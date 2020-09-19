@@ -7,4 +7,20 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="assets\pause-icon.png" />
+    <None Remove="assets\play-icon.png" />
+    <None Remove="play-icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\pause-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\play-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="play-icon.svg" />
+  </ItemGroup>
+
 </Project>

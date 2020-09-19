@@ -6,7 +6,33 @@
         xmlns:local="clr-namespace:Octoplayer_Frontend"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <Image x:Key="Play" Source="assets/play-icon.png"/>
+        <Image x:Key="Pause" Source="assets/pause-icon.png"/>
+    </Window.Resources>
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnOpenFile" Content="Select Audio File" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
+            <TextBox x:Name="txtFilePath" Grid.Column="1" IsReadOnly="True" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnPlayPause" Grid.Column="1" Click="btnPlayPause_Click">
+                <DynamicResource ResourceKey="Play"/>
+            </Button>
 
+        </Grid>
     </Grid>
 </Window>
