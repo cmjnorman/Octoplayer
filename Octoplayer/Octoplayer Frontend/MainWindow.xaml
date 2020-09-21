@@ -11,28 +11,47 @@
         <Image x:Key="Pause" Source="assets/pause-icon.png"/>
     </Window.Resources>
     <Grid Margin="50">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="btnOpenFile" Content="Select Audio File" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
-            <TextBox x:Name="txtFilePath" Grid.Column="1" IsReadOnly="True" VerticalAlignment="Center"/>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnOpenFile" Content="Select Audio File" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
+                <TextBox x:Name="txtFilePath" Grid.Column="1" IsReadOnly="True" VerticalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label x:Name="lblTrackTitle"/>
+                <Label x:Name="lblArtists" Grid.Row="1"/>
+                <Label x:Name="lblAlbum" Grid.Row="2"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnPlayPause" Grid.Column="1" Click="btnPlayPause_Click">
+                    <DynamicResource ResourceKey="Play"/>
+                </Button>
+            </Grid>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="btnPlayPause" Grid.Column="1" Click="btnPlayPause_Click">
-                <DynamicResource ResourceKey="Play"/>
-            </Button>
-
+        <Grid Grid.Column="1">
+            <Image x:Name="imgAlbumArt"/>
         </Grid>
     </Grid>
 </Window>
