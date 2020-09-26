@@ -28,13 +28,13 @@
         <Image x:Name="imgAlbumArt" Grid.Row="1"/>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.35*"/>
+                <RowDefinition Height="0.25*"/>
             </Grid.RowDefinitions>
-            <Label x:Name="lblTrackTitle" HorizontalContentAlignment="Center"/>
-            <Label x:Name="lblArtists" Grid.Row="1" HorizontalContentAlignment="Center"/>
-            <Label x:Name="lblAlbum" Grid.Row="2" HorizontalContentAlignment="Center"/>
+            <Label x:Name="lblTrackTitle" HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Bottom"/>
+            <Label x:Name="lblArtists" Grid.Row="1" HorizontalContentAlignment="Center" FontSize="16"/>
+            <Label x:Name="lblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
