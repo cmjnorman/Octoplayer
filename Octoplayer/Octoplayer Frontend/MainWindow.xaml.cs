@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
@@ -42,6 +45,25 @@ namespace Octoplayer_Frontend
                 lblArtists.Content = artists;
                 lblAlbum.Content = track.Tag.Album;
 
+                ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{track.Tag.Track} / {track.Tag.TrackCount}";
+                ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{track.Tag.Disc} / {track.Tag.DiscCount}";
+                ((System.Windows.Controls.Label)this.FindResource("Year")).Content = track.Tag.Year;
+                ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = "0";
+                
+                var genres = new StringBuilder();
+                genres.Append(track.Tag.Genres[0]);
+                foreach (var genre in track.Tag.Genres.Skip(1))
+                {
+                    artists.Append($"; {genre}");
+                }
+                ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = genres;
+
+                ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = track.Tag.BeatsPerMinute;
+                ((System.Windows.Controls.Label)this.FindResource("Key")).Content = track.Tag.InitialKey;
+
+                gridControls.Visibility = Visibility.Visible;
+                gridInfo.Visibility = Visibility.Visible;
+
                 MemoryStream ms = new MemoryStream(track.Tag.Pictures[0].Data.Data);
                 ms.Seek(0, SeekOrigin.Begin);
 
@@ -51,7 +73,21 @@ namespace Octoplayer_Frontend
                 bitmap.EndInit();
 
                 imgAlbumArt.Source = bitmap;
+
+                expander.IsExpanded = false;
             }
+        }
+
+        private void expander_expand(object sender, RoutedEventArgs e)
+        {
+            imgAlbumArt.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void expander_collapse(object sender, RoutedEventArgs e)
+        {
+            imgAlbumArt.Visibility = Visibility.Visible;
+
         }
 
         private void btnPlayPause_Click(object sender, RoutedEventArgs e)
@@ -79,5 +115,28 @@ namespace Octoplayer_Frontend
             btnPlayPause.Content = FindResource("Play");
             isPlaying = false;
         }
+
+        //private System.Windows.Controls.Label SearchForLabelWithinElement(DependencyObject element, string name)
+        //{
+        //    for(int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+        //    {
+        //        var child = VisualTreeHelper.GetChild(element, i);
+        //        if ((child is System.Windows.Controls.Label))
+        //        {
+        //            var label = (System.Windows.Controls.Label)child;
+        //            if (label.Name == name)
+        //            {
+        //                return label;
+        //            }
+        //        }
+        //        if (VisualTreeHelper.GetChildrenCount(child) > 0)
+        //        {
+        //            var result = SearchForLabelWithinElement(child, name);
+        //            if (result != null) return result;
+        //        }
+        //    }
+        //    return null;
+        //}
+
     }
 }
