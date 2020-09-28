@@ -91,7 +91,7 @@ namespace Octoplayer_Frontend
             imgAlbumArt.Source = bitmap;
 
             expander.IsExpanded = false;
-
+            player.MediaEnded += songEnd;
             if (isPlaying) play();
         }
 
@@ -104,7 +104,6 @@ namespace Octoplayer_Frontend
         private void expander_collapse(object sender, RoutedEventArgs e)
         {
             imgAlbumArt.Visibility = Visibility.Visible;
-
         }
 
         private void btnPlayPause_Click(object sender, RoutedEventArgs e)
@@ -128,6 +127,16 @@ namespace Octoplayer_Frontend
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            next();
+        }
+
+        private void songEnd(object sender, EventArgs e)
+        {
+            next();
+        }
+
+        private void next()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];

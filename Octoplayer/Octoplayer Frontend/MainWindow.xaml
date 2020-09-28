@@ -167,7 +167,7 @@
                 </Grid>
             </Expander>
         </Grid>
-        <Grid x:Name="gridControls" Grid.Row="3" >
+        <Grid x:Name="gridControls" Grid.Row="3" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="70"/>
