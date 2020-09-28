@@ -92,7 +92,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnOpenFile" Content="Select Audio File(s)" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
+            <Button x:Name="btnOpenFile" Content="Select Audio File(s)" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
             <Label x:Name="lblFilesSelected" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Image x:Name="imgAlbumArt" Grid.Row="1"/>
