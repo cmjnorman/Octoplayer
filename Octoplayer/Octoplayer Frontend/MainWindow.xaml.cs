@@ -1,15 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
+using System.Windows.Forms;
 using System.Text;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using TagLib;
 using Octoplayer_Backend;
 
 
@@ -21,6 +17,7 @@ namespace Octoplayer_Frontend
         private Track currentTrack;
         private bool isPlaying = false;
         private Library library;
+        private string[] extensions = { ".mp3", ".wav", ".flac" };
         public MainWindow()
         {
             InitializeComponent();
@@ -28,20 +25,18 @@ namespace Octoplayer_Frontend
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Audio files|*.mp3; *.flac; *.wav";
-            dialog.Multiselect = true;
-            if(dialog.ShowDialog() == true)
+            var folderBrowser = new FolderBrowserDialog();
+            if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 pause();
-
                 library = new Library();
-                foreach (var filePath in dialog.FileNames)
+                var files = Directory.GetFiles(folderBrowser.SelectedPath);
+                foreach (var file in files)
                 {
-                    library.AddTrack(filePath);
+                    if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
                 currentTrack = library.Tracks[0];
-                lblFilesSelected.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} selected.";
+                lblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
 
                 loadTrack();
 

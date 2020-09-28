@@ -92,8 +92,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnOpenFile" Content="Select Audio File(s)" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
-            <Label x:Name="lblFilesSelected" Grid.Column="1" VerticalAlignment="Center"/>
+            <Button x:Name="btnOpenFile" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
+            <Label x:Name="lblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Image x:Name="imgAlbumArt" Grid.Row="1"/>
         <Grid x:Name="gridInfo" Grid.Row="2" Visibility="Collapsed">
@@ -176,13 +176,13 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button x:Name="btnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="btnPrevious_Click">
-                <Image Source="assets/previous-icon.png" Width="50"/>
+                <Image Source="assets/previous-icon.png" Width="40"/>
             </Button>
             <Button x:Name="btnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="btnPlayPause_Click">
                 <DynamicResource ResourceKey="Play"/>
             </Button>
             <Button x:Name="btnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="btnNext_Click">
-                <Image Source="assets/next-icon.png" Width="50"/>
+                <Image Source="assets/next-icon.png" Width="40"/>
             </Button>
         </Grid>
     </Grid>
