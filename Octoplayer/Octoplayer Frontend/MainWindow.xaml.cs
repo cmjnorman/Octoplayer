@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using TagLib;
+using Octoplayer_Backend;
 
 
 namespace Octoplayer_Frontend
@@ -17,8 +18,9 @@ namespace Octoplayer_Frontend
     public partial class MainWindow : Window
     {
         private MediaPlayer player = new MediaPlayer();
+        private Track currentTrack;
         private bool isPlaying = false;
-        private TagLib.File track;
+        private Library library;
         public MainWindow()
         {
             InitializeComponent();
@@ -27,55 +29,70 @@ namespace Octoplayer_Frontend
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Audio files|*.mp3; *.flac; *.wav|All files|*.*";
+            dialog.Filter = "Audio files|*.mp3; *.flac; *.wav";
+            dialog.Multiselect = true;
             if(dialog.ShowDialog() == true)
             {
-                Pause();
-                txtFilePath.Text = dialog.FileName;
-                track = TagLib.File.Create(dialog.FileName);
-                player.Open(new Uri(dialog.FileName));
+                pause();
 
-                lblTrackTitle.Content = track.Tag.Title;
-                var artists = new StringBuilder();
-                artists.Append(track.Tag.Performers[0]);
-                foreach (var artist in track.Tag.Performers.Skip(1))
+                library = new Library();
+                foreach (var filePath in dialog.FileNames)
                 {
-                    artists.Append(artist);
+                    library.AddTrack(filePath);
                 }
-                lblArtists.Content = artists;
-                lblAlbum.Content = track.Tag.Album;
+                currentTrack = library.Tracks[0];
+                lblFilesSelected.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} selected.";
 
-                ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{track.Tag.Track} / {track.Tag.TrackCount}";
-                ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{track.Tag.Disc} / {track.Tag.DiscCount}";
-                ((System.Windows.Controls.Label)this.FindResource("Year")).Content = track.Tag.Year;
-                ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = "0";
-                
-                var genres = new StringBuilder();
-                genres.Append(track.Tag.Genres[0]);
-                foreach (var genre in track.Tag.Genres.Skip(1))
-                {
-                    artists.Append($"; {genre}");
-                }
-                ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = genres;
-
-                ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = track.Tag.BeatsPerMinute;
-                ((System.Windows.Controls.Label)this.FindResource("Key")).Content = track.Tag.InitialKey;
+                loadTrack();
 
                 gridControls.Visibility = Visibility.Visible;
                 gridInfo.Visibility = Visibility.Visible;
-
-                MemoryStream ms = new MemoryStream(track.Tag.Pictures[0].Data.Data);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = ms;
-                bitmap.EndInit();
-
-                imgAlbumArt.Source = bitmap;
-
-                expander.IsExpanded = false;
             }
+        }
+
+        private void loadTrack()
+        {
+            player.Open(new Uri(currentTrack.FilePath));
+
+            lblTrackTitle.Content = currentTrack.Title;
+            var artists = new StringBuilder();
+            artists.Append(currentTrack.Artists[0]);
+            foreach (var artist in currentTrack.Artists.Skip(1))
+            {
+                artists.Append(artist);
+            }
+            lblArtists.Content = artists;
+            lblAlbum.Content = currentTrack.Album;
+
+            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{currentTrack.TrackNumber} / {currentTrack.TrackCount}";
+            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{currentTrack.DiscNumber} / {currentTrack.DiscCount}";
+            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = currentTrack.Year;
+            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = currentTrack.Rating;
+
+            var genres = new StringBuilder();
+            genres.Append(currentTrack.Genres[0]);
+            foreach (var genre in currentTrack.Genres.Skip(1))
+            {
+                artists.Append($"; {genre}");
+            }
+                ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = genres;
+
+            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
+            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
+
+            MemoryStream ms = new MemoryStream(currentTrack.Artwork.Data.Data);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = ms;
+            bitmap.EndInit();
+
+            imgAlbumArt.Source = bitmap;
+
+            expander.IsExpanded = false;
+
+            if (isPlaying) play();
         }
 
         private void expander_expand(object sender, RoutedEventArgs e)
@@ -94,49 +111,46 @@ namespace Octoplayer_Frontend
         {
             if (isPlaying)
             {
-                Pause();
+                pause();
             }
             else
             {
-                Play();
+                play();
             }
         }
 
-        private void Play()
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
+            if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
+            else currentTrack = library.Tracks[currentTrackIndex - 1];
+            loadTrack();
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
+            if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];
+            else currentTrack = library.Tracks[currentTrackIndex + 1];
+            loadTrack();
+        }
+
+        private void play()
         {
             player.Play();
             btnPlayPause.Content = FindResource("Pause");
             isPlaying = true;
         }
 
-        private void Pause()
+        private void pause()
         {
             player.Pause();
             btnPlayPause.Content = FindResource("Play");
             isPlaying = false;
         }
 
-        //private System.Windows.Controls.Label SearchForLabelWithinElement(DependencyObject element, string name)
-        //{
-        //    for(int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
-        //    {
-        //        var child = VisualTreeHelper.GetChild(element, i);
-        //        if ((child is System.Windows.Controls.Label))
-        //        {
-        //            var label = (System.Windows.Controls.Label)child;
-        //            if (label.Name == name)
-        //            {
-        //                return label;
-        //            }
-        //        }
-        //        if (VisualTreeHelper.GetChildrenCount(child) > 0)
-        //        {
-        //            var result = SearchForLabelWithinElement(child, name);
-        //            if (result != null) return result;
-        //        }
-        //    }
-        //    return null;
-        //}
+        
 
+        
     }
 }

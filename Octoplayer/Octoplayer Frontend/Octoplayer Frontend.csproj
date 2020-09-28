@@ -8,8 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\next-icon.png" />
     <None Remove="assets\pause-icon.png" />
     <None Remove="assets\play-icon.png" />
+    <None Remove="assets\previous-icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +19,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Octoplayer Backend\Octoplayer Backend.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\next-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="assets\pause-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="assets\play-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\previous-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

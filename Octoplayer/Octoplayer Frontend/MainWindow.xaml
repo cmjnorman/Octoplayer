@@ -92,8 +92,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnOpenFile" Content="Select Audio File" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
-            <TextBox x:Name="txtFilePath" Grid.Column="1" IsReadOnly="True" VerticalAlignment="Center"/>
+            <Button x:Name="btnOpenFile" Content="Select Audio File(s)" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
+            <Label x:Name="lblFilesSelected" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Image x:Name="imgAlbumArt" Grid.Row="1"/>
         <Grid x:Name="gridInfo" Grid.Row="2" Visibility="Collapsed">
@@ -167,14 +167,22 @@
                 </Grid>
             </Expander>
         </Grid>
-        <Grid x:Name="gridControls" Grid.Row="3" Visibility="Collapsed">
+        <Grid x:Name="gridControls" Grid.Row="3" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnPlayPause" Grid.Column="1" Click="btnPlayPause_Click" Background="Transparent" BorderThickness="0" Width="50">
+            <Button x:Name="btnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="btnPrevious_Click">
+                <Image Source="assets/previous-icon.png" Width="50"/>
+            </Button>
+            <Button x:Name="btnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="btnPlayPause_Click">
                 <DynamicResource ResourceKey="Play"/>
+            </Button>
+            <Button x:Name="btnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="btnNext_Click">
+                <Image Source="assets/next-icon.png" Width="50"/>
             </Button>
         </Grid>
     </Grid>
