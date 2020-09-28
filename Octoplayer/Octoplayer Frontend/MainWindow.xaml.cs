@@ -120,10 +120,8 @@ namespace Octoplayer_Frontend
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
-            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
-            if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
-            else currentTrack = library.Tracks[currentTrackIndex - 1];
-            loadTrack();
+            if (player.Position.TotalSeconds >= 5) player.Position = new TimeSpan(0);
+            else previous();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
@@ -134,6 +132,14 @@ namespace Octoplayer_Frontend
         private void songEnd(object sender, EventArgs e)
         {
             next();
+        }
+
+        private void previous()
+        {
+            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
+            if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
+            else currentTrack = library.Tracks[currentTrackIndex - 1];
+            loadTrack();
         }
 
         private void next()
