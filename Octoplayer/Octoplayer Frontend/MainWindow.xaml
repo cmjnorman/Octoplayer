@@ -186,6 +186,14 @@
                 <Image Source="assets/next-icon.png" Width="30"/>
             </Button>
         </Grid>
-        <Slider x:Name="Slider" Grid.Row="4" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
+        <Grid x:Name="GridPositionControls" Grid.Row="4" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Slider x:Name="Slider" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
+            <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center"/>
+        </Grid>
+        
     </Grid>
 </Window>

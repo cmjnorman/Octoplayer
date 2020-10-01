@@ -47,6 +47,7 @@ namespace Octoplayer_Frontend
 
                 GridControls.Visibility = Visibility.Visible;
                 GridInfo.Visibility = Visibility.Visible;
+                GridPositionControls.Visibility = Visibility.Visible;
             }
         }
 
@@ -166,6 +167,7 @@ namespace Octoplayer_Frontend
             if (!SliderActive)
             {
                 Slider.Value = player.Position.TotalMilliseconds;
+                LabelTrackTime.Content = $"{(player.Position).ToString(@"hh\:mm\:ss")} / {(player.NaturalDuration.TimeSpan).ToString(@"hh\:mm\:ss")}";
             }
         }
 
@@ -173,7 +175,11 @@ namespace Octoplayer_Frontend
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
-            else currentTrack = library.Tracks[currentTrackIndex - 1];
+            else
+            {
+                currentTrack = library.Tracks[currentTrackIndex - 1];
+                timer.Stop();
+            }
             LoadTrack();
         }
 
@@ -183,6 +189,7 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];
             else currentTrack = library.Tracks[currentTrackIndex + 1];
             LoadTrack();
+            timer.Stop();
         }
 
         private void Play()
