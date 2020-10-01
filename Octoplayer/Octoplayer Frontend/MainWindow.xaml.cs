@@ -7,57 +7,86 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Octoplayer_Backend;
-
+using System.Windows.Media.Animation;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace Octoplayer_Frontend
 {
     public partial class MainWindow : Window
     {
         private MediaPlayer player = new MediaPlayer();
+        private DispatcherTimer timer;
+        private Library library;
         private Track currentTrack;
         private bool isPlaying = false;
-        private Library library;
-        private string[] extensions = { ".mp3", ".wav", ".flac" };
+        private bool SliderActive = false;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
         {
             var folderBrowser = new FolderBrowserDialog();
             if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                pause();
+                if(isPlaying) Pause();
                 library = new Library();
                 var files = Directory.GetFiles(folderBrowser.SelectedPath);
+                string[] extensions = { ".mp3", ".wav", ".flac" };
                 foreach (var file in files)
                 {
                     if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
                 currentTrack = library.Tracks[0];
-                lblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
+                LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
 
-                loadTrack();
+                LoadTrack();
 
-                gridControls.Visibility = Visibility.Visible;
-                gridInfo.Visibility = Visibility.Visible;
+                GridControls.Visibility = Visibility.Visible;
+                GridInfo.Visibility = Visibility.Visible;
             }
         }
 
-        private void loadTrack()
+        
+        private void BtnPlayPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
+        private void BtnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            if (player.Position.TotalSeconds >= 5) player.Position = new TimeSpan(0);
+            else Previous();
+        }
+
+        private void BtnNext_Click(object sender, RoutedEventArgs e)
+        {
+            Next();
+        }
+
+        private void LoadTrack()
         {
             player.Open(new Uri(currentTrack.FilePath));
 
-            lblTrackTitle.Content = currentTrack.Title;
+            LblTrackTitle.Content = currentTrack.Title;
             var artists = new StringBuilder();
             artists.Append(currentTrack.Artists[0]);
             foreach (var artist in currentTrack.Artists.Skip(1))
             {
                 artists.Append(artist);
             }
-            lblArtists.Content = artists;
-            lblAlbum.Content = currentTrack.Album;
+            LblArtists.Content = artists;
+            LblAlbum.Content = currentTrack.Album;
 
             ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{currentTrack.TrackNumber} / {currentTrack.TrackCount}";
             ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{currentTrack.DiscNumber} / {currentTrack.DiscCount}";
@@ -83,84 +112,93 @@ namespace Octoplayer_Frontend
             bitmap.StreamSource = ms;
             bitmap.EndInit();
 
-            imgAlbumArt.Source = bitmap;
+            ImgAlbumArt.Source = bitmap;
 
-            expander.IsExpanded = false;
-            player.MediaEnded += songEnd;
-            if (isPlaying) play();
+            Expander.IsExpanded = false;
+            player.MediaOpened += OnTrackLoad;
+            player.MediaEnded += OnTrackEnd;
+            
+            if (isPlaying) Play();
         }
 
-        private void expander_expand(object sender, RoutedEventArgs e)
+        private void Expander_Expand(object sender, RoutedEventArgs e)
         {
-            imgAlbumArt.Visibility = Visibility.Collapsed;
+            ImgAlbumArt.Visibility = Visibility.Collapsed;
         }
 
 
-        private void expander_collapse(object sender, RoutedEventArgs e)
+        private void Expander_Collapse(object sender, RoutedEventArgs e)
         {
-            imgAlbumArt.Visibility = Visibility.Visible;
+            ImgAlbumArt.Visibility = Visibility.Visible;
         }
 
-        private void btnPlayPause_Click(object sender, RoutedEventArgs e)
+        private void Slider_DragStarted(object sender, RoutedEventArgs e)
         {
-            if (isPlaying)
+            SliderActive = true;
+        }
+        
+        private void Slider_DragCompleted(object sender, RoutedEventArgs e)
+        {
+            SliderActive = false;
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedEventArgs e)
+        {
+            if(SliderActive) player.Position = TimeSpan.FromMilliseconds(Slider.Value);
+        }
+
+        private void OnTrackLoad(object sender, EventArgs e)
+        {
+            Slider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(1);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+
+        private void OnTrackEnd(object sender, EventArgs e)
+        {
+            Next();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (!SliderActive)
             {
-                pause();
-            }
-            else
-            {
-                play();
+                Slider.Value = player.Position.TotalMilliseconds;
             }
         }
 
-        private void btnPrevious_Click(object sender, RoutedEventArgs e)
-        {
-            if (player.Position.TotalSeconds >= 5) player.Position = new TimeSpan(0);
-            else previous();
-        }
-
-        private void btnNext_Click(object sender, RoutedEventArgs e)
-        {
-            next();
-        }
-
-        private void songEnd(object sender, EventArgs e)
-        {
-            next();
-        }
-
-        private void previous()
+        private void Previous()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
             else currentTrack = library.Tracks[currentTrackIndex - 1];
-            loadTrack();
+            LoadTrack();
         }
 
-        private void next()
+        private void Next()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];
             else currentTrack = library.Tracks[currentTrackIndex + 1];
-            loadTrack();
+            LoadTrack();
         }
 
-        private void play()
+        private void Play()
         {
             player.Play();
-            btnPlayPause.Content = FindResource("Pause");
+            BtnPlayPause.Content = FindResource("Pause");
             isPlaying = true;
         }
 
-        private void pause()
+        private void Pause()
         {
             player.Pause();
-            btnPlayPause.Content = FindResource("Play");
+            BtnPlayPause.Content = FindResource("Play");
             isPlaying = false;
         }
 
-        
 
-        
     }
 }

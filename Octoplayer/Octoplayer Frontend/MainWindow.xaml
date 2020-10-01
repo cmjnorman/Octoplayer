@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Octoplayer_Frontend"
+        xmlns:local="clr-namespace:Octoplayer_Frontend" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="610" Width="400" FontSize="14">
+        Title="MainWindow" Height="660" Width="400" FontSize="14">
     <Window.Resources>
         <Image x:Key="Play" Source="assets/play-icon.png" Width="50"/>
         <Image x:Key="Pause" Source="assets/pause-icon.png" Width="50"/>
@@ -83,8 +83,9 @@
     <Grid Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" MaxHeight="500"/>
             <RowDefinition MinHeight="90"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid>
@@ -92,12 +93,12 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnOpenFile" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnOpenFile_Click"/>
-            <Label x:Name="lblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
+            <Button x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click"/>
+            <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
-        <Image x:Name="imgAlbumArt" Grid.Row="1"/>
-        <Grid x:Name="gridInfo" Grid.Row="2" Visibility="Collapsed">
-            <Expander x:Name="expander" VerticalAlignment="Bottom" HorizontalAlignment="Center" Expanded="expander_expand" Collapsed="expander_collapse" >
+        <Image x:Name="ImgAlbumArt" Grid.Row="1"/>
+        <Grid x:Name="GridInfo" Grid.Row="2" Visibility="Collapsed">
+            <Expander x:Name="Expander" VerticalAlignment="Bottom" HorizontalAlignment="Center" Expanded="Expander_Expand" Collapsed="Expander_Collapse" >
                 <Expander.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -105,9 +106,9 @@
                             <RowDefinition Height="0.2*"/>
                             <RowDefinition Height="0.3*"/>
                         </Grid.RowDefinitions>
-                        <Label x:Name="lblTrackTitle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" />
-                        <Label x:Name="lblArtists" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" />
-                        <Label x:Name="lblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" />
+                        <Label x:Name="LblTrackTitle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" />
+                        <Label x:Name="LblArtists" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" />
+                        <Label x:Name="LblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" />
                     </Grid>
                 </Expander.Header>
                 <Grid>
@@ -159,7 +160,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="BPM:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
                         <Label Content="{DynamicResource BPM}" Grid.Column="1"/>
                         <Label Content="Key:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
                         <Label Content="{DynamicResource Key}" Grid.Column="4"/>
@@ -167,7 +168,7 @@
                 </Grid>
             </Expander>
         </Grid>
-        <Grid x:Name="gridControls" Grid.Row="3" Visibility="Collapsed">
+        <Grid x:Name="GridControls" Grid.Row="3" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="50"/>
@@ -175,17 +176,16 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="btnPrevious_Click">
+            <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
                 <Image Source="assets/previous-icon.png" Width="30"/>
             </Button>
-            <Button x:Name="btnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="btnPlayPause_Click">
+            <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
                 <DynamicResource ResourceKey="Play"/>
             </Button>
-            <Button x:Name="btnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="btnNext_Click">
+            <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="BtnNext_Click">
                 <Image Source="assets/next-icon.png" Width="30"/>
             </Button>
         </Grid>
+        <Slider x:Name="Slider" Grid.Row="4" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
     </Grid>
-    
-    
 </Window>
