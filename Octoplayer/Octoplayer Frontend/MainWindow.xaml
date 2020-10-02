@@ -191,8 +191,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Slider x:Name="Slider" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
-            <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center"/>
+            <Slider x:Name="Slider" VerticalAlignment="Bottom" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
+            <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Grid>
         
     </Grid>
