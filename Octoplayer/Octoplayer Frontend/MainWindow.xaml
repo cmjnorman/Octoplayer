@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Octoplayer_Frontend" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="660" Width="400" FontSize="14">
+        Title="MainWindow" Height="1080" Width="1920" FontSize="14">
     <Window.Resources>
         <Image x:Key="Play" Source="assets/play-icon.png" Width="50"/>
         <Image x:Key="Pause" Source="assets/pause-icon.png" Width="50"/>
@@ -16,7 +16,6 @@
         <Label x:Key="Genres"/>
         <Label x:Key="BPM"/>
         <Label x:Key="Key"/>
-        <!--#region ExpanderSettings-->
         <Style x:Key="ExpanderHeaderFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -28,32 +27,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ExpanderUpHeaderStyle" TargetType="{x:Type ToggleButton}">
+        <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Border Padding="{TemplateBinding Padding}">
                             <Grid Background="Transparent" SnapsToDevicePixels="False">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition />
+                                    <RowDefinition/>
+                                    <RowDefinition Height="20"/>
                                 </Grid.RowDefinitions>
-                                <Grid>
-                                    <Path x:Name="arrow" Data="M 1,7  L 5,3  L 9,7" HorizontalAlignment="Center" VerticalAlignment="Center" Height="10" Width="10" SnapsToDevicePixels="false" StrokeThickness="2" Stroke="#FF333333"/>
-                                </Grid>
-                                <ContentPresenter Grid.Row="1" HorizontalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                                <ContentPresenter HorizontalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                                <Path x:Name="arrow" Grid.Row="1" Data="M 4,6 L 10,14 L 16,6" HorizontalAlignment="Center" StrokeThickness="2" Stroke="#FF333333" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter Property="Data" TargetName="arrow" Value="M 1,3 L 5,7 L 9,3"/>
+                                <Setter Property="Data" TargetName="arrow" Value="M 4,14  L 10,6  L 16,14"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="{x:Type Expander}">
+        <Style x:Key="TrackDataExpander" TargetType="{x:Type Expander}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -65,7 +62,7 @@
                     <ControlTemplate TargetType="{x:Type Expander}">
                         <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" SnapsToDevicePixels="true">
                             <DockPanel>
-                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="1" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderUpHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="1" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
                             </DockPanel>
                         </Border>
@@ -78,122 +75,134 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--#endregion-->
     </Window.Resources>
-    <Grid Margin="50">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="auto" MaxHeight="500"/>
-            <RowDefinition MinHeight="90"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid x:Name="GridLibrarySelection">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click"/>
             <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
-        <Image x:Name="ImgAlbumArt" Grid.Row="1"/>
-        <Grid x:Name="GridInfo" Grid.Row="2" Visibility="Collapsed">
-            <Expander x:Name="Expander" VerticalAlignment="Bottom" HorizontalAlignment="Center" Expanded="Expander_Expand" Collapsed="Expander_Collapse" >
-                <Expander.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0.3*"/>
-                            <RowDefinition Height="0.2*"/>
-                            <RowDefinition Height="0.3*"/>
-                        </Grid.RowDefinitions>
-                        <Label x:Name="LblTrackTitle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" />
-                        <Label x:Name="LblArtists" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" />
-                        <Label x:Name="LblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" />
-                    </Grid>
-                </Expander.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource TrackInfo}" Grid.Column="1"/>
-                        <Label Content="Disc:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource DiscInfo}" Grid.Column="4"/>
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource Year}" Grid.Column="1"/>
-                        <Label Content="Rating:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" />
-                        <Label Content="{DynamicResource Rating}" Grid.Column="4"/>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource Genres}" Grid.Column="1"/>
-                    </Grid>
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource BPM}" Grid.Column="1"/>
-                        <Label Content="Key:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Label Content="{DynamicResource Key}" Grid.Column="4"/>
-                    </Grid>
-                </Grid>
-            </Expander>
-        </Grid>
-        <Grid x:Name="GridControls" Grid.Row="3" Visibility="Collapsed">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="500"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
-                <Image Source="assets/previous-icon.png" Width="30"/>
-            </Button>
-            <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
-                <DynamicResource ResourceKey="Play"/>
-            </Button>
-            <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="BtnNext_Click">
-                <Image Source="assets/next-icon.png" Width="30"/>
-            </Button>
+            <Grid x:Name="GridPlayer" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="500"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
+                <Expander Style="{DynamicResource TrackDataExpander}" x:Name="ExpTrackInfo" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" ExpandDirection="Down">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.2*"/>
+                                <RowDefinition Height="0.3*"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="LblTrackTitle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" />
+                            <Label x:Name="LblArtists" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" />
+                            <Label x:Name="LblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" />
+                        </Grid>
+                    </Expander.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource TrackInfo}" Grid.Column="1"/>
+                            <Label Content="Disc:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource DiscInfo}" Grid.Column="4"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource Year}" Grid.Column="1"/>
+                            <Label Content="Rating:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" />
+                            <Label Content="{DynamicResource Rating}" Grid.Column="4"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource Genres}" Grid.Column="1"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource BPM}" Grid.Column="1"/>
+                            <Label Content="Key:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <Label Content="{DynamicResource Key}" Grid.Column="4"/>
+                        </Grid>
+                    </Grid>
+                </Expander>
+            </Grid>
         </Grid>
-        <Grid x:Name="GridPositionControls" Grid.Row="4" Visibility="Collapsed">
+        <Grid x:Name="GridControls" Grid.Row="2" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Slider x:Name="Slider" VerticalAlignment="Bottom" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
-            <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
+                    <Image Source="assets/previous-icon.png" Width="30"/>
+                </Button>
+                <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
+                    <DynamicResource ResourceKey="Play"/>
+                </Button>
+                <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="BtnNext_Click">
+                    <Image Source="assets/next-icon.png" Width="30"/>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Slider x:Name="Slider" VerticalAlignment="Bottom" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged" />
+                <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            </Grid>
         </Grid>
-        
     </Grid>
 </Window>

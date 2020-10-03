@@ -45,9 +45,7 @@ namespace Octoplayer_Frontend
 
                 LoadTrack();
 
-                GridControls.Visibility = Visibility.Visible;
-                GridInfo.Visibility = Visibility.Visible;
-                GridPositionControls.Visibility = Visibility.Visible;
+                GridPlayer.Visibility = Visibility.Visible;
             }
         }
 
@@ -115,7 +113,7 @@ namespace Octoplayer_Frontend
 
             ImgAlbumArt.Source = bitmap;
 
-            Expander.IsExpanded = false;
+            ExpTrackInfo.IsExpanded = false;
             player.MediaOpened += OnTrackLoad;
             player.MediaEnded += OnTrackEnd;
             
