@@ -45,7 +45,7 @@ namespace Octoplayer_Frontend
                 ListBoxTracks.ItemsSource = library.Tracks;
                 LoadTrack();
 
-                GridPlayer.Visibility = Visibility.Visible;
+                GridPlayer.Visibility = Visibility.Visible; 
             }
         }
 
@@ -84,28 +84,14 @@ namespace Octoplayer_Frontend
             player.Open(new Uri(currentTrack.FilePath));
 
             LblTrackTitle.Content = currentTrack.Title;
-            var artists = new StringBuilder();
-            artists.Append(currentTrack.Artists[0]);
-            foreach (var artist in currentTrack.Artists.Skip(1))
-            {
-                artists.Append(artist);
-            }
-            LblArtists.Content = artists;
+            LblArtists.Content = currentTrack.GetArtistString();
             LblAlbum.Content = currentTrack.Album;
 
             ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{currentTrack.TrackNumber} / {currentTrack.TrackCount}";
             ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{currentTrack.DiscNumber} / {currentTrack.DiscCount}";
             ((System.Windows.Controls.Label)this.FindResource("Year")).Content = currentTrack.Year;
             ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = currentTrack.Rating;
-
-            var genres = new StringBuilder();
-            genres.Append(currentTrack.Genres[0]);
-            foreach (var genre in currentTrack.Genres.Skip(1))
-            {
-                artists.Append($"; {genre}");
-            }
-                ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = genres;
-
+            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = currentTrack.GetGenreString();
             ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
             ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
 
