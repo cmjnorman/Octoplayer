@@ -172,7 +172,7 @@
                 </Expander>
             </Grid>
             <Grid Grid.Column="1">
-                <ListBox x:Name="ListBoxTracks">
+                <ListBox x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>

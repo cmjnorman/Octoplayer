@@ -73,10 +73,12 @@ namespace Octoplayer_Frontend
             Next();
         }
 
-        //private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
-        //{
-        //    var selectedTrack = ListBoxTracks.SelectedItem;
-        //}
+        private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
+            currentTrack = (Track) ListBoxTracks.SelectedItem;
+            LoadTrack();
+        }
 
 
         private void LoadTrack()
@@ -126,11 +128,13 @@ namespace Octoplayer_Frontend
         private void Slider_DragStarted(object sender, RoutedEventArgs e)
         {
             SliderActive = true;
+            Pause();
         }
         
         private void Slider_DragCompleted(object sender, RoutedEventArgs e)
         {
             SliderActive = false;
+            Play();
         }
 
         private void Slider_ValueChanged(object sender, RoutedEventArgs e)
@@ -167,8 +171,8 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
             else
             {
-                currentTrack = library.Tracks[currentTrackIndex - 1];
                 timer.Stop();
+                currentTrack = library.Tracks[currentTrackIndex - 1];
             }
             LoadTrack();
         }
@@ -176,10 +180,11 @@ namespace Octoplayer_Frontend
         private void Next()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
+            timer.Stop();
             if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];
             else currentTrack = library.Tracks[currentTrackIndex + 1];
             LoadTrack();
-            timer.Stop();
+            
         }
 
         private void Play()
