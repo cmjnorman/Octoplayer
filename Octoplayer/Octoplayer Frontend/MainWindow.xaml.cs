@@ -84,14 +84,14 @@ namespace Octoplayer_Frontend
             player.Open(new Uri(currentTrack.FilePath));
 
             LblTrackTitle.Content = currentTrack.Title;
-            LblArtists.Content = currentTrack.GetArtistString();
+            LblArtists.Content = currentTrack.ArtistString;
             LblAlbum.Content = currentTrack.Album;
 
             ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{currentTrack.TrackNumber} / {currentTrack.TrackCount}";
             ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{currentTrack.DiscNumber} / {currentTrack.DiscCount}";
             ((System.Windows.Controls.Label)this.FindResource("Year")).Content = currentTrack.Year;
             ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = currentTrack.Rating;
-            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = currentTrack.GetGenreString();
+            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = currentTrack.GenreString;
             ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
             ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
 
@@ -195,7 +195,5 @@ namespace Octoplayer_Frontend
             BtnPlayPause.Content = FindResource("Play");
             isPlaying = false;
         }
-
-
     }
 }
