@@ -42,7 +42,7 @@ namespace Octoplayer_Frontend
                 }
                 currentTrack = library.Tracks[0];
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                ListBoxTracks.ItemsSource = library.Tracks.Select(t => t.Title);
+                ListBoxTracks.ItemsSource = library.Tracks;
                 LoadTrack();
 
                 GridPlayer.Visibility = Visibility.Visible;
@@ -72,6 +72,12 @@ namespace Octoplayer_Frontend
         {
             Next();
         }
+
+        //private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
+        //{
+        //    var selectedTrack = ListBoxTracks.SelectedItem;
+        //}
+
 
         private void LoadTrack()
         {
