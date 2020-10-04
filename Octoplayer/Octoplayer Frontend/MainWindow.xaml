@@ -176,18 +176,20 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Content="{Binding Title}"/>
-                                <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding ArtistString}"/>
-                                    <Label Content="{Binding Album}" Grid.Column="1"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <!--<Image Source="{Binding Artwork}"/>-->
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="{Binding Title}" FontSize="20" Padding="0"/>
+                                    <Label Content="{Binding ArtistString}" FontSize="16" Grid.Row="1" Padding="0"/>
+                                    <Label Content="{Binding Album}" Grid.Row="2" Padding="0"/>
                                 </Grid>
                             </Grid>
                         </DataTemplate>

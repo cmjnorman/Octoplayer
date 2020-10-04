@@ -14,6 +14,7 @@ namespace Octoplayer_Backend
         {
             get
             {
+                if (Artists.Length == 0) return "";
                 var artists = new StringBuilder();
                 artists.Append(Artists[0]);
                 for (var i = 1; i < Artists.Length; i++)
@@ -35,6 +36,7 @@ namespace Octoplayer_Backend
         {
             get
             {
+                if (Genres.Length == 0) return "";
                 var genres = new StringBuilder();
                 genres.Append(Genres[0]);
                 for (var i = 1; i < Genres.Length; i++)
@@ -64,7 +66,7 @@ namespace Octoplayer_Backend
             this.Genres = track.Tag.Genres;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
-            this.Artwork = track.Tag.Pictures[0];
+            if(track.Tag.Pictures.Length > 0) this.Artwork = track.Tag.Pictures[0];
         }
     }
 }

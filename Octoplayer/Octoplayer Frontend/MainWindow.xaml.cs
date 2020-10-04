@@ -10,6 +10,9 @@ using Octoplayer_Backend;
 using System.Windows.Media.Animation;
 using System.Threading;
 using System.Windows.Threading;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Interop;
 
 namespace Octoplayer_Frontend
 {
@@ -34,7 +37,7 @@ namespace Octoplayer_Frontend
             {
                 if(isPlaying) Pause();
                 library = new Library();
-                var files = Directory.GetFiles(folderBrowser.SelectedPath);
+                var files = Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories);
                 string[] extensions = { ".mp3", ".wav", ".flac" };
                 foreach (var file in files)
                 {
@@ -78,6 +81,7 @@ namespace Octoplayer_Frontend
             timer.Stop();
             currentTrack = (Track) ListBoxTracks.SelectedItem;
             LoadTrack();
+            Play();
         }
 
 
@@ -104,7 +108,6 @@ namespace Octoplayer_Frontend
             bitmap.BeginInit();
             bitmap.StreamSource = ms;
             bitmap.EndInit();
-
             ImgAlbumArt.Source = bitmap;
 
             ExpTrackInfo.IsExpanded = false;
@@ -128,13 +131,13 @@ namespace Octoplayer_Frontend
         private void Slider_DragStarted(object sender, RoutedEventArgs e)
         {
             SliderActive = true;
-            Pause();
+            player.Pause();
         }
         
         private void Slider_DragCompleted(object sender, RoutedEventArgs e)
         {
             SliderActive = false;
-            Play();
+            player.Play();
         }
 
         private void Slider_ValueChanged(object sender, RoutedEventArgs e)
