@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Octoplayer_Backend
@@ -30,6 +31,11 @@ namespace Octoplayer_Backend
                 if (track.FilePath == filePath) return track;
             }
             return null;
+        }
+
+        public void sortByTrackTitle()
+        {
+            Tracks = Tracks.OrderBy(t => t.Title).ToList();
         }
     }
 }

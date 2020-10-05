@@ -35,11 +35,10 @@ namespace Octoplayer_Frontend
                 {
                     if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
-                currentTrack = library.Tracks[0];
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
+                library.sortByTrackTitle();
                 ListBoxTracks.ItemsSource = library.Tracks;
-                LoadTrack();
-
+    
                 GridPlayer.Visibility = Visibility.Visible; 
             }
         }
@@ -70,7 +69,7 @@ namespace Octoplayer_Frontend
 
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
-            timer.Stop();
+            if(timer != null) timer.Stop();
             currentTrack = (Track) ListBoxTracks.SelectedItem;
             LoadTrack();
             Play();
