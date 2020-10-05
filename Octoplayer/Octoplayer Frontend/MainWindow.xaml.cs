@@ -103,13 +103,13 @@ namespace Octoplayer_Frontend
         private void Slider_DragStarted(object sender, RoutedEventArgs e)
         {
             SliderActive = true;
-            player.Pause();
+            if (isPlaying) player.Pause();
         }
         
         private void Slider_DragCompleted(object sender, RoutedEventArgs e)
         {
             SliderActive = false;
-            player.Play();
+            if(isPlaying) player.Play();
         }
 
         private void Slider_ValueChanged(object sender, RoutedEventArgs e)
