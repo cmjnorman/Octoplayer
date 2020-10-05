@@ -180,8 +180,8 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <!--<Image Source="{Binding Artwork}"/>-->
-                                <Grid Grid.Column="1">
+                                <Image Source="{Binding Artwork}" Height="100"/>
+                                <Grid Grid.Column="1" Margin="10, 0, 0, 0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
