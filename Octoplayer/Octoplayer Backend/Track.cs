@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TagLib;
+﻿using System.Text;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Octoplayer_Backend
 {
@@ -48,7 +47,7 @@ namespace Octoplayer_Backend
         }
         public uint BPM { get; set; }
         public string Key { get; set; }
-        public IPicture Artwork { get; set; }
+        public BitmapImage Artwork { get; set; }
 
         public Track(string filepath)
         {
@@ -66,7 +65,14 @@ namespace Octoplayer_Backend
             this.Genres = track.Tag.Genres;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
-            if(track.Tag.Pictures.Length > 0) this.Artwork = track.Tag.Pictures[0];
+            if (track.Tag.Pictures.Length > 0)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = new MemoryStream(track.Tag.Pictures[0].Data.Data);
+                bitmap.EndInit();
+                this.Artwork = bitmap;
+            }
         }
     }
 }
