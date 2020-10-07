@@ -7,8 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
-        <Image x:Key="Play" Source="assets/play-icon.png" Width="50"/>
-        <Image x:Key="Pause" Source="assets/pause-icon.png" Width="50"/>
+        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="#E18A07" Fill="#E18A07"/>
+        <Path x:Key="Pause" Width="50" Height="50" Stroke="#E18A07" Fill="#E18A07">
+            <Path.Data>
+                <GeometryGroup>
+                    <RectangleGeometry Rect="5,2,12,46"/>
+                    <RectangleGeometry Rect="33,2,12,46"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
         <Label x:Key="TrackInfo" Foreground="#E18A07"/>
         <Label x:Key="DiscInfo" Foreground="#E18A07"/>
         <Label x:Key="Year" Foreground="#E18A07"/>
@@ -75,7 +82,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -100,7 +106,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="SliderThumb" TargetType="Thumb">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -144,7 +149,41 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="RoundedScrollThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Path Width="14" Height="50" Stroke="#E18A07" Fill="#E18A07">
+                            <Path.Data>
+                                <GeometryGroup FillRule="Nonzero">
+                                    <EllipseGeometry Center="7,5" RadiusX="5" RadiusY="5"/>
+                                    <RectangleGeometry Rect="2,5,10,40"/>
+                                    <EllipseGeometry Center="7,45" RadiusX="5" RadiusY="5"/>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="LibraryBrowserScroll" TargetType="{x:Type ScrollBar}">
+            <Track 
+                Name="PART_Track"
+                Grid.Row="1"
+                IsDirectionReversed="true">
+                <Track.Thumb>
+                    <Thumb Background="#E18A07" BorderThickness="0" Style="{StaticResource RoundedScrollThumb}"/>
+                </Track.Thumb>
+            </Track>
+        </ControlTemplate>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template" Value="{StaticResource LibraryBrowserScroll}"/>
+        </Style>
     </Window.Resources>
+    
     <Grid Margin="10" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -279,14 +318,46 @@
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
-                    <Image Source="assets/previous-icon.png" Width="30"/>
+                <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
+                    <Path Width="30" Height="30" Stroke="#E18A07" Fill="#E18A07">
+                        <Path.Data>
+                            <GeometryGroup>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="29,2.5" IsClosed="True" IsFilled="true">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <LineSegment Point="29,27.5"/>
+                                                <LineSegment Point="7,15"/>
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry>
+                                <RectangleGeometry Rect="1,2,6,26"/>
+                            </GeometryGroup>
+                        </Path.Data>
+                    </Path>
                 </Button>
-                <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
+                <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
                     <DynamicResource ResourceKey="Play"/>
                 </Button>
-                <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" BorderThickness="0" Width="50" Click="BtnNext_Click">
-                    <Image Source="assets/next-icon.png" Width="30"/>
+                <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnNext_Click">
+                    <Path Width="30" Height="30" Stroke="#E18A07" Fill="#E18A07">
+                        <Path.Data>
+                            <GeometryGroup>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="1,2.5" IsClosed="True" IsFilled="true">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <LineSegment Point="1,27.5"/>
+                                                <LineSegment Point="23,15"/>
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry>
+                                <RectangleGeometry Rect="23,2,6,26"/>
+                            </GeometryGroup>
+                        </Path.Data>
+                    </Path>
                 </Button>
             </Grid>
             <Grid Grid.Row="1">
