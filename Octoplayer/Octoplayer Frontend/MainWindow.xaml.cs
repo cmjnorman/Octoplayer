@@ -15,7 +15,7 @@ namespace Octoplayer_Frontend
         private Library library;
         private Track currentTrack;
         private bool isPlaying = false;
-        private bool SliderActive = false;
+        private bool trackSliderBeingDragged = false;
 
         public MainWindow()
         {
@@ -28,6 +28,7 @@ namespace Octoplayer_Frontend
             if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if(isPlaying) Pause();
+                UnloadTrack();
                 library = new Library();
                 var files = Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories);
                 string[] extensions = { ".mp3", ".wav", ".flac" };
@@ -38,8 +39,6 @@ namespace Octoplayer_Frontend
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
                 library.sortByTrackTitle();
                 ListBoxTracks.ItemsSource = library.Tracks;
-    
-                GridPlayer.Visibility = Visibility.Visible; 
             }
         }
 
@@ -70,15 +69,16 @@ namespace Octoplayer_Frontend
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
             if(timer != null) timer.Stop();
-            currentTrack = (Track) ListBoxTracks.SelectedItem;
-            LoadTrack();
-            Play();
+            LoadTrack((Track)ListBoxTracks.SelectedItem);
         }
 
 
-        private void LoadTrack()
+        private void LoadTrack(Track track)
         {
+            currentTrack = track;
             player.Open(new Uri(currentTrack.FilePath));
+
+            if(GridPlayer.Visibility == Visibility.Collapsed) GridPlayer.Visibility = Visibility.Visible;
 
             LblTrackTitle.Content = currentTrack.Title;
             LblArtists.Content = currentTrack.ArtistString;
@@ -95,34 +95,44 @@ namespace Octoplayer_Frontend
 
             player.MediaOpened += OnTrackLoad;
             player.MediaEnded += OnTrackEnd;
-            
+
+            BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             if (isPlaying) Play();
         }
 
-        private void Slider_DragStarted(object sender, RoutedEventArgs e)
+        public void UnloadTrack()
         {
-            SliderActive = true;
+            if (isPlaying) Pause();
+            GridPlayer.Visibility = Visibility.Collapsed;
+            BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = false;
+            TrackSlider.Value = 0;
+            LabelTrackTime.Content = "";
+            currentTrack = null;
+        }
+
+        private void TrackSlider_DragStarted(object sender, RoutedEventArgs e)
+        {
+            trackSliderBeingDragged = true;
             if (isPlaying) player.Pause();
         }
         
-        private void Slider_DragCompleted(object sender, RoutedEventArgs e)
+        private void TrackSlider_DragCompleted(object sender, RoutedEventArgs e)
         {
-            SliderActive = false;
+            trackSliderBeingDragged = false;
             if(isPlaying) player.Play();
         }
 
-        private void Slider_ValueChanged(object sender, RoutedEventArgs e)
+        private void TrackSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
-            if(SliderActive) player.Position = TimeSpan.FromMilliseconds(Slider.Value);
+            if(trackSliderBeingDragged) player.Position = TimeSpan.FromMilliseconds(TrackSlider.Value);
         }
 
         private void OnTrackLoad(object sender, EventArgs e)
         {
-            Slider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
+            TrackSlider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += timer_Tick;
-            timer.Start();
         }
 
         private void OnTrackEnd(object sender, EventArgs e)
@@ -132,9 +142,9 @@ namespace Octoplayer_Frontend
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (!SliderActive)
+            if (!trackSliderBeingDragged)
             {
-                Slider.Value = player.Position.TotalMilliseconds;
+                TrackSlider.Value = player.Position.TotalMilliseconds;
                 LabelTrackTime.Content = $"{(player.Position).ToString(@"hh\:mm\:ss")} / {(player.NaturalDuration.TimeSpan).ToString(@"hh\:mm\:ss")}";
             }
         }
@@ -142,28 +152,24 @@ namespace Octoplayer_Frontend
         private void Previous()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
-            if (currentTrackIndex == 0) currentTrack = library.Tracks[library.Tracks.Count - 1];
-            else
-            {
-                timer.Stop();
-                currentTrack = library.Tracks[currentTrackIndex - 1];
-            }
-            LoadTrack();
+            timer.Stop();
+            if (currentTrackIndex == 0) LoadTrack(library.Tracks[library.Tracks.Count - 1]);
+            else LoadTrack(library.Tracks[currentTrackIndex - 1]);
         }
 
         private void Next()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             timer.Stop();
-            if (currentTrackIndex + 1 == library.Tracks.Count) currentTrack = library.Tracks[0];
-            else currentTrack = library.Tracks[currentTrackIndex + 1];
-            LoadTrack();
-            
+            if (currentTrackIndex + 1 == library.Tracks.Count) LoadTrack(library.Tracks[0]);
+            else LoadTrack(library.Tracks[currentTrackIndex + 1]);
         }
 
         private void Play()
         {
             player.Play();
+            while (timer == null) { }
+            timer.Start();
             BtnPlayPause.Content = FindResource("Pause");
             isPlaying = true;
         }
@@ -171,6 +177,7 @@ namespace Octoplayer_Frontend
         private void Pause()
         {
             player.Pause();
+            timer.Stop();
             BtnPlayPause.Content = FindResource("Play");
             isPlaying = false;
         }

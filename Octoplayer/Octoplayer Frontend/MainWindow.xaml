@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
-        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="#E18A07" Fill="#E18A07"/>
-        <Path x:Key="Pause" Width="50" Height="50" Stroke="#E18A07" Fill="#E18A07">
+        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"/>
+        <Path x:Key="Pause" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
             <Path.Data>
                 <GeometryGroup>
                     <RectangleGeometry Rect="5,2,12,46"/>
@@ -39,7 +39,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Border Padding="{TemplateBinding Padding}">
-                            <Grid Background="Transparent" SnapsToDevicePixels="False">
+                            <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition Height="20"/>
@@ -59,17 +59,14 @@
         </Style>
         <Style x:Key="TrackDataExpander" TargetType="{x:Type Expander}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Expander}">
-                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" SnapsToDevicePixels="true">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
                             <DockPanel>
-                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="1" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ToggleButton x:Name="HeaderSite" Background="{TemplateBinding Background}" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="1" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
                             </DockPanel>
                         </Border>
@@ -112,7 +109,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Ellipse Height="20" Width="20" Fill="#E18A07" Stroke="#2F2F2F" StrokeThickness="1"></Ellipse>
+                        <Ellipse Height="20" Width="20" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" StrokeThickness="1"></Ellipse>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -121,7 +118,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Track Grid.Row="1" x:Name="PART_Track"   >
@@ -138,14 +135,16 @@
             </Grid>
         </ControlTemplate>
         <Style x:Key="TrackSlider" TargetType="Slider">
-            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template" Value="{StaticResource Slider}" />
             <Style.Triggers>
-                <Trigger Property="Orientation" Value="Horizontal">
-                    <Setter Property="MinHeight" Value="21" />
-                    <Setter Property="MinWidth" Value="104" />
-                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Foreground" Value="#E18A07"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#553300"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -162,7 +161,6 @@
                                 </GeometryGroup>
                             </Path.Data>
                         </Path>
-                        
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -182,6 +180,53 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template" Value="{StaticResource LibraryBrowserScroll}"/>
         </Style>
+        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TransparentButton" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="true">
+                                <Setter Property="Foreground" Value="#E18A07"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#553300"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     
     <Grid Margin="10" >
@@ -195,7 +240,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Black" Foreground="#E18A07" BorderBrush="#E18A07"/>
+            <Button Style="{DynamicResource RoundedButton}" x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Black" Foreground="#E18A07" BorderBrush="#E18A07"/>
             <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Margin="0, 10, 0, 10">
@@ -209,7 +254,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
-                <Expander Style="{DynamicResource TrackDataExpander}" x:Name="ExpTrackInfo" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" ExpandDirection="Down" Margin="0, 10, 0, 0">
+                <Expander Style="{DynamicResource TrackDataExpander}" x:Name="ExpTrackInfo" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" ExpandDirection="Down" Margin="0, 10, 0, 0" Background="Transparent">
                     <Expander.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -318,8 +363,8 @@
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BtnPrevious" Grid.Column="1" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
-                    <Path Width="30" Height="30" Stroke="#E18A07" Fill="#E18A07">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPrevious" Grid.Column="1" Padding="0" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
+                    <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
                         <Path.Data>
                             <GeometryGroup>
                                 <PathGeometry>
@@ -337,11 +382,11 @@
                         </Path.Data>
                     </Path>
                 </Button>
-                <Button x:Name="BtnPlayPause" Grid.Column="2" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPlayPause" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
                     <DynamicResource ResourceKey="Play"/>
                 </Button>
-                <Button x:Name="BtnNext" Grid.Column="3" Background="Transparent" Padding="0" BorderThickness="0" Width="50" Click="BtnNext_Click">
-                    <Path Width="30" Height="30" Stroke="#E18A07" Fill="#E18A07">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnNext" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" Click="BtnNext_Click">
+                    <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
                         <Path.Data>
                             <GeometryGroup>
                                 <PathGeometry>
@@ -365,7 +410,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Slider Style="{StaticResource TrackSlider}" x:Name="Slider" VerticalAlignment="Bottom" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" ValueChanged="Slider_ValueChanged"  />
+                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" VerticalAlignment="Bottom" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged"  />
                 <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#E18A07"/>
             </Grid>
         </Grid>
