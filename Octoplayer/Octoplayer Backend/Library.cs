@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Octoplayer_Backend
 {
     public class Library
     {
         public List<Track> Tracks { get; set; }
-
+        public List<Album> Albums { get; set; }
+ 
         public Library() 
         {
             Tracks = new List<Track>();
-        }
-
-        public void AddTrack(Track track)
-        {
-            Tracks.Add(track);
+            Albums = new List<Album>();
         }
 
         public void AddTrack(string filePath)
         {
-            Tracks.Add(new Track(filePath));
+            var track = new Track(filePath);
+            Tracks.Add(track);
+            var album = Albums.FirstOrDefault(a => a.Title == track.Album);
+            if (album == null)
+            {
+                Albums.Add(new Album(track));
+            }
+            else
+            {
+                album.AddTrack(track);
+            }
         }
 
         public Track GetTrack(string filePath)
