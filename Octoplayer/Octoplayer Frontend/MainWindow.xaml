@@ -240,7 +240,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Style="{DynamicResource RoundedButton}" x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Black" Foreground="#E18A07" BorderBrush="#E18A07"/>
+            <Button Style="{DynamicResource RoundedButton}" x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
             <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Margin="0, 10, 0, 10">
@@ -267,38 +267,44 @@
                             <Label x:Name="LblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" Foreground="#E18A07"/>
                         </Grid>
                     </Expander.Header>
-                    <Grid>
+                    <Grid MinWidth="300" HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid Margin="0">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                             <Label Content="{DynamicResource TrackInfo}" Grid.Column="1"/>
-                            <Label Content="Disc:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource DiscInfo}" Grid.Column="4"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                            <Label Content="{DynamicResource DiscInfo}" Grid.Column="1"/>
                         </Grid>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                             <Label Content="{DynamicResource Year}" Grid.Column="1"/>
-                            <Label Content="Rating:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Rating}" Grid.Column="4"/>
+                        </Grid>
+                        <Grid Grid.Row="1" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                            <Label Content="{DynamicResource Rating}" Grid.Column="1"/>
                         </Grid>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -312,20 +318,23 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                             <Label Content="{DynamicResource BPM}" Grid.Column="1"/>
-                            <Label Content="Key:" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Key}" Grid.Column="4"/>
+                        </Grid>
+                        <Grid Grid.Row="3" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Key:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                            <Label Content="{DynamicResource Key}" Grid.Column="1"/>
                         </Grid>
                     </Grid>
                 </Expander>
             </Grid>
             <Grid Grid.Column="1" Margin="10, 0, 0, 0">
-                <ListBox x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" Background="Black" BorderThickness="0">
+                <ListBox x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" Background="Transparent" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>

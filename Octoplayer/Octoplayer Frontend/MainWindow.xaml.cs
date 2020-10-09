@@ -133,6 +133,7 @@ namespace Octoplayer_Frontend
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += timer_Tick;
+            timer.Start();
         }
 
         private void OnTrackEnd(object sender, EventArgs e)
