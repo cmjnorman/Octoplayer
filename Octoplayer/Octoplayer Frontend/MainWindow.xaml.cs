@@ -20,6 +20,8 @@ namespace Octoplayer_Frontend
         public MainWindow()
         {
             InitializeComponent();
+            player.MediaOpened += OnTrackLoad;
+            player.MediaEnded += OnTrackEnd;
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
@@ -126,8 +128,10 @@ namespace Octoplayer_Frontend
             ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
             ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
 
-            player.MediaOpened += OnTrackLoad;
-            player.MediaEnded += OnTrackEnd;
+            if (ListBoxLibrary.Items.Contains(currentTrack))
+            {
+                ListBoxLibrary.SelectedItem = currentTrack;
+            }
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             if (isPlaying) Play();
@@ -179,6 +183,7 @@ namespace Octoplayer_Frontend
             if (!trackSliderBeingDragged)
             {
                 TrackSlider.Value = player.Position.TotalMilliseconds;
+                while (!player.NaturalDuration.HasTimeSpan) { }
                 LabelTrackTime.Content = $"{(player.Position).ToString(@"hh\:mm\:ss")} / {(player.NaturalDuration.TimeSpan).ToString(@"hh\:mm\:ss")}";
             }
         }
@@ -190,12 +195,10 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex == 0)
             {
                 LoadTrack(library.Tracks[library.Tracks.Count - 1]);
-                ListBoxLibrary.SelectedItem = library.Tracks.Count - 1;
             }
             else
             {
                 LoadTrack(library.Tracks[currentTrackIndex - 1]);
-                ListBoxLibrary.SelectedItem = library.Tracks[currentTrackIndex - 1];
             }
         }
 
@@ -206,12 +209,10 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex + 1 == library.Tracks.Count)
             {
                 LoadTrack(library.Tracks[0]);
-                ListBoxLibrary.SelectedItem = library.Tracks[0];
             }
             else
             {
                 LoadTrack(library.Tracks[currentTrackIndex + 1]);
-                ListBoxLibrary.SelectedItem = library.Tracks[currentTrackIndex + 1];
             }
         }
 
