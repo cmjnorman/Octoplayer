@@ -199,6 +199,7 @@
                             <Trigger Property="IsPressed" Value="true">
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderThickness" Value="2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -381,7 +382,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
+                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" IsEnabled="False" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
                     <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
                     <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
                     <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>

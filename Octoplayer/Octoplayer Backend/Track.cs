@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System;
 
 namespace Octoplayer_Backend
 {
@@ -73,6 +74,8 @@ namespace Octoplayer_Backend
                 bitmap.EndInit();
                 this.Artwork = bitmap;
             }
+            Array.Sort(Artists);
+            Array.Sort(Genres);
         }
     }
 }
