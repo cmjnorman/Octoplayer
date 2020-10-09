@@ -19,7 +19,7 @@ namespace Octoplayer_Backend
         {
             var track = new Track(filePath);
             Tracks.Add(track);
-            Tracks = Tracks.OrderBy(t => t.Title).ToList();
+            Tracks.OrderBy(t => t.Title);
             var album = Albums.FirstOrDefault(a => a.Title == track.Album);
             if (album == null)
             {
