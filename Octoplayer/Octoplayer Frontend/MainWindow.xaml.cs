@@ -154,16 +154,32 @@ namespace Octoplayer_Frontend
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             timer.Stop();
-            if (currentTrackIndex == 0) LoadTrack(library.Tracks[library.Tracks.Count - 1]);
-            else LoadTrack(library.Tracks[currentTrackIndex - 1]);
+            if (currentTrackIndex == 0)
+            {
+                LoadTrack(library.Tracks[library.Tracks.Count - 1]);
+                ListBoxTracks.SelectedItem = library.Tracks.Count - 1;
+            }
+            else
+            {
+                LoadTrack(library.Tracks[currentTrackIndex - 1]);
+                ListBoxTracks.SelectedItem = library.Tracks[currentTrackIndex - 1];
+            }
         }
 
         private void Next()
         {
             var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
             timer.Stop();
-            if (currentTrackIndex + 1 == library.Tracks.Count) LoadTrack(library.Tracks[0]);
-            else LoadTrack(library.Tracks[currentTrackIndex + 1]);
+            if (currentTrackIndex + 1 == library.Tracks.Count)
+            {
+                LoadTrack(library.Tracks[0]);
+                ListBoxTracks.SelectedItem = library.Tracks[0];
+            }
+            else
+            {
+                LoadTrack(library.Tracks[currentTrackIndex + 1]);
+                ListBoxTracks.SelectedItem = library.Tracks[currentTrackIndex + 1];
+            }
         }
 
         private void Play()
