@@ -19,6 +19,7 @@ namespace Octoplayer_Backend
         {
             var track = new Track(filePath);
             Tracks.Add(track);
+            Tracks = Tracks.OrderBy(t => t.Title).ToList();
             var album = Albums.FirstOrDefault(a => a.Title == track.Album);
             if (album == null)
             {
@@ -28,20 +29,7 @@ namespace Octoplayer_Backend
             {
                 album.AddTrack(track);
             }
-        }
-
-        public Track GetTrack(string filePath)
-        {
-            foreach(var track in Tracks)
-            {
-                if (track.FilePath == filePath) return track;
-            }
-            return null;
-        }
-
-        public void sortByTrackTitle()
-        {
-            Tracks = Tracks.OrderBy(t => t.Title).ToList();
+            Albums = Albums.OrderBy(t => t.Title).ToList();
         }
     }
 }
