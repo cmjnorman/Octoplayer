@@ -372,7 +372,7 @@
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPrevious" Grid.Column="1" Padding="0" BorderThickness="0" Width="50" Click="BtnPrevious_Click">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPrevious" Grid.Column="1" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPrevious_Click">
                     <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
                         <Path.Data>
                             <GeometryGroup>
@@ -391,10 +391,10 @@
                         </Path.Data>
                     </Path>
                 </Button>
-                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPlayPause" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" Click="BtnPlayPause_Click">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnPlayPause" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPlayPause_Click">
                     <DynamicResource ResourceKey="Play"/>
                 </Button>
-                <Button Style="{StaticResource TransparentButton}" x:Name="BtnNext" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" Click="BtnNext_Click">
+                <Button Style="{StaticResource TransparentButton}" x:Name="BtnNext" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnNext_Click">
                     <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
                         <Path.Data>
                             <GeometryGroup>
@@ -419,7 +419,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" VerticalAlignment="Bottom" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged"  />
+                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" VerticalAlignment="Bottom" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
                 <Label x:Name="LabelTrackTime" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#E18A07"/>
             </Grid>
         </Grid>
