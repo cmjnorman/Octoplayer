@@ -21,7 +21,7 @@ namespace Octoplayer_Backend
 
         public Album(Track track)
         {
-            this.Title = track.Title;
+            this.Title = track.Album;
             Tracks = new List<Track>() { track };
             Artists = new List<string>();
             Artists.AddRange(track.Artists);

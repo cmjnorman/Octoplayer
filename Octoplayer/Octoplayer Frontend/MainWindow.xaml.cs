@@ -66,10 +66,43 @@ namespace Octoplayer_Frontend
             Next();
         }
 
+        private void BtnViewTracks_Click(object sender, RoutedEventArgs e)
+        {
+            BtnViewTracks.IsEnabled = false;
+            BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
+            ListBoxLibrary.ItemsSource = library.Tracks;
+        }
+
+        private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
+        {
+            BtnViewAlbums.IsEnabled = false;
+            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
+            ListBoxLibrary.ItemsSource = library.Albums;
+        }
+
+        private void BtnViewArtists_Click(object sender, RoutedEventArgs e)
+        {
+            BtnViewArtists.IsEnabled = false;
+            BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
+        }
+
+        private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
+        {
+            BtnViewGenres.IsEnabled = false;
+            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
+        }
+
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
-            if(timer != null) timer.Stop();
-            LoadTrack((Track)ListBoxLibrary.SelectedItem);
+            if (ListBoxLibrary.SelectedItem is Track)
+            {
+                if (timer != null) timer.Stop();
+                LoadTrack((Track)ListBoxLibrary.SelectedItem);
+            }
+            else if (ListBoxLibrary.SelectedItem is Album)
+            {
+                ListBoxLibrary.ItemsSource = ((Album)ListBoxLibrary.SelectedItem).Tracks;
+            }
         }
 
 
@@ -197,32 +230,6 @@ namespace Octoplayer_Frontend
             timer.Stop();
             BtnPlayPause.Content = FindResource("Play");
             isPlaying = false;
-        }
-
-        private void BtnViewTracks_Click(object sender, RoutedEventArgs e)
-        {
-            BtnViewTracks.IsEnabled = false;
-            BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxLibrary.ItemsSource = library.Tracks;
-        }
-
-        private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
-        {
-            BtnViewAlbums.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxLibrary.ItemsSource = library.Albums;
-        }
-
-        private void BtnViewArtists_Click(object sender, RoutedEventArgs e)
-        {
-            BtnViewArtists.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
-        }
-
-        private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
-        {
-            BtnViewGenres.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
         }
     }
 }
