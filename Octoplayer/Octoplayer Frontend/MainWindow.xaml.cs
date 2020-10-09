@@ -203,7 +203,7 @@ namespace Octoplayer_Frontend
         {
             BtnViewTracks.IsEnabled = false;
             BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxLibrary.ItemsSource = library.Albums;
+            ListBoxLibrary.ItemsSource = library.Tracks;
         }
 
         private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
