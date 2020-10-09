@@ -37,7 +37,8 @@ namespace Octoplayer_Frontend
                     if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                ListBoxTracks.ItemsSource = library.Tracks;
+                BtnViewTracks.IsEnabled = false;
+                ListBoxLibrary.ItemsSource = library.Tracks;
             }
         }
 
@@ -68,7 +69,7 @@ namespace Octoplayer_Frontend
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
             if(timer != null) timer.Stop();
-            LoadTrack((Track)ListBoxTracks.SelectedItem);
+            LoadTrack((Track)ListBoxLibrary.SelectedItem);
         }
 
 
@@ -156,12 +157,12 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex == 0)
             {
                 LoadTrack(library.Tracks[library.Tracks.Count - 1]);
-                ListBoxTracks.SelectedItem = library.Tracks.Count - 1;
+                ListBoxLibrary.SelectedItem = library.Tracks.Count - 1;
             }
             else
             {
                 LoadTrack(library.Tracks[currentTrackIndex - 1]);
-                ListBoxTracks.SelectedItem = library.Tracks[currentTrackIndex - 1];
+                ListBoxLibrary.SelectedItem = library.Tracks[currentTrackIndex - 1];
             }
         }
 
@@ -172,12 +173,12 @@ namespace Octoplayer_Frontend
             if (currentTrackIndex + 1 == library.Tracks.Count)
             {
                 LoadTrack(library.Tracks[0]);
-                ListBoxTracks.SelectedItem = library.Tracks[0];
+                ListBoxLibrary.SelectedItem = library.Tracks[0];
             }
             else
             {
                 LoadTrack(library.Tracks[currentTrackIndex + 1]);
-                ListBoxTracks.SelectedItem = library.Tracks[currentTrackIndex + 1];
+                ListBoxLibrary.SelectedItem = library.Tracks[currentTrackIndex + 1];
             }
         }
 
