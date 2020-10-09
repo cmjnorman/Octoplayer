@@ -39,6 +39,7 @@ namespace Octoplayer_Frontend
                     if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
+                LibraryBrowser.Visibility = Visibility.Visible;
                 BtnViewTracks.IsEnabled = false;
                 ListBoxLibrary.ItemsSource = library.Tracks;
             }

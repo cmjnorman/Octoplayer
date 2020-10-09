@@ -370,7 +370,7 @@
                     </Grid>
                 </Expander>
             </Grid>
-            <Grid Grid.Column="1" Margin="10, 0, 0, 0">
+            <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition/>
