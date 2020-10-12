@@ -13,7 +13,7 @@ namespace Octoplayer_Backend
         {
             get
             {
-                return Tracks.Select(t => t.Album).OrderBy(a => a.Title).ToList();
+                return Tracks.Select(t => t.Album).Distinct().OrderBy(a => a.Title).ToList();
             }
         } 
 

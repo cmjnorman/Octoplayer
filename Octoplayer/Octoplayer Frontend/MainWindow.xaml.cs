@@ -87,6 +87,7 @@ namespace Octoplayer_Frontend
         {
             BtnViewArtists.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
+            ListBoxLibrary.ItemsSource = library.Artists;
         }
 
         private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
@@ -105,6 +106,10 @@ namespace Octoplayer_Frontend
             else if (ListBoxLibrary.SelectedItem is Album)
             {
                 ListBoxLibrary.ItemsSource = ((Album)ListBoxLibrary.SelectedItem).Tracks;
+            }
+            else if (ListBoxLibrary.SelectedItem is Artist)
+            {
+                ListBoxLibrary.ItemsSource = ((Artist)ListBoxLibrary.SelectedItem).Albums;
             }
         }
 

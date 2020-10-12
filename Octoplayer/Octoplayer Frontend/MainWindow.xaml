@@ -396,6 +396,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
                                     <Image Source="{Binding Artwork}" Height="100"/>
                                     <Grid Grid.Column="1" Margin="10, 0, 0, 0">
                                         <Grid.RowDefinitions>

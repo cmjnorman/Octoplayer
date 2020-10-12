@@ -75,7 +75,7 @@ namespace Octoplayer_Backend
                 this.Artwork = bitmap;
             }
 
-            this.Artists = lib.FindOrCreateArtists(track.Tag.Performers);
+            this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
             this.Artists.ForEach(a => a.AddTrack(this));
 
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);

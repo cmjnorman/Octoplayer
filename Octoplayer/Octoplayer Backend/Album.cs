@@ -14,7 +14,7 @@ namespace Octoplayer_Backend
         {
             get
             {
-                return Tracks.SelectMany(t => t.Artists).OrderBy(a => a.Name).ToList();
+                return Tracks.SelectMany(t => t.Artists).Distinct().OrderBy(a => a.Name).ToList();
             }
         }
         public BitmapImage Artwork
