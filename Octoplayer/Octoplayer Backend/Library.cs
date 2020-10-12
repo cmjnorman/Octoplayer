@@ -8,28 +8,46 @@ namespace Octoplayer_Backend
     {
         public List<Track> Tracks { get; set; }
         public List<Album> Albums { get; set; }
+        public List<Artist> Artists { get; set; }
  
         public Library() 
         {
-            Tracks = new List<Track>();
-            Albums = new List<Album>();
+            this.Tracks = new List<Track>();
+            this.Albums = new List<Album>();
+            this.Artists = new List<Artist>();
         }
 
         public void AddTrack(string filePath)
         {
-            var track = new Track(filePath);
-            Tracks.Add(track);
-            Tracks = Tracks.OrderBy(t => t.Title).ToList();
-            var album = Albums.FirstOrDefault(a => a.Title == track.Album);
+            var track = new Track(filePath, this);
+            this.Tracks.Add(track);
+        }
+
+        public Album FindOrCreateAlbum(string title)
+        {
+            var album = this.Albums.FirstOrDefault(a => a.Title == title);
             if (album == null)
             {
-                Albums.Add(new Album(track));
+                album = new Album(title);
+                this.Albums.Add(album);
             }
-            else
+            return album;
+        }
+
+        public List<Artist> FindOrCreateArtists(string[] names)
+        {
+            var artists = new List<Artist>();
+            foreach (var name in names)
             {
-                album.AddTrack(track);
+                var artist = this.Artists.FirstOrDefault(a => a.Name == name);
+                if (artist == null)
+                {
+                    artist = new Artist(name);
+                    this.Artists.Add(artist);
+                }
+                artists.Add(artist);
             }
-            Albums = Albums.OrderBy(t => t.Title).ToList();
+            return artists;
         }
     }
 }

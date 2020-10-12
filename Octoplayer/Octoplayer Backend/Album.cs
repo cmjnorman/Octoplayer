@@ -8,9 +8,15 @@ namespace Octoplayer_Backend
 {
     public class Album
     {
-        public string Title { get; set; }
-        public List<Track> Tracks { get; set; }
-        public List<string> Artists { get; set; }
+        public string Title { get; }
+        public List<Track> Tracks { get; private set; }
+        public List<Artist> Artists
+        {
+            get
+            {
+                return Tracks.SelectMany(t => t.Artists).OrderBy(a => a.Name).ToList();
+            }
+        }
         public BitmapImage Artwork
         { 
             get
@@ -19,20 +25,23 @@ namespace Octoplayer_Backend
             }
         }
 
-        public Album(Track track)
+
+        public Album(string title)
         {
-            this.Title = track.Album;
-            Tracks = new List<Track>() { track };
-            Artists = new List<string>();
-            Artists.AddRange(track.Artists);
+            this.Title = title;
+            Tracks = new List<Track>();
         }
 
         public void AddTrack(Track track)
         {
             Tracks.Add(track);
             Tracks = Tracks.OrderBy(t => t.TrackNumber).ToList();
-            Artists.AddRange(track.Artists);
-            Artists.Sort();
+        }
+
+
+        public override string ToString()
+        {
+            return Title;
         }
     }
 }

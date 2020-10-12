@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.IO;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using System;
+using System.Collections.Generic;
 
 namespace Octoplayer_Backend
 {
@@ -9,22 +11,22 @@ namespace Octoplayer_Backend
     {
         public string FilePath { get; private set; }
         public string Title { get; set; }
-        public string[] Artists { get; set; }
+        public List<Artist> Artists { get; set; }
         public string ArtistString
         {
             get
             {
-                if (Artists.Length == 0) return "";
+                if (Artists.Count == 0) return "";
                 var artists = new StringBuilder();
                 artists.Append(Artists[0]);
-                for (var i = 1; i < Artists.Length; i++)
+                for (var i = 1; i < Artists.Count; i++)
                 {
                     artists.Append($"; {Artists[i]}");
                 }
                 return artists.ToString();
             }
         }
-        public string Album { get; set; }
+        public Album Album { get; set; }
         public uint TrackNumber { get; set; }
         public uint TrackCount { get; set; }
         public uint DiscNumber { get; set; }
@@ -50,14 +52,12 @@ namespace Octoplayer_Backend
         public string Key { get; set; }
         public BitmapImage Artwork { get; set; }
 
-        public Track(string filepath)
+        public Track(string filepath, Library lib)
         {
             this.FilePath = filepath;
             var track = TagLib.File.Create(filepath);
 
             this.Title = track.Tag.Title;
-            this.Artists = track.Tag.Performers;
-            this.Album = track.Tag.Album;
             this.TrackNumber = track.Tag.Track;
             this.TrackCount = track.Tag.TrackCount;
             this.DiscNumber = track.Tag.Disc;
@@ -74,8 +74,12 @@ namespace Octoplayer_Backend
                 bitmap.EndInit();
                 this.Artwork = bitmap;
             }
-            Array.Sort(Artists);
-            Array.Sort(Genres);
+
+            this.Artists = lib.FindOrCreateArtists(track.Tag.Performers);
+            this.Artists.ForEach(a => a.AddTrack(this));
+
+            this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
+            this.Album.AddTrack(this);
         }
     }
 }
