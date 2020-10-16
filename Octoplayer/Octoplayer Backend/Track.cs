@@ -33,15 +33,15 @@ namespace Octoplayer_Backend
         public uint DiscCount { get; set; }
         public uint Year { get; set; }
         public uint Rating { get; set; }
-        public string[] Genres { get; set; }
+        public List<Genre> Genres { get; set; }
         public string GenreString
         {
             get
             {
-                if (Genres.Length == 0) return "";
+                if (Genres.Count == 0) return "";
                 var genres = new StringBuilder();
                 genres.Append(Genres[0]);
-                for (var i = 1; i < Genres.Length; i++)
+                for (var i = 1; i < Genres.Count; i++)
                 {
                     genres.Append($"; {Genres[i]}");
                 }
@@ -63,7 +63,6 @@ namespace Octoplayer_Backend
             this.DiscNumber = track.Tag.Disc;
             this.DiscCount = track.Tag.DiscCount;
             this.Year = track.Tag.Year;
-            this.Genres = track.Tag.Genres;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
             if (track.Tag.Pictures.Length > 0)
@@ -80,6 +79,9 @@ namespace Octoplayer_Backend
 
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
             this.Album.AddTrack(this);
+
+            this.Genres = lib.FindOrCreateGenres(track.Tag.Genres);
+            this.Genres.ForEach(g => g.AddTrack(this));
         }
     }
 }

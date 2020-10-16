@@ -9,7 +9,8 @@ namespace Octoplayer_Backend
         public List<Track> Tracks { get; set; }
         public List<Album> Albums { get; set; }
         public List<Artist> Artists { get; set; }
- 
+        public List<Genre> Genres { get; set; }
+
         public Library() 
         {
             this.Tracks = new List<Track>();
@@ -51,6 +52,23 @@ namespace Octoplayer_Backend
                 artists.Add(artist);
             }
             return artists;
+        }
+
+        public List<Genre> FindOrCreateGenres(string[] names)
+        {
+            var genres = new List<Genre>();
+            foreach(var name in names)
+            {
+                var genre = this.Genres.FirstOrDefault(g => g.Name == name);
+                if (genre == null)
+                {
+                    genre = new Genre(name);
+                    this.Genres.Add(genre);
+                    this.Genres = this.Genres.OrderBy(a => a.Name).ToList();
+                }
+                genres.Add(genre);
+            }
+            return genres;
         }
     }
 }
