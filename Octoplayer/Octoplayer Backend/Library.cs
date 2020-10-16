@@ -16,6 +16,7 @@ namespace Octoplayer_Backend
             this.Tracks = new List<Track>();
             this.Albums = new List<Album>();
             this.Artists = new List<Artist>();
+            this.Genres = new List<Genre>();
         }
 
         public void AddTrack(string filePath)

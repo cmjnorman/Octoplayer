@@ -80,7 +80,7 @@ namespace Octoplayer_Backend
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
             this.Album.AddTrack(this);
 
-            this.Genres = lib.FindOrCreateGenres(track.Tag.Genres);
+            this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
             this.Genres.ForEach(g => g.AddTrack(this));
         }
     }
