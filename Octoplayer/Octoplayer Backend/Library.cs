@@ -21,6 +21,7 @@ namespace Octoplayer_Backend
         {
             var track = new Track(filePath, this);
             this.Tracks.Add(track);
+            this.Tracks = this.Tracks.OrderBy(a => a.Title).ToList();
         }
 
         public Album FindOrCreateAlbum(string title)
@@ -30,6 +31,7 @@ namespace Octoplayer_Backend
             {
                 album = new Album(title);
                 this.Albums.Add(album);
+                this.Albums = this.Albums.OrderBy(a => a.Title).ToList();
             }
             return album;
         }
@@ -44,6 +46,7 @@ namespace Octoplayer_Backend
                 {
                     artist = new Artist(name);
                     this.Artists.Add(artist);
+                    this.Artists = this.Artists.OrderBy(a => a.Name).ToList();
                 }
                 artists.Add(artist);
             }
