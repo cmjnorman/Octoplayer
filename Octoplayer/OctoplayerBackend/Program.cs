@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Octoplayer_Backend
+namespace OctoplayerBackend
 {
     class Program
     {

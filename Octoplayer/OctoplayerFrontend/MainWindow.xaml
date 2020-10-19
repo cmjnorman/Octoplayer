@@ -1,9 +1,10 @@
-﻿<Window x:Class="Octoplayer_Frontend.MainWindow"
+﻿<Window x:Class="OctoplayerFrontend.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Octoplayer_Frontend" 
+        xmlns:local="clr-namespace:OctoplayerFrontend" 
+        xmlns:back="clr-namespace:OctoplayerBackend;assembly=OctoplayerBackend"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
@@ -398,17 +399,16 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                    <Image Source="{Binding Artwork}" Height="100"/>
+                                    <Image Source="{Binding Path=(back:IBrowsable.Image)}" Height="100"/>
                                     <Grid Grid.Column="1" Margin="10, 0, 0, 0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding ArtistString}"  Grid.Row="1" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Path=(back:IBrowsable.Heading)}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Path=(back:IBrowsable.SubHeading1)}"  Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Path=(back:IBrowsable.SubHeading2)}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>

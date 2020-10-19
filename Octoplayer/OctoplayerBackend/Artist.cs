@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
-namespace Octoplayer_Backend
+namespace OctoplayerBackend
 {
-    public class Artist
+    public class Artist : IBrowsable
     {
         public string Name { get; }
         public List<Track> Tracks { get; private set; }
@@ -15,8 +17,27 @@ namespace Octoplayer_Backend
             {
                 return Tracks.Select(t => t.Album).Distinct().OrderBy(a => a.Title).ToList();
             }
-        } 
+        }
 
+        string IBrowsable.Heading
+        {
+            get { return Name; }
+        }
+
+        string IBrowsable.SubHeading1
+        {
+            get { return ""; }
+        }
+
+        string IBrowsable.SubHeading2
+        {
+            get { return ""; }
+        }
+
+        BitmapImage IBrowsable.Image
+        {
+            get { return Tracks[0].Artwork; }
+        }
 
         public Artist(string name)
         {

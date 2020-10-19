@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Octoplayer_Frontend</RootNamespace>
+    <RootNamespace>OctoplayerFrontend</RootNamespace>
     <UseWPF>true</UseWPF>
 	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Octoplayer Backend\Octoplayer Backend.csproj" />
+    <ProjectReference Include="..\OctoplayerBackend\OctoplayerBackend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

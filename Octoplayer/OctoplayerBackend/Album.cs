@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 
-namespace Octoplayer_Backend
+namespace OctoplayerBackend
 {
-    public class Album
+    public class Album : IBrowsable
     {
         public string Title { get; }
         public List<Track> Tracks { get; private set; }
@@ -23,6 +23,25 @@ namespace Octoplayer_Backend
             {
                 return Tracks[0].Artwork;
             }
+        }
+        string IBrowsable.Heading
+        {
+            get { return Title; }
+        }
+
+        string IBrowsable.SubHeading1
+        {
+            get { return String.Join("; ", Artists); }
+        }
+
+        string IBrowsable.SubHeading2
+        {
+            get { return ""; }
+        }
+
+        BitmapImage IBrowsable.Image
+        {
+            get { return Artwork; }
         }
 
 

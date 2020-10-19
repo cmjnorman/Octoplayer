@@ -1,7 +1,7 @@
-﻿<Application x:Class="Octoplayer_Frontend.App"
+﻿<Application x:Class="OctoplayerFrontend.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Octoplayer_Frontend"
+             xmlns:local="clr-namespace:OctoplayerFrontend"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

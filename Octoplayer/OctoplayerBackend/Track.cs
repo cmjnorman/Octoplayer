@@ -5,20 +5,13 @@ using System.Windows.Media.Imaging;
 using System;
 using System.Collections.Generic;
 
-namespace Octoplayer_Backend
+namespace OctoplayerBackend
 {
     public class Track : IBrowsable
     {
         public string FilePath { get; private set; }
         public string Title { get; set; }
         public List<Artist> Artists { get; set; }
-        public string ArtistString
-        {
-            get
-            {
-                return String.Join("; ", Artists);
-            }
-        }
         public Album Album { get; set; }
         public uint TrackNumber { get; set; }
         public uint TrackCount { get; set; }
@@ -27,24 +20,9 @@ namespace Octoplayer_Backend
         public uint Year { get; set; }
         public uint Rating { get; set; }
         public List<Genre> Genres { get; set; }
-        public string GenreString
-        {
-            get
-            {
-                if (Genres.Count == 0) return "";
-                var genres = new StringBuilder();
-                genres.Append(Genres[0]);
-                for (var i = 1; i < Genres.Count; i++)
-                {
-                    genres.Append($"; {Genres[i]}");
-                }
-                return genres.ToString();
-            }
-        }
         public uint BPM { get; set; }
         public string Key { get; set; }
         public BitmapImage Artwork { get; set; }
-
         string IBrowsable.Heading
         {
             get { return Title; }
@@ -52,17 +30,7 @@ namespace Octoplayer_Backend
 
         string IBrowsable.SubHeading1
         {
-            get
-            {
-                if (Artists.Count == 0) return "";
-                //var artists = new StringBuilder();
-                //artists.Append(Artists[0]);
-                //for (var i = 1; i < Artists.Count; i++)
-                //{
-                //    artists.Append($"; {Artists[i]}");
-                //}
-                return String.Join("; ", Artists);
-            }
+            get { return String.Join("; ", Artists); }
         }
 
         string IBrowsable.SubHeading2
@@ -99,14 +67,20 @@ namespace Octoplayer_Backend
                 this.Artwork = bitmap;
             }
 
-            this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
-            this.Artists.ForEach(a => a.AddTrack(this));
-
+            if(track.Tag.Performers.Length > 0)
+            {
+                this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
+                this.Artists.ForEach(a => a.AddTrack(this));
+            }
+            
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
             this.Album.AddTrack(this);
 
-            this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
-            this.Genres.ForEach(g => g.AddTrack(this));
+            if (track.Tag.Genres.Length > 0)
+            {
+                this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
+                this.Genres.ForEach(g => g.AddTrack(this));
+            }
         }
     }
 }
