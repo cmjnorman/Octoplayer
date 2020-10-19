@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace OctoplayerBackend
 {
-    public class Album : IBrowsable
+    public class Album
     {
         public string Title { get; }
         public List<Track> Tracks { get; private set; }
@@ -17,22 +17,6 @@ namespace OctoplayerBackend
         public BitmapImage Artwork
         { 
             get { return Tracks[0].Artwork; }
-        }
-        string IBrowsable.Heading
-        {
-            get { return Title; }
-        }
-        string IBrowsable.SubHeading1
-        {
-            get { return String.Join("; ", Artists); }
-        }
-        string IBrowsable.SubHeading2
-        {
-            get { return ""; }
-        }
-        BitmapImage IBrowsable.Image
-        {
-            get { return Artwork; }
         }
 
         public Album(string title)

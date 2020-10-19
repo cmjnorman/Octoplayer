@@ -14,7 +14,6 @@ namespace OctoplayerFrontend
         private MediaPlayer player = new MediaPlayer();
         private DispatcherTimer timer;
         private Library library;
-        private Browser browser;
         private Track currentTrack;
         private bool isPlaying = false;
         private bool trackSliderBeingDragged = false;
@@ -25,9 +24,8 @@ namespace OctoplayerFrontend
             InitializeComponent();
             player.MediaOpened += OnTrackLoad;
             player.MediaEnded += OnTrackEnd;
-            LibraryBrowser.Visibility = Visibility.Hidden;
             GridPlayer.Visibility = Visibility.Hidden;
-            BtnBack.Visibility = Visibility.Collapsed;
+            LibraryBrowser.Visibility = Visibility.Hidden;
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
@@ -44,11 +42,19 @@ namespace OctoplayerFrontend
                 {
                     if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
                 }
-                browser = new Browser(library);
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
+                ListBoxTracks.ItemsSource = library.Tracks;
+                ListBoxAlbums.ItemsSource = library.Albums;
+                ListBoxArtists.ItemsSource = library.Artists;
+                ListBoxGenres.ItemsSource = library.Genres;
                 LibraryBrowser.Visibility = Visibility.Visible;
+                BtnBack.Visibility = Visibility.Collapsed;
+                BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+                ListBoxAlbums.Visibility = Visibility.Collapsed;
+                ListBoxArtists.Visibility = Visibility.Collapsed;
+                ListBoxGenres.Visibility = Visibility.Collapsed;
                 BtnViewTracks.IsEnabled = false;
-                RefreshBrowser();
+                
             }
         }
 
@@ -78,67 +84,80 @@ namespace OctoplayerFrontend
 
         private void BtnViewTracks_Click(object sender, RoutedEventArgs e)
         {
+            if (ListBoxTracks.ItemsSource != library.Tracks) ListBoxTracks.ItemsSource = library.Tracks;
             BtnViewTracks.IsEnabled = false;
             BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            browser.ChangeMode(BrowserItemType.Tracks);
-            RefreshBrowser();
+            ListBoxTracks.Visibility = Visibility.Visible;
+            ListBoxAlbums.Visibility = ListBoxArtists.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Collapsed;
+            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
         private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
         {
+            if (ListBoxAlbums.ItemsSource != library.Albums) ListBoxAlbums.ItemsSource = library.Albums;
             BtnViewAlbums.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            browser.ChangeMode(BrowserItemType.Albums);
-            RefreshBrowser();
+            ListBoxAlbums.Visibility = Visibility.Visible;
+            ListBoxTracks.Visibility = ListBoxArtists.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Collapsed;
+            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
         private void BtnViewArtists_Click(object sender, RoutedEventArgs e)
         {
+            if (ListBoxArtists.ItemsSource != library.Artists) ListBoxArtists.ItemsSource = library.Artists;
             BtnViewArtists.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
-            browser.ChangeMode(BrowserItemType.Artists);
-            RefreshBrowser();
+            ListBoxArtists.Visibility = Visibility.Visible;
+            ListBoxAlbums.Visibility = ListBoxTracks.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Collapsed;
+            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
         private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
         {
+            if (ListBoxGenres.ItemsSource != library.Genres) ListBoxGenres.ItemsSource = library.Genres;
             BtnViewGenres.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
-            browser.ChangeMode(BrowserItemType.Genres);
-            RefreshBrowser();
+            ListBoxGenres.Visibility = Visibility.Visible;
+            ListBoxAlbums.Visibility = ListBoxArtists.Visibility = ListBoxTracks.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Collapsed;
+            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
-            //if (ListBoxLibrary.SelectedItem is Track)
-            //{
-            //    if (timer != null) timer.Stop();
-            //    LoadTrack((Track)ListBoxLibrary.SelectedItem);
-            //}
-            //else if (ListBoxLibrary.SelectedItem is Album)
-            //{
-            //    ListBoxLibrary.ItemsSource = ((Album)ListBoxLibrary.SelectedItem).Tracks;
-            //    browserLevel++;
-            //    browserLevelChanged();
-            //}
-            //else if (ListBoxLibrary.SelectedItem is Artist)
-            //{
-            //    ListBoxLibrary.ItemsSource = ((Artist)ListBoxLibrary.SelectedItem).Albums;
-            //    browserLevel++;
-            //    browserLevelChanged();
-            //}
-            //else if (ListBoxLibrary.SelectedItem is Genre)
-            //{
-            //    ListBoxLibrary.ItemsSource = ((Genre)ListBoxLibrary.SelectedItem).Tracks;
-            //    browserLevel++;
-            //    browserLevelChanged();
-            //}
+            LoadTrack((Track)ListBoxTracks.SelectedItem);
         }
 
-        private void RefreshBrowser()
+        private void ListBoxAlbums_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxLibrary.ItemsSource = browser.Items;
+            ListBoxTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
+            ListBoxTracks.Visibility = Visibility.Visible;
+            ListBoxAlbums.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Visible;
         }
+
+        private void ListBoxArtists_Select(object sender, RoutedEventArgs e)
+        {
+            ListBoxTracks.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
+            ListBoxAlbums.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
+            ListBoxTracks.Visibility = Visibility.Visible;
+            ListBoxArtists.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Visible;
+            BtnSwapTrackAlbum.Content = "Show Artist Albums";
+            BtnSwapTrackAlbum.Visibility = Visibility.Visible;
+        }
+
+        private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
+        {
+            ListBoxTracks.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
+            ListBoxTracks.Visibility = Visibility.Visible;
+            ListBoxGenres.Visibility = Visibility.Collapsed;
+            BtnBack.Visibility = Visibility.Visible;
+        }
+
 
         private void LoadTrack(Track track)
         {
@@ -159,11 +178,6 @@ namespace OctoplayerFrontend
             ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", currentTrack.Genres);
             ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
             ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
-
-            if (ListBoxLibrary.Items.Contains(currentTrack))
-            {
-                ListBoxLibrary.SelectedItem = currentTrack;
-            }
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             if (isPlaying) Play();
@@ -267,18 +281,29 @@ namespace OctoplayerFrontend
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            //if(!BtnViewAlbums.IsEnabled)
-            //{
-            //    ListBoxLibrary.ItemsSource = library.Albums;
-            //}
-            //else if (!BtnViewArtists.IsEnabled)
-            //{
-            //    if(browserLevel == 1)
-            //    {
-            //        ListBoxLibrary.ItemsSource = library.Albums;
-            //    }
-                
-            //}
+            if (!BtnViewAlbums.IsEnabled)
+            {
+                ListBoxAlbums.Visibility = Visibility.Visible;
+                ListBoxTracks.Visibility = Visibility.Collapsed;
+            }
+            else if (!BtnViewArtists.IsEnabled)
+            {
+                ListBoxArtists.Visibility = Visibility.Visible;
+                ListBoxTracks.Visibility = ListBoxAlbums.Visibility = Visibility.Collapsed;
+            }
+            else if (!BtnViewGenres.IsEnabled)
+            {
+                ListBoxGenres.Visibility = Visibility.Visible;
+                ListBoxTracks.Visibility = Visibility.Collapsed;
+            }
+            BtnBack.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnSwapTrackAlbum_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxTracks.Visibility = ListBoxTracks.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            ListBoxAlbums.Visibility = ListBoxTracks.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            BtnSwapTrackAlbum.Content = (string)BtnSwapTrackAlbum.Content == "Show Artist Tracks" ? "Show Artist Albums" : "Show Artist Tracks";
         }
     }
 }

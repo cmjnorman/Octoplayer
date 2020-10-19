@@ -260,14 +260,14 @@
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="BorderBrush" TargetName="Bd" Value="#FFDADADA"/>
-                            </Trigger> 
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid Margin="10" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -390,9 +390,16 @@
                     <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewArtists_Click"/>
                     <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewGenres_Click"/>
                 </Grid>
-                <Button x:Name="BtnBack" Style="{StaticResource RoundedButton}" Grid.Row="1" Content="Back" Padding="5, 0, 5, 0" Margin="5,10,0,0" HorizontalAlignment="Left" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnBack_Click"/>
+                <Grid Grid.Row="1" Margin="5,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="BtnBack" Style="{StaticResource RoundedButton}" Content="Back" Padding="5, 0, 5, 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnBack_Click"/>
+                    <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Padding="5, 0, 5, 0" HorizontalAlignment="Right" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Height="21" VerticalAlignment="Top" Click="BtnSwapTrackAlbum_Click"/>
+                </Grid>
                 <Grid Grid.Row="2" Margin="0,10,0,0">
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxLibrary" MouseDoubleClick="ListBoxTracks_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -412,6 +419,42 @@
                                         <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbums" MouseDoubleClick="ListBoxAlbums_Select" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding Artwork}" Height="100"/>
+                                    <Grid Grid.Column="1" Margin="10, 0, 0, 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxArtists" MouseDoubleClick="ListBoxArtists_Select" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxGenres" MouseDoubleClick="ListBoxGenres_Select" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

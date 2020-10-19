@@ -6,26 +6,10 @@ using System.Windows.Media.Imaging;
 
 namespace OctoplayerBackend
 {
-    public class Genre : IBrowsable
+    public class Genre
     {
         public string Name { get; set; }
         public List<Track> Tracks { get; set; }
-        string IBrowsable.Heading
-        {
-            get { return Name; }
-        }
-        string IBrowsable.SubHeading1
-        {
-            get { return ""; }
-        }
-        string IBrowsable.SubHeading2
-        {
-            get { return ""; }
-        }
-        BitmapImage IBrowsable.Image
-        {
-            get { return Tracks[0].Artwork; }
-        }
 
         public Genre(string name)
         {

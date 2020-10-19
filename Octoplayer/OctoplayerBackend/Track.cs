@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace OctoplayerBackend
 {
-    public class Track : IBrowsable
+    public class Track
     {
         public string FilePath { get; private set; }
         public string Title { get; set; }
@@ -23,26 +23,6 @@ namespace OctoplayerBackend
         public uint BPM { get; set; }
         public string Key { get; set; }
         public BitmapImage Artwork { get; set; }
-        string IBrowsable.Heading
-        {
-            get { return Title; }
-        }
-
-        string IBrowsable.SubHeading1
-        {
-            get { return String.Join("; ", Artists); }
-        }
-
-        string IBrowsable.SubHeading2
-        {
-            get { return Album.Title; }
-        }
-
-        BitmapImage IBrowsable.Image
-        {
-            get { return Artwork; }
-        }
-
 
 
         public Track(string filepath, Library lib)
