@@ -12,11 +12,10 @@ namespace OctoplayerBackend
 
         private BrowserItemType mode;
 
-
         public Browser(Library library, BrowserItemType initialMode = BrowserItemType.Tracks)
         {
             this.Library = library;
-            this.mode = initialMode;
+            ChangeMode(initialMode);
         }
 
         public void ChangeMode(BrowserItemType mode)

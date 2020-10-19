@@ -13,27 +13,20 @@ namespace OctoplayerBackend
         public List<Track> Tracks { get; private set; }
         public List<Album> Albums
         {
-            get
-            {
-                return Tracks.Select(t => t.Album).Distinct().OrderBy(a => a.Title).ToList();
-            }
+            get { return Tracks.Select(t => t.Album).Distinct().OrderBy(a => a.Title).ToList(); }
         }
-
         string IBrowsable.Heading
         {
             get { return Name; }
         }
-
         string IBrowsable.SubHeading1
         {
             get { return ""; }
         }
-
         string IBrowsable.SubHeading2
         {
             get { return ""; }
         }
-
         BitmapImage IBrowsable.Image
         {
             get { return Tracks[0].Artwork; }
@@ -50,7 +43,6 @@ namespace OctoplayerBackend
             Tracks.Add(track);
             Tracks = Tracks.OrderBy(t => t.Title).ToList();
         }
-
 
         public override string ToString()
         {
