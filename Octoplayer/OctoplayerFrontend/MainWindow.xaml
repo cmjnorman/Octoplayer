@@ -24,6 +24,7 @@
         <Label x:Key="Genres" Foreground="#E18A07"/>
         <Label x:Key="BPM" Foreground="#E18A07"/>
         <Label x:Key="Key" Foreground="#E18A07"/>
+        <local:ListToStringConverter x:Key="ListToStringConverter" />
         <Style x:Key="ExpanderHeaderFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -399,16 +400,16 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Source="{Binding Path=(back:IBrowsable.Image)}" Height="100"/>
+                                    <Image Source="{Binding Artwork}" Height="100"/>
                                     <Grid Grid.Column="1" Margin="10, 0, 0, 0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Path=(back:IBrowsable.Heading)}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Path=(back:IBrowsable.SubHeading1)}"  Grid.Row="1" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Path=(back:IBrowsable.SubHeading2)}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>

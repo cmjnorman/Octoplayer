@@ -145,7 +145,7 @@ namespace OctoplayerFrontend
             currentTrack = track;
             player.Open(new Uri(currentTrack.FilePath));
 
-            if(GridPlayer.Visibility == Visibility.Collapsed) GridPlayer.Visibility = Visibility.Visible;
+            if (GridPlayer.Visibility == Visibility.Collapsed) GridPlayer.Visibility = Visibility.Visible;
 
             LblTrackTitle.Content = currentTrack.Title;
             LblArtists.Content = String.Join("; ", currentTrack.Artists);
