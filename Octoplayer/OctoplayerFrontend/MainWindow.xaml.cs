@@ -125,48 +125,69 @@ namespace OctoplayerFrontend
 
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
         {
-            LoadTrack((Track)ListBoxTracks.SelectedItem);
+            if(ListBoxTracks.SelectedItem != null)
+            {
+                LoadTrack((Track)ListBoxTracks.SelectedItem);
+            }
         }
 
         private void ListBoxAlbums_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
-            ToggleListBox(ListBoxAlbumTracks);
-            BtnBack.Visibility = Visibility.Visible;
+            if (ListBoxAlbums.SelectedItem != null)
+            {
+                ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
+                ToggleListBox(ListBoxAlbumTracks);
+                BtnBack.Visibility = Visibility.Visible;
+            }
         }
 
         private void ListBoxArtists_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxTracksSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
-            ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
-            ToggleListBox(ListBoxTracksSubmenu);
-            BtnBack.Visibility = Visibility.Visible;
-            BtnSwapTrackAlbum.Content = "Show Artist Albums";
-            BtnSwapTrackAlbum.Visibility = Visibility.Visible;
+            if (ListBoxArtists.SelectedItem != null)
+            {
+                ListBoxTracksSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
+                ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
+                ToggleListBox(ListBoxTracksSubmenu);
+                BtnBack.Visibility = Visibility.Visible;
+                BtnSwapTrackAlbum.Content = "Show Artist Albums";
+                BtnSwapTrackAlbum.Visibility = Visibility.Visible;
+            }
         }
 
         private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxTracksSubmenu.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
-            ToggleListBox(ListBoxTracksSubmenu);
-            BtnBack.Visibility = Visibility.Visible;
+            if (ListBoxGenres.SelectedItem != null)
+            {
+                ListBoxTracksSubmenu.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
+                ToggleListBox(ListBoxTracksSubmenu);
+                BtnBack.Visibility = Visibility.Visible;
+            }
         }
 
         private void ListBoxAlbumTracks_Select(object sender, RoutedEventArgs e)
         {
-            LoadTrack((Track)ListBoxAlbumTracks.SelectedItem);
+            if (ListBoxAlbumTracks.SelectedItem != null)
+            {
+                LoadTrack((Track)ListBoxAlbumTracks.SelectedItem);
+            }
         }
 
         private void ListBoxTracksSubmenu_Select(object sender, RoutedEventArgs e)
         {
-            LoadTrack((Track)ListBoxTracksSubmenu.SelectedItem);
+            if (ListBoxTracksSubmenu.SelectedItem != null)
+            {
+                LoadTrack((Track)ListBoxTracksSubmenu.SelectedItem);
+            }
         }
 
         private void ListBoxAlbumsSubmenu_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbumsSubmenu.SelectedItem).Tracks;
-            ToggleListBox(ListBoxAlbumTracks);
-            BtnBack.Visibility = Visibility.Visible;
+            if (ListBoxAlbumsSubmenu.SelectedItem != null)
+            {
+                ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbumsSubmenu.SelectedItem).Tracks;
+                ToggleListBox(ListBoxAlbumTracks);
+                BtnBack.Visibility = Visibility.Visible;
+            }
         }
 
 
