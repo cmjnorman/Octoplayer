@@ -81,7 +81,6 @@ namespace OctoplayerFrontend
 
         private void BtnViewTracks_Click(object sender, RoutedEventArgs e)
         {
-            if (ListBoxTracks.ItemsSource != library.Tracks) ListBoxTracks.ItemsSource = library.Tracks;
             BtnViewTracks.IsEnabled = false;
             BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
             ToggleListBox(ListBoxTracks);
@@ -91,7 +90,6 @@ namespace OctoplayerFrontend
 
         private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
         {
-            if (ListBoxAlbums.ItemsSource != library.Albums) ListBoxAlbums.ItemsSource = library.Albums;
             BtnViewAlbums.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
             ToggleListBox(ListBoxAlbums);
@@ -101,7 +99,6 @@ namespace OctoplayerFrontend
 
         private void BtnViewArtists_Click(object sender, RoutedEventArgs e)
         {
-            if (ListBoxArtists.ItemsSource != library.Artists) ListBoxArtists.ItemsSource = library.Artists;
             BtnViewArtists.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
             ToggleListBox(ListBoxArtists);
@@ -111,7 +108,6 @@ namespace OctoplayerFrontend
 
         private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
         {
-            if (ListBoxGenres.ItemsSource != library.Genres) ListBoxGenres.ItemsSource = library.Genres;
             BtnViewGenres.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
             ToggleListBox(ListBoxGenres);
@@ -141,9 +137,9 @@ namespace OctoplayerFrontend
 
         private void ListBoxArtists_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxTracks.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
-            ListBoxAlbums.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
-            ToggleListBox(ListBoxTracks);
+            ListBoxTracksSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
+            ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
+            ToggleListBox(ListBoxTracksSubmenu);
             BtnBack.Visibility = Visibility.Visible;
             BtnSwapTrackAlbum.Content = "Show Artist Albums";
             BtnSwapTrackAlbum.Visibility = Visibility.Visible;
@@ -151,14 +147,26 @@ namespace OctoplayerFrontend
 
         private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxTracks.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
-            ToggleListBox(ListBoxTracks);
+            ListBoxTracksSubmenu.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
+            ToggleListBox(ListBoxTracksSubmenu);
             BtnBack.Visibility = Visibility.Visible;
         }
 
         private void ListBoxAlbumTracks_Select(object sender, RoutedEventArgs e)
         {
-            LoadTrack((Track)ListBoxTracks.SelectedItem);
+            LoadTrack((Track)ListBoxAlbumTracks.SelectedItem);
+        }
+
+        private void ListBoxTracksSubmenu_Select(object sender, RoutedEventArgs e)
+        {
+            LoadTrack((Track)ListBoxTracksSubmenu.SelectedItem);
+        }
+
+        private void ListBoxAlbumsSubmenu_Select(object sender, RoutedEventArgs e)
+        {
+            ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbumsSubmenu.SelectedItem).Tracks;
+            ToggleListBox(ListBoxAlbumTracks);
+            BtnBack.Visibility = Visibility.Visible;
         }
 
 
@@ -291,10 +299,11 @@ namespace OctoplayerFrontend
             }
             else if (!BtnViewArtists.IsEnabled)
             {
-                if (ListBoxAlbumTracks.Visibility == Visibility.Visible) ToggleListBox(ListBoxAlbums);
+                if (ListBoxAlbumTracks.Visibility == Visibility.Visible) ToggleListBox(ListBoxAlbumsSubmenu);
                 else
                 {
                     ToggleListBox(ListBoxArtists);
+                    BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
                     BtnBack.Visibility = Visibility.Collapsed;
                 }
             }
@@ -309,12 +318,12 @@ namespace OctoplayerFrontend
         {
             if((string)BtnSwapTrackAlbum.Content == "Show Artist Albums")
             {
-                ToggleListBox(ListBoxAlbums);
+                ToggleListBox(ListBoxAlbumsSubmenu);
                 BtnSwapTrackAlbum.Content = "Show Artist Tracks";
             }
             else
             {
-                ToggleListBox(ListBoxTracks);
+                ToggleListBox(ListBoxTracksSubmenu);
                 BtnSwapTrackAlbum.Content = "Show Artist Albums";
             }
         }

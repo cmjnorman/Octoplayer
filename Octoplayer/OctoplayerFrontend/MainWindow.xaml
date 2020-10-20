@@ -482,6 +482,51 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracksSubmenu" MouseDoubleClick="ListBoxTracksSubmenu_Select" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding Artwork}" Height="100"/>
+                                    <Grid Grid.Column="1" Margin="10, 0, 0, 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbumsSubmenu" MouseDoubleClick="ListBoxAlbumsSubmenu_Select" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding Artwork}" Height="100"/>
+                                    <Grid Grid.Column="1" Margin="10, 0, 0, 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </Grid>
         </Grid>
