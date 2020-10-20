@@ -50,11 +50,8 @@ namespace OctoplayerFrontend
                 LibraryBrowser.Visibility = Visibility.Visible;
                 BtnBack.Visibility = Visibility.Collapsed;
                 BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
-                ListBoxAlbums.Visibility = Visibility.Collapsed;
-                ListBoxArtists.Visibility = Visibility.Collapsed;
-                ListBoxGenres.Visibility = Visibility.Collapsed;
+                ToggleListBox(ListBoxTracks);
                 BtnViewTracks.IsEnabled = false;
-                
             }
         }
 
@@ -87,8 +84,7 @@ namespace OctoplayerFrontend
             if (ListBoxTracks.ItemsSource != library.Tracks) ListBoxTracks.ItemsSource = library.Tracks;
             BtnViewTracks.IsEnabled = false;
             BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxTracks.Visibility = Visibility.Visible;
-            ListBoxAlbums.Visibility = ListBoxArtists.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxTracks);
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
@@ -98,8 +94,7 @@ namespace OctoplayerFrontend
             if (ListBoxAlbums.ItemsSource != library.Albums) ListBoxAlbums.ItemsSource = library.Albums;
             BtnViewAlbums.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxAlbums.Visibility = Visibility.Visible;
-            ListBoxTracks.Visibility = ListBoxArtists.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxAlbums);
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
@@ -109,8 +104,7 @@ namespace OctoplayerFrontend
             if (ListBoxArtists.ItemsSource != library.Artists) ListBoxArtists.ItemsSource = library.Artists;
             BtnViewArtists.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
-            ListBoxArtists.Visibility = Visibility.Visible;
-            ListBoxAlbums.Visibility = ListBoxTracks.Visibility = ListBoxGenres.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxArtists);
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
@@ -120,10 +114,17 @@ namespace OctoplayerFrontend
             if (ListBoxGenres.ItemsSource != library.Genres) ListBoxGenres.ItemsSource = library.Genres;
             BtnViewGenres.IsEnabled = false;
             BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
-            ListBoxGenres.Visibility = Visibility.Visible;
-            ListBoxAlbums.Visibility = ListBoxArtists.Visibility = ListBoxTracks.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxGenres);
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+        }
+
+        private void ToggleListBox(System.Windows.Controls.ListBox box)
+        {
+            foreach (var listBox in ListBoxGrid.Children.OfType<System.Windows.Controls.ListBox>())
+            {
+                listBox.Visibility = (listBox == box ? Visibility.Visible : Visibility.Collapsed);
+            }
         }
 
         private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
@@ -133,9 +134,8 @@ namespace OctoplayerFrontend
 
         private void ListBoxAlbums_Select(object sender, RoutedEventArgs e)
         {
-            ListBoxTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
-            ListBoxTracks.Visibility = Visibility.Visible;
-            ListBoxAlbums.Visibility = Visibility.Collapsed;
+            ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
+            ToggleListBox(ListBoxAlbumTracks);
             BtnBack.Visibility = Visibility.Visible;
         }
 
@@ -143,8 +143,7 @@ namespace OctoplayerFrontend
         {
             ListBoxTracks.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
             ListBoxAlbums.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
-            ListBoxTracks.Visibility = Visibility.Visible;
-            ListBoxArtists.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxTracks);
             BtnBack.Visibility = Visibility.Visible;
             BtnSwapTrackAlbum.Content = "Show Artist Albums";
             BtnSwapTrackAlbum.Visibility = Visibility.Visible;
@@ -153,9 +152,13 @@ namespace OctoplayerFrontend
         private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
         {
             ListBoxTracks.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
-            ListBoxTracks.Visibility = Visibility.Visible;
-            ListBoxGenres.Visibility = Visibility.Collapsed;
+            ToggleListBox(ListBoxTracks);
             BtnBack.Visibility = Visibility.Visible;
+        }
+
+        private void ListBoxAlbumTracks_Select(object sender, RoutedEventArgs e)
+        {
+            LoadTrack((Track)ListBoxTracks.SelectedItem);
         }
 
 
@@ -283,27 +286,37 @@ namespace OctoplayerFrontend
         {
             if (!BtnViewAlbums.IsEnabled)
             {
-                ListBoxAlbums.Visibility = Visibility.Visible;
-                ListBoxTracks.Visibility = Visibility.Collapsed;
+                ToggleListBox(ListBoxAlbums);
+                BtnBack.Visibility = Visibility.Collapsed;
             }
             else if (!BtnViewArtists.IsEnabled)
             {
-                ListBoxArtists.Visibility = Visibility.Visible;
-                ListBoxTracks.Visibility = ListBoxAlbums.Visibility = Visibility.Collapsed;
+                if (ListBoxAlbumTracks.Visibility == Visibility.Visible) ToggleListBox(ListBoxAlbums);
+                else
+                {
+                    ToggleListBox(ListBoxArtists);
+                    BtnBack.Visibility = Visibility.Collapsed;
+                }
             }
             else if (!BtnViewGenres.IsEnabled)
             {
-                ListBoxGenres.Visibility = Visibility.Visible;
-                ListBoxTracks.Visibility = Visibility.Collapsed;
+                ToggleListBox(ListBoxGenres);
+                BtnBack.Visibility = Visibility.Collapsed;
             }
-            BtnBack.Visibility = Visibility.Collapsed;
         }
 
         private void BtnSwapTrackAlbum_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxTracks.Visibility = ListBoxTracks.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-            ListBoxAlbums.Visibility = ListBoxTracks.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-            BtnSwapTrackAlbum.Content = (string)BtnSwapTrackAlbum.Content == "Show Artist Tracks" ? "Show Artist Albums" : "Show Artist Tracks";
+            if((string)BtnSwapTrackAlbum.Content == "Show Artist Albums")
+            {
+                ToggleListBox(ListBoxAlbums);
+                BtnSwapTrackAlbum.Content = "Show Artist Tracks";
+            }
+            else
+            {
+                ToggleListBox(ListBoxTracks);
+                BtnSwapTrackAlbum.Content = "Show Artist Albums";
+            }
         }
     }
 }

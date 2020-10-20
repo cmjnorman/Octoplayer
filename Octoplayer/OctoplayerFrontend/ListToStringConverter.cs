@@ -22,11 +22,6 @@ namespace OctoplayerFrontend
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is string)
-            {
-                var str = (string)value;
-                return str.Split("; ").ToList();
-            }
             return null;
         }
     }
