@@ -11,21 +11,24 @@ namespace OctoplayerFrontend
 {
     public partial class MainWindow : Window
     {
-        private MediaPlayer player = new MediaPlayer();
-        private DispatcherTimer timer;
+        private Player player = new Player();
+        private DispatcherTimer timelineClock;
         private Library library;
-        private Track currentTrack;
-        private bool isPlaying = false;
         private bool trackSliderBeingDragged = false;
+        //private Track currentTrack;
 
 
         public MainWindow()
         {
             InitializeComponent();
-            player.MediaOpened += OnTrackLoad;
-            player.MediaEnded += OnTrackEnd;
+            player.Media.MediaOpened += OnTrackLoad;
+            player.Media.MediaEnded += OnTrackEnd;
+            player.PlayerPlaying += () => BtnPlayPause.Content = FindResource("Pause");
+            player.PlayerPaused += () => BtnPlayPause.Content = FindResource("Play");
             GridPlayer.Visibility = Visibility.Hidden;
             LibraryBrowser.Visibility = Visibility.Hidden;
+            BtnBack.Visibility = Visibility.Collapsed;
+            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
@@ -33,23 +36,17 @@ namespace OctoplayerFrontend
             var folderBrowser = new FolderBrowserDialog();
             if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if(isPlaying) Pause();
+                if(player.IsPlaying) player.Pause();
                 UnloadTrack();
-                library = new Library();
-                var files = Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories);
-                string[] extensions = { ".mp3", ".wav", ".flac" };
-                foreach (var file in files)
-                {
-                    if (extensions.Contains(Path.GetExtension(file))) library.AddTrack(file);
-                }
+
+                library = new Library(Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories));
+
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
                 ListBoxTracks.ItemsSource = library.Tracks;
                 ListBoxAlbums.ItemsSource = library.Albums;
                 ListBoxArtists.ItemsSource = library.Artists;
                 ListBoxGenres.ItemsSource = library.Genres;
                 LibraryBrowser.Visibility = Visibility.Visible;
-                BtnBack.Visibility = Visibility.Collapsed;
-                BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
                 ToggleListBox(ListBoxTracks);
                 BtnViewTracks.IsEnabled = false;
             }
@@ -58,19 +55,19 @@ namespace OctoplayerFrontend
         
         private void BtnPlayPause_Click(object sender, RoutedEventArgs e)
         {
-            if (isPlaying)
+            if (player.IsPlaying)
             {
-                Pause();
+                player.Pause();
             }
             else
             {
-                Play();
+                player.Play();
             }
         }
 
         private void BtnPrevious_Click(object sender, RoutedEventArgs e)
         {
-            if (player.Position.TotalSeconds >= 5) player.Position = new TimeSpan(0);
+            if (player.CurrentTrackPosition >= 5000) player.CurrentTrackPosition = 0;
             else Previous();
         }
 
@@ -193,62 +190,61 @@ namespace OctoplayerFrontend
 
         private void LoadTrack(Track track)
         {
-            currentTrack = track;
-            player.Open(new Uri(currentTrack.FilePath));
+            player.LoadTrack(track);
+            if (timelineClock != null) timelineClock.Stop();
 
-            if (GridPlayer.Visibility == Visibility.Collapsed) GridPlayer.Visibility = Visibility.Visible;
+            if (GridPlayer.Visibility == Visibility.Hidden) GridPlayer.Visibility = Visibility.Visible;
 
-            LblTrackTitle.Content = currentTrack.Title;
-            LblArtists.Content = String.Join("; ", currentTrack.Artists);
-            LblAlbum.Content = currentTrack.Album;
-            ImgAlbumArt.Source = currentTrack.Artwork;
+            LblTrackTitle.Content = track.Title;
+            LblArtists.Content = String.Join("; ", track.Artists);
+            LblAlbum.Content = track.Album;
+            ImgAlbumArt.Source = track.Artwork;
 
-            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{currentTrack.TrackNumber} / {currentTrack.TrackCount}";
-            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{currentTrack.DiscNumber} / {currentTrack.DiscCount}";
-            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = currentTrack.Year;
-            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = currentTrack.Rating;
-            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", currentTrack.Genres);
-            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = currentTrack.BPM;
-            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = currentTrack.Key;
+            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{track.TrackNumber} / {track.TrackCount}";
+            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{track.DiscNumber} / {track.DiscCount}";
+            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = track.Year;
+            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = track.Rating;
+            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", track.Genres);
+            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = track.BPM;
+            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = track.Key;
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
-            if (isPlaying) Play();
         }
 
         public void UnloadTrack()
         {
-            if (isPlaying) Pause();
-            GridPlayer.Visibility = Visibility.Collapsed;
+            if (player.IsPlaying) player.Pause();
+            if(timelineClock != null) timelineClock.Stop();
+            GridPlayer.Visibility = Visibility.Hidden;
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = false;
             TrackSlider.Value = 0;
             LabelTrackTime.Content = "";
-            currentTrack = null;
         }
 
         private void TrackSlider_DragStarted(object sender, RoutedEventArgs e)
         {
             trackSliderBeingDragged = true;
-            if (isPlaying) player.Pause();
+            if (player.IsPlaying) player.Suspend();
         }
         
         private void TrackSlider_DragCompleted(object sender, RoutedEventArgs e)
         {
             trackSliderBeingDragged = false;
-            if(isPlaying) player.Play();
+            if (player.IsPlaying) player.Unsuspend();
         }
 
         private void TrackSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
-            if(trackSliderBeingDragged) player.Position = TimeSpan.FromMilliseconds(TrackSlider.Value);
+            player.CurrentTrackPosition = TrackSlider.Value;
         }
 
         private void OnTrackLoad(object sender, EventArgs e)
         {
-            TrackSlider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1);
-            timer.Tick += timer_Tick;
-            timer.Start();
+            TrackSlider.Maximum = player.CurrentTrackLength;
+            timelineClock = new DispatcherTimer();
+            timelineClock.Interval = TimeSpan.FromMilliseconds(1);
+            timelineClock.Tick += timelineClock_Tick;
+            timelineClock.Start();
         }
 
         private void OnTrackEnd(object sender, EventArgs e)
@@ -256,20 +252,18 @@ namespace OctoplayerFrontend
             Next();
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void timelineClock_Tick(object sender, EventArgs e)
         {
             if (!trackSliderBeingDragged)
             {
-                TrackSlider.Value = player.Position.TotalMilliseconds;
-                while (!player.NaturalDuration.HasTimeSpan) { }
-                LabelTrackTime.Content = $"{(player.Position).ToString(@"hh\:mm\:ss")} / {(player.NaturalDuration.TimeSpan).ToString(@"hh\:mm\:ss")}";
+                TrackSlider.Value = player.CurrentTrackPosition;
+                LabelTrackTime.Content = $"{TimeSpan.FromMilliseconds(player.CurrentTrackPosition).ToString(@"hh\:mm\:ss")} / {TimeSpan.FromMilliseconds(player.CurrentTrackLength).ToString(@"hh\:mm\:ss")}";
             }
         }
 
         private void Previous()
         {
-            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
-            timer.Stop();
+            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == player.CurrentTrack.FilePath);
             if (currentTrackIndex == 0)
             {
                 LoadTrack(library.Tracks[library.Tracks.Count - 1]);
@@ -282,8 +276,7 @@ namespace OctoplayerFrontend
 
         private void Next()
         {
-            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == currentTrack.FilePath);
-            timer.Stop();
+            var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == player.CurrentTrack.FilePath);
             if (currentTrackIndex + 1 == library.Tracks.Count)
             {
                 LoadTrack(library.Tracks[0]);
@@ -292,23 +285,6 @@ namespace OctoplayerFrontend
             {
                 LoadTrack(library.Tracks[currentTrackIndex + 1]);
             }
-        }
-
-        private void Play()
-        {
-            player.Play();
-            while (timer == null) { }
-            timer.Start();
-            BtnPlayPause.Content = FindResource("Pause");
-            isPlaying = true;
-        }
-
-        private void Pause()
-        {
-            player.Pause();
-            timer.Stop();
-            BtnPlayPause.Content = FindResource("Play");
-            isPlaying = false;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

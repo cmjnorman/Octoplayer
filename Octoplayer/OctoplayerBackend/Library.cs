@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace OctoplayerBackend
@@ -11,12 +12,18 @@ namespace OctoplayerBackend
         public List<Artist> Artists { get; set; }
         public List<Genre> Genres { get; set; }
 
-        public Library() 
+        public Library(string[] files) 
         {
             this.Tracks = new List<Track>();
             this.Albums = new List<Album>();
             this.Artists = new List<Artist>();
             this.Genres = new List<Genre>();
+
+            string[] extensions = { ".mp3", ".wav", ".flac" };
+            foreach (var file in files)
+            {
+                if (extensions.Contains(Path.GetExtension(file))) AddTrack(file);
+            }
         }
 
         public void AddTrack(string filePath)
