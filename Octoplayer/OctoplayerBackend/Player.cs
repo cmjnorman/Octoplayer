@@ -10,28 +10,7 @@ namespace OctoplayerBackend
     {
         public MediaPlayer Media;
         public DispatcherTimer TrackTimer;
-        private List<Track> queue;
-        public List<Track> PlayingQueue
-        {
-            get
-            {
-                return queue;
-            }
-            set 
-            {
-                queue = value;
-                queuePosition = 0;
-                LoadTrack();
-            }
-        }
-        private int queuePosition;
-        public Track CurrentTrack
-        {
-            get
-            {
-                return PlayingQueue[queuePosition];
-            }
-        }
+        public Queue Queue;
         public bool IsPlaying;
         public double CurrentTrackLength
         {
@@ -65,9 +44,15 @@ namespace OctoplayerBackend
             this.IsPlaying = false;
         }
 
+        public void SetQueue(List<Track> queue)
+        {
+            this.Queue = new Queue(queue);
+            LoadTrack();
+        }
+
         public void LoadTrack()
         {
-            Media.Open(new Uri(CurrentTrack.FilePath));
+            Media.Open(new Uri(Queue.CurrentTrack.FilePath));
             TrackTimer = new DispatcherTimer();
             if (IsPlaying) Media.Play();
         }
@@ -100,8 +85,7 @@ namespace OctoplayerBackend
 
         public void Next()
         {
-            if (queuePosition == PlayingQueue.Count - 1) queuePosition = 0;
-            else queuePosition++;
+            Queue.Next();
             LoadTrack();
         }
 
@@ -110,8 +94,7 @@ namespace OctoplayerBackend
             if (CurrentTrackPosition > 5000) CurrentTrackPosition = 0;
             else
             {
-                if (queuePosition == 0) queuePosition = PlayingQueue.Count - 1;
-                else queuePosition--;
+                Queue.Previous();
                 LoadTrack();
             }
         }

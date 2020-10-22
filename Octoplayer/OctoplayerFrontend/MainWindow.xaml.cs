@@ -124,7 +124,7 @@ namespace OctoplayerFrontend
             {
                 var queue = ListBoxTracks.Items.OfType<Track>();
                 var index = ListBoxTracks.SelectedIndex;
-                player.PlayingQueue = queue.Skip(index).Concat(queue.Take(index)).ToList();
+                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
             }
         }
 
@@ -167,7 +167,7 @@ namespace OctoplayerFrontend
             {
                 var queue = ListBoxAlbumTracks.Items.OfType<Track>();
                 var index = ListBoxAlbumTracks.SelectedIndex;
-                player.PlayingQueue = queue.Skip(index).Concat(queue.Take(index)).ToList();
+                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
             }
         }
 
@@ -177,7 +177,7 @@ namespace OctoplayerFrontend
             {
                 var queue = ListBoxTracksSubmenu.Items.OfType<Track>();
                 var index = ListBoxTracksSubmenu.SelectedIndex;
-                player.PlayingQueue = queue.Skip(index).Concat(queue.Take(index)).ToList();
+                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
             }
         }
 
@@ -195,18 +195,19 @@ namespace OctoplayerFrontend
         {
             if (GridPlayer.Visibility == Visibility.Hidden) GridPlayer.Visibility = Visibility.Visible;
 
-            LblTrackTitle.Content = player.CurrentTrack.Title;
-            LblArtists.Content = String.Join("; ", player.CurrentTrack.Artists);
-            LblAlbum.Content = player.CurrentTrack.Album;
-            ImgAlbumArt.Source = player.CurrentTrack.Artwork;
+            var track = player.Queue.CurrentTrack;
+            LblTrackTitle.Content = track.Title;
+            LblArtists.Content = String.Join("; ", track.Artists);
+            LblAlbum.Content = track.Album;
+            ImgAlbumArt.Source = track.Artwork;
 
-            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{player.CurrentTrack.TrackNumber} / {player.CurrentTrack.TrackCount}";
-            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{player.CurrentTrack.DiscNumber} / {player.CurrentTrack.DiscCount}";
-            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = player.CurrentTrack.Year;
-            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = player.CurrentTrack.Rating;
-            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", player.CurrentTrack.Genres);
-            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = player.CurrentTrack.BPM;
-            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = player.CurrentTrack.Key;
+            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{track.TrackNumber} / {track.TrackCount}";
+            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{track.DiscNumber} / {track.DiscCount}";
+            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = track.Year;
+            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = track.Rating;
+            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", track.Genres);
+            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = track.BPM;
+            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = track.Key;
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             TrackSlider.Maximum = player.CurrentTrackLength;
@@ -251,32 +252,6 @@ namespace OctoplayerFrontend
                 LabelTrackTime.Content = $"{TimeSpan.FromMilliseconds(player.CurrentTrackPosition).ToString(@"hh\:mm\:ss")} / {TimeSpan.FromMilliseconds(player.CurrentTrackLength).ToString(@"hh\:mm\:ss")}";
             }
         }
-
-        //private void Previous()
-        //{
-        //    var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == player.CurrentTrack.FilePath);
-        //    if (currentTrackIndex == 0)
-        //    {
-        //        LoadTrack(library.Tracks[library.Tracks.Count - 1]);
-        //    }
-        //    else
-        //    {
-        //        LoadTrack(library.Tracks[currentTrackIndex - 1]);
-        //    }
-        //}
-
-        //private void Next()
-        //{
-        //    var currentTrackIndex = library.Tracks.FindIndex(t => t.FilePath == player.CurrentTrack.FilePath);
-        //    if (currentTrackIndex + 1 == library.Tracks.Count)
-        //    {
-        //        LoadTrack(library.Tracks[0]);
-        //    }
-        //    else
-        //    {
-        //        LoadTrack(library.Tracks[currentTrackIndex + 1]);
-        //    }
-        //}
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
