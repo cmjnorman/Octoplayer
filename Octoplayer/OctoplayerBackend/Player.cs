@@ -10,7 +10,28 @@ namespace OctoplayerBackend
     {
         public MediaPlayer Media;
         public DispatcherTimer TrackTimer;
-        public Track CurrentTrack;
+        private List<Track> queue;
+        public List<Track> PlayingQueue
+        {
+            get
+            {
+                return queue;
+            }
+            set 
+            {
+                queue = value;
+                queuePosition = 0;
+                LoadTrack();
+            }
+        }
+        private int queuePosition;
+        public Track CurrentTrack
+        {
+            get
+            {
+                return PlayingQueue[queuePosition];
+            }
+        }
         public bool IsPlaying;
         public double CurrentTrackLength
         {
@@ -31,37 +52,24 @@ namespace OctoplayerBackend
                 this.Media.Position = TimeSpan.FromMilliseconds(value);
             }
         }
-
-        public delegate void PausePlayHandler();
-        public event PausePlayHandler PlayerPlaying;
-        public event PausePlayHandler PlayerPaused;
+        public delegate void EmptyHandler(); 
+        public event EmptyHandler MediaPlaying;
+        public event EmptyHandler MediaPaused;
+        public event EmptyHandler TrackLoaded;
         
         public Player()
         {
             this.Media = new MediaPlayer();
+            this.Media.MediaOpened += OnTrackLoad;
+            this.Media.MediaEnded += OnTrackEnd;
             this.IsPlaying = false;
         }
 
-        public void LoadTrack(Track track)
+        public void LoadTrack()
         {
-            CurrentTrack = track;
-            Media.Open(new Uri(track.FilePath));
+            Media.Open(new Uri(CurrentTrack.FilePath));
             TrackTimer = new DispatcherTimer();
             if (IsPlaying) Media.Play();
-        }
-
-        public void Play()
-        {
-            Unsuspend();
-            IsPlaying = true;
-            PlayerPlaying();
-        }
-
-        public void Pause()
-        {
-            Suspend();
-            IsPlaying = false;
-            PlayerPaused();
         }
 
         public void Suspend()
@@ -76,6 +84,46 @@ namespace OctoplayerBackend
             TrackTimer.Start();
         }
 
-        
+        public void Play()
+        {
+            Unsuspend();
+            IsPlaying = true;
+            MediaPlaying();
+        }
+
+        public void Pause()
+        {
+            Suspend();
+            IsPlaying = false;
+            MediaPaused();
+        }
+
+        public void Next()
+        {
+            if (queuePosition == PlayingQueue.Count - 1) queuePosition = 0;
+            else queuePosition++;
+            LoadTrack();
+        }
+
+        public void Previous()
+        {
+            if (CurrentTrackPosition > 5000) CurrentTrackPosition = 0;
+            else
+            {
+                if (queuePosition == 0) queuePosition = PlayingQueue.Count - 1;
+                else queuePosition--;
+                LoadTrack();
+            }
+        }
+
+        private void OnTrackLoad(object sender, EventArgs e)
+        {
+            TrackLoaded();
+        }
+
+        private void OnTrackEnd(object sender, EventArgs e)
+        {
+            Next();
+        }
     }
 }
