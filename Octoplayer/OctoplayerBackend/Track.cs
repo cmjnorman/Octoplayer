@@ -39,12 +39,16 @@ namespace OctoplayerBackend
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
             if (track.Tag.Pictures.Length > 0)
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = new MemoryStream(track.Tag.Pictures[0].Data.Data);
-                bitmap.EndInit();
-                this.Artwork = bitmap;
+            { 
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = new MemoryStream(track.Tag.Pictures[0].Data.Data);
+                    bitmap.EndInit();
+                    this.Artwork = bitmap;
+                }
+                catch (Exception e) { }
             }
 
             if(track.Tag.Performers.Length > 0)

@@ -16,6 +16,7 @@ namespace OctoplayerFrontend
         private DispatcherTimer timelineClock;
         private Library library;
         private bool trackSliderBeingDragged = false;
+        private bool ShuffleEnabled = false;
 
 
         public MainWindow()
@@ -122,9 +123,11 @@ namespace OctoplayerFrontend
         {
             if(ListBoxTracks.SelectedItem != null)
             {
-                var queue = ListBoxTracks.Items.OfType<Track>();
+                var tracks = ListBoxTracks.Items.OfType<Track>();
                 var index = ListBoxTracks.SelectedIndex;
-                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
+                var queue = tracks.Skip(index).Concat(tracks.Take(index));
+                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
+                else player.SetQueue(queue.ToList());
             }
         }
 
@@ -165,9 +168,11 @@ namespace OctoplayerFrontend
         {
             if (ListBoxAlbumTracks.SelectedItem != null)
             {
-                var queue = ListBoxAlbumTracks.Items.OfType<Track>();
+                var tracks = ListBoxAlbumTracks.Items.OfType<Track>();
                 var index = ListBoxAlbumTracks.SelectedIndex;
-                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
+                var queue = tracks.Skip(index).Concat(tracks.Take(index));
+                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
+                else player.SetQueue(queue.ToList());
             }
         }
 
@@ -175,9 +180,11 @@ namespace OctoplayerFrontend
         {
             if (ListBoxTracksSubmenu.SelectedItem != null)
             {
-                var queue = ListBoxTracksSubmenu.Items.OfType<Track>();
+                var tracks = ListBoxTracksSubmenu.Items.OfType<Track>();
                 var index = ListBoxTracksSubmenu.SelectedIndex;
-                player.SetQueue(queue.Skip(index).Concat(queue.Take(index)).ToList());
+                var queue = tracks.Skip(index).Concat(tracks.Take(index));
+                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
+                else player.SetQueue(queue.ToList());
             }
         }
 
@@ -289,6 +296,11 @@ namespace OctoplayerFrontend
                 ToggleListBox(ListBoxTracksSubmenu);
                 BtnSwapTrackAlbum.Content = "Show Artist Albums";
             }
+        }
+
+        private void BtnShuffle_Click(object sender, RoutedEventArgs e)
+        {
+            ShuffleEnabled = !ShuffleEnabled;
         }
     }
 }
