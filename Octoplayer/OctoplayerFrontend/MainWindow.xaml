@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OctoplayerFrontend" 
         xmlns:back="clr-namespace:OctoplayerBackend;assembly=OctoplayerBackend"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920" FontSize="14" Background="Black" >
+        Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
         <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"/>
         <Path x:Key="Pause" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
