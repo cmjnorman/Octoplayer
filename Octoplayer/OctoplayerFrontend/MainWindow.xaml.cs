@@ -29,6 +29,18 @@ namespace OctoplayerFrontend
             LibraryBrowser.Visibility = Visibility.Hidden;
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            library = new Library();
+            if (library.Tracks.Count > 0)
+            {
+                LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
+                ListBoxTracks.ItemsSource = library.Tracks;
+                ListBoxAlbums.ItemsSource = library.Albums;
+                ListBoxArtists.ItemsSource = library.Artists;
+                ListBoxGenres.ItemsSource = library.Genres;
+                LibraryBrowser.Visibility = Visibility.Visible;
+                ToggleListBox(ListBoxTracks);
+                BtnViewTracks.IsEnabled = false;
+            }
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)

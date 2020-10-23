@@ -4,13 +4,11 @@ using System.Linq;
 using System.Windows.Media.Imaging;
 using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
 
 namespace OctoplayerBackend
 {
     public class Track
     {
-        public int Id { get; }
         public string FilePath { get; private set; }
         public string Title { get; set; }
         public List<Artist> Artists { get; set; }
@@ -27,9 +25,8 @@ namespace OctoplayerBackend
         public BitmapImage Artwork { get; set; }
 
 
-        public Track(int id, string filePath, Library lib)
+        public Track(string filePath, Library lib)
         {
-            this.Id = id;
             this.FilePath = filePath;
             var track = TagLib.File.Create(filePath);
 
@@ -39,6 +36,7 @@ namespace OctoplayerBackend
             this.DiscNumber = track.Tag.Disc;
             this.DiscCount = track.Tag.DiscCount;
             this.Year = track.Tag.Year;
+            this.Rating = 50;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
             if (track.Tag.Pictures.Length > 0)
@@ -70,23 +68,19 @@ namespace OctoplayerBackend
             }
         }
 
-        public Track(int id, string filePath, string title, List<Artist> artists, Album album, uint trackNumber, uint trackCount, uint discNumber, uint discCount, uint year, uint rating, List<Genre> genres, uint bpm, string key)
+        public Track(string filePath, string title, uint rating, Library lib)
         {
-            this.Id = id;
             this.FilePath = filePath;
-            this.Title = title;
-            this.Artists = artists;
-            this.Album = album;
-            this.TrackNumber = trackNumber;
-            this.TrackCount = trackCount;
-            this.DiscNumber = discNumber;
-            this.DiscCount = discCount;
-            this.Year = year;
-            this.Rating = rating;
-            this.Genres = genres;
-            this.BPM = bpm;
-            this.Key = key;
             var track = TagLib.File.Create(filePath);
+            this.Title = title;
+            this.Rating = rating;
+            this.TrackNumber = track.Tag.Track;
+            this.TrackCount = track.Tag.TrackCount;
+            this.DiscNumber = track.Tag.Disc;
+            this.DiscCount = track.Tag.DiscCount;
+            this.Year = track.Tag.Year;
+            this.BPM = track.Tag.BeatsPerMinute;
+            this.Key = track.Tag.InitialKey;
             if (track.Tag.Pictures.Length > 0)
             {
                 try
@@ -97,10 +91,22 @@ namespace OctoplayerBackend
                     bitmap.EndInit();
                     this.Artwork = bitmap;
                 }
-                catch (Exception) 
-                {
-                    this.Artwork = Bitmap.
-                }
+                catch (Exception) { }
+            }
+
+            if (track.Tag.Performers.Length > 0)
+            {
+                this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
+                this.Artists.ForEach(a => a.AddTrack(this));
+            }
+
+            this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
+            this.Album.AddTrack(this);
+
+            if (track.Tag.Genres.Length > 0)
+            {
+                this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
+                this.Genres.ForEach(g => g.AddTrack(this));
             }
         }
     }

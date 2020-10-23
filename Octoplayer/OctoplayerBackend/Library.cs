@@ -13,6 +13,16 @@ namespace OctoplayerBackend
         public List<Album> Albums { get; set; }
         public List<Genre> Genres { get; set; }
 
+        public Library()
+        {
+            this.Tracks = new List<Track>();
+            this.Artists = new List<Artist>();
+            this.Albums = new List<Album>();
+            this.Genres = new List<Genre>();
+
+            LoadLibrary();
+        }
+
         public Library(string[] files) 
         {
             this.Tracks = new List<Track>();
@@ -30,7 +40,7 @@ namespace OctoplayerBackend
 
         public void AddTrack(string filePath)
         {
-            var track = new Track(this.Tracks.Count + 1, filePath, this);
+            var track = new Track(filePath, this);
             this.Tracks.Add(track);
             this.Tracks = this.Tracks.OrderBy(a => a.Title).ToList();
         }
@@ -43,7 +53,7 @@ namespace OctoplayerBackend
                 var artist = this.Artists.FirstOrDefault(a => a.Name == name);
                 if (artist == null)
                 {
-                    artist = new Artist(this.Artists.Count + 1, name);
+                    artist = new Artist(name);
                     this.Artists.Add(artist);
                     this.Artists = this.Artists.OrderBy(a => a.Name).ToList();
                 }
@@ -57,7 +67,7 @@ namespace OctoplayerBackend
             var album = this.Albums.FirstOrDefault(a => a.Title == title);
             if (album == null)
             {
-                album = new Album(this.Albums.Count + 1, title);
+                album = new Album(title);
                 this.Albums.Add(album);
                 this.Albums = this.Albums.OrderBy(a => a.Title).ToList();
             }
@@ -72,7 +82,7 @@ namespace OctoplayerBackend
                 var genre = this.Genres.FirstOrDefault(g => g.Name == name);
                 if (genre == null)
                 {
-                    genre = new Genre(this.Genres.Count + 1, name);
+                    genre = new Genre(name);
                     this.Genres.Add(genre);
                     this.Genres = this.Genres.OrderBy(a => a.Name).ToList();
                 }
@@ -85,92 +95,29 @@ namespace OctoplayerBackend
         {
             var document = new XDocument();
 
-            var library = new XElement("Library");
-
-            var trackElement = new XElement("Tracks");
+            var tracks = new XElement("Tracks");
             foreach (var track in this.Tracks)
             {
-                var artists = new XElement("Artists");
-                foreach (var artist in track.Artists)
-                {
-                    artists.Add(new XElement("ArtistId", artist.Id));
-                }
-                var genres = new XElement("Genres");
-                foreach(var genre in track.Genres)
-                {
-                    genres.Add(new XElement("GenreId", genre.Id));
-                }
-                trackElement.Add(new XElement("Track",
-                                    new XElement("Id", track.Id),
+                tracks.Add(new XElement("Track",
                                     new XElement("FilePath", track.FilePath),
                                     new XElement("Title", track.Title),
-                                    artists,
-                                    new XElement("AlbumId", track.Album.Id),
-                                    new XElement("TrackNumber", track.TrackNumber),
-                                    new XElement("TrackCount", track.TrackCount),
-                                    new XElement("DiscNumber", track.DiscNumber),
-                                    new XElement("DiscCount", track.DiscCount),
-                                    new XElement("Year", track.Year),
-                                    new XElement("Rating", track.Rating),
-                                    genres,
-                                    new XElement("BPM", track.BPM),
-                                    new XElement("Key", track.Key)));
-
+                                    new XElement("Rating", track.Rating)));
             }
-
-            var artistElement = new XElement("Artists");
-            foreach(var artist in this.Artists)
-            {
-                var tracks = new XElement("Tracks");
-                foreach(var track in artist.Tracks)
-                {
-                    tracks.Add(new XElement("TrackId", track.Id));
-                }
-                artistElement.Add(new XElement("Artist",
-                                    new XElement("Id", artist.Id),
-                                    new XElement("Name", artist.Name),
-                                    tracks));
-            }
-
-            var albumElement = new XElement("Albums");
-            foreach (var album in this.Albums)
-            {
-                var tracks = new XElement("Tracks");
-                foreach (var track in album.Tracks)
-                {
-                    tracks.Add(new XElement("TrackId", track.Id));
-                }
-                albumElement.Add(new XElement("Album",
-                                    new XElement("Id", album.Id),
-                                    new XElement("Title", album.Title),
-                                    tracks));
-            }
-
-            var genreElement = new XElement("Genres");
-            foreach (var genre in this.Genres)
-            {
-                var tracks = new XElement("Tracks");
-                foreach (var track in genre.Tracks)
-                {
-                    tracks.Add(new XElement("TrackId", track.Id));
-                }
-                genreElement.Add(new XElement("Genre",
-                                    new XElement("Id", genre.Id),
-                                    new XElement("Title", genre.Name),
-                                    tracks));
-            }
-
-            library.Add(trackElement, artistElement, albumElement, genreElement);
-            document.Add(library);
-
+            document.Add(tracks);
             document.Save("library.xml");
         }
 
         public void LoadLibrary()
         {
-            var document = XDocument.Load("library.xml");
+            var tracks = XDocument.Load("library.xml").Element("Tracks").Elements("Track");
 
-            document.El
+            foreach (var track in tracks)
+            {
+                this.Tracks.Add(new Track(track.Element("FilePath").Value,
+                                    track.Element("Title").Value,
+                                    UInt32.Parse(track.Element("Rating").Value),
+                                    this));
+            }
         }
     }
 }
