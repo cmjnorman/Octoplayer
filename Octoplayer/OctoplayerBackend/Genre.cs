@@ -8,11 +8,13 @@ namespace OctoplayerBackend
 {
     public class Genre
     {
+        public int Id { get; }
         public string Name { get; set; }
         public List<Track> Tracks { get; set; }
 
-        public Genre(string name)
+        public Genre(int id, string name)
         {
+            this.Id = id;
             this.Name = name;
             Tracks = new List<Track>();
         }

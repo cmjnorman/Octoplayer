@@ -9,6 +9,7 @@ namespace OctoplayerBackend
 {
     public class Track
     {
+        public int Id { get; }
         public string FilePath { get; private set; }
         public string Title { get; set; }
         public List<Artist> Artists { get; set; }
@@ -25,8 +26,9 @@ namespace OctoplayerBackend
         public BitmapImage Artwork { get; set; }
 
 
-        public Track(string filepath, Library lib)
+        public Track(int id, string filepath, Library lib)
         {
+            this.Id = id;
             this.FilePath = filepath;
             var track = TagLib.File.Create(filepath);
 

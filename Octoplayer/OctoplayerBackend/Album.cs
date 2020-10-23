@@ -8,6 +8,7 @@ namespace OctoplayerBackend
 {
     public class Album
     {
+        public int Id { get; }
         public string Title { get; }
         public List<Track> Tracks { get; private set; }
         public List<Artist> Artists
@@ -19,8 +20,9 @@ namespace OctoplayerBackend
             get { return Tracks[0].Artwork; }
         }
 
-        public Album(string title)
+        public Album(int id, string title)
         {
+            this.Id = id;
             this.Title = title;
             Tracks = new List<Track>();
         }
