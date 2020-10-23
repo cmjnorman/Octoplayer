@@ -19,6 +19,13 @@ namespace OctoplayerBackend
             Tracks = new List<Track>();
         }
 
+        public Genre(int id, string name, List<Track> tracks)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Tracks = tracks;
+        }
+
         public void AddTrack(Track track)
         {
             Tracks.Add(track);

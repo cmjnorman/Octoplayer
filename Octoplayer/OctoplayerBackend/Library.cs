@@ -165,5 +165,12 @@ namespace OctoplayerBackend
 
             document.Save("library.xml");
         }
+
+        public void LoadLibrary()
+        {
+            var document = XDocument.Load("library.xml");
+
+            document.El
+        }
     }
 }
