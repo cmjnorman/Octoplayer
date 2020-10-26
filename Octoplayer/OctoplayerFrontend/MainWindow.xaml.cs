@@ -313,6 +313,7 @@ namespace OctoplayerFrontend
         private void BtnShuffle_Click(object sender, RoutedEventArgs e)
         {
             ShuffleEnabled = !ShuffleEnabled;
+            BtnShuffle.Tag = ((string)BtnShuffle.Tag == "On" ? "Off" : "On");
         }
     }
 }
