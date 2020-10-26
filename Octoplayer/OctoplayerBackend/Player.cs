@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace OctoplayerBackend
 {
@@ -44,9 +45,9 @@ namespace OctoplayerBackend
             this.IsPlaying = false;
         }
 
-        public void SetQueue(List<Track> queue)
+        public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
         {
-            this.Queue = new Queue(queue);
+            this.Queue = new Queue(tracks, startPos, shuffle);
             LoadTrack();
         }
 
@@ -96,6 +97,22 @@ namespace OctoplayerBackend
             {
                 Queue.Previous();
                 LoadTrack();
+            }
+        }
+
+        public void ShuffleQueue()
+        {
+            if(this.Queue != null)
+            {
+                this.Queue.Shuffle();
+            }
+        }
+
+        public void UnshuffleQueue()
+        {
+            if (this.Queue != null)
+            {
+                this.Queue.Unshuffle();
             }
         }
 

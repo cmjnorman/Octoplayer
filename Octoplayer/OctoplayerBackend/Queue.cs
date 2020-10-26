@@ -1,38 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace OctoplayerBackend
 {
     public class Queue
     {
-        
-        public List<Track> PlayingQueue { get; }
-        private int queuePosition;
+        public List<Track> Tracks { get; }
+        private int[] queueOrder;
+        private int currentIndex;
         public Track CurrentTrack
         {
             get
             {
-                return PlayingQueue[queuePosition];
+                return Tracks[currentIndex];
             }
         }
 
-        public Queue(List<Track> tracks)
+        public Queue(List<Track> tracks, int startPos, bool shuffle)
         {
-            this.PlayingQueue = tracks;
-            queuePosition = 0;
+            this.Tracks = tracks;
+            queueOrder = Enumerable.Range(0, tracks.Count).ToArray();
+            currentIndex = startPos;
+            if (shuffle) Shuffle();
+        }
+
+        public void Shuffle()
+        {
+            queueOrder = queueOrder.Shuffle().ToArray();
+        }
+
+        public void Unshuffle()
+        {
+            queueOrder = queueOrder.OrderBy(q => q).ToArray();
         }
 
         public void Next()
         {
-            if (queuePosition == PlayingQueue.Count - 1) queuePosition = 0;
-            else queuePosition++;
+            if (currentIndex == queueOrder.Last()) currentIndex = queueOrder.First();
+            else currentIndex = queueOrder[Array.IndexOf(queueOrder, currentIndex) + 1];
         }
 
         public void Previous()
         {
-            if (queuePosition == 0) queuePosition = PlayingQueue.Count - 1;
-            else queuePosition--;
+            if (currentIndex == queueOrder.First()) currentIndex = queueOrder.Last();
+            else currentIndex = queueOrder[Array.IndexOf(queueOrder, currentIndex) - 1];
         }
     }
 }

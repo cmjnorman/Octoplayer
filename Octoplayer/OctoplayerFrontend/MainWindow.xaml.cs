@@ -135,11 +135,7 @@ namespace OctoplayerFrontend
         {
             if(ListBoxTracks.SelectedItem != null)
             {
-                var tracks = ListBoxTracks.Items.OfType<Track>();
-                var index = ListBoxTracks.SelectedIndex;
-                var queue = tracks.Skip(index).Concat(tracks.Take(index));
-                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
-                else player.SetQueue(queue.ToList());
+                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToList(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -180,11 +176,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxAlbumTracks.SelectedItem != null)
             {
-                var tracks = ListBoxAlbumTracks.Items.OfType<Track>();
-                var index = ListBoxAlbumTracks.SelectedIndex;
-                var queue = tracks.Skip(index).Concat(tracks.Take(index));
-                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
-                else player.SetQueue(queue.ToList());
+                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToList(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -192,11 +184,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxTracksSubmenu.SelectedItem != null)
             {
-                var tracks = ListBoxTracksSubmenu.Items.OfType<Track>();
-                var index = ListBoxTracksSubmenu.SelectedIndex;
-                var queue = tracks.Skip(index).Concat(tracks.Take(index));
-                if (ShuffleEnabled) player.SetQueue(queue.Take(1).Concat(queue.Skip(1).Shuffle()).ToList());
-                else player.SetQueue(queue.ToList());
+                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToList(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -313,7 +301,9 @@ namespace OctoplayerFrontend
         private void BtnShuffle_Click(object sender, RoutedEventArgs e)
         {
             ShuffleEnabled = !ShuffleEnabled;
-            BtnShuffle.Tag = ((string)BtnShuffle.Tag == "On" ? "Off" : "On");
+            BtnShuffle.Tag = (ShuffleEnabled ? "On" : "Off");
+            if (ShuffleEnabled) player.ShuffleQueue();
+            else player.UnshuffleQueue();
         }
     }
 }
