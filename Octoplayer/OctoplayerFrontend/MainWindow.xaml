@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OctoplayerFrontend" 
-        xmlns:back="clr-namespace:OctoplayerBackend;assembly=OctoplayerBackend"
         mc:Ignorable="d"
         Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
@@ -17,13 +16,16 @@
                 </GeometryGroup>
             </Path.Data>
         </Path>
-        <Label x:Key="TrackInfo" Foreground="#E18A07"/>
-        <Label x:Key="DiscInfo" Foreground="#E18A07"/>
-        <Label x:Key="Year" Foreground="#E18A07"/>
-        <Label x:Key="Rating" Foreground="#E18A07"/>
-        <Label x:Key="Genres" Foreground="#E18A07"/>
-        <Label x:Key="BPM" Foreground="#E18A07"/>
-        <Label x:Key="Key" Foreground="#E18A07"/>
+        <TextBlock x:Key="Title"/>
+        <TextBlock x:Key="Album"/>
+        <TextBlock x:Key="Artists"/>
+        <TextBlock x:Key="TrackInfo"/>
+        <TextBlock x:Key="DiscInfo"/>
+        <TextBlock x:Key="Year"/>
+        <TextBlock x:Key="Rating"/>
+        <TextBlock x:Key="Genres"/>
+        <TextBlock x:Key="BPM"/>
+        <TextBlock x:Key="Key"/>
         <local:ListToStringConverter x:Key="ListToStringConverter" />
         <Style x:Key="ExpanderHeaderFocusVisual">
             <Setter Property="Control.Template">
@@ -310,87 +312,84 @@
             <Grid x:Name="GridPlayer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="500"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
-                <Expander Style="{DynamicResource TrackDataExpander}" x:Name="ExpTrackInfo" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" ExpandDirection="Down" Margin="0, 10, 0, 0" Background="Transparent">
-                    <Expander.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.3*"/>
-                                <RowDefinition Height="0.2*"/>
-                                <RowDefinition Height="0.3*"/>
-                            </Grid.RowDefinitions>
-                            <Label x:Name="LblTrackTitle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" Foreground="#E18A07"/>
-                            <Label x:Name="LblArtists" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Foreground="#E18A07"/>
-                            <Label x:Name="LblAlbum" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" Foreground="#E18A07"/>
-                        </Grid>
-                    </Expander.Header>
-                    <Grid MinWidth="300" HorizontalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource TrackInfo}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid HorizontalAlignment="Right">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource DiscInfo}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Year}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid Grid.Row="1" HorizontalAlignment="Right">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Rating}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Genres}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource BPM}" Grid.Column="1"/>
-                        </Grid>
-                        <Grid Grid.Row="3" HorizontalAlignment="Right">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Key:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
-                            <Label Content="{DynamicResource Key}" Grid.Column="1"/>
-                        </Grid>
+                <Grid Grid.Row="1" Margin="0, 10, 0, 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{DynamicResource Title}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" Foreground="#E18A07"/>
+                    <Label Content="{DynamicResource Artists}" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Foreground="#E18A07"/>
+                    <Label Content="{DynamicResource Album}" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" Foreground="#E18A07"/>
+                </Grid>
+                <Grid Grid.Row="2" MinWidth="300" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource TrackInfo}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                </Expander>
+                    <Grid HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource DiscInfo}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource Year}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource Rating}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource Genres}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource BPM}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="3" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Key:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource Key}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                </Grid>
             </Grid>
             <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
                 <Grid.RowDefinitions>

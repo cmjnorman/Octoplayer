@@ -203,18 +203,18 @@ namespace OctoplayerFrontend
             if (GridPlayer.Visibility == Visibility.Hidden) GridPlayer.Visibility = Visibility.Visible;
 
             var track = player.Queue.CurrentTrack;
-            LblTrackTitle.Content = track.Title;
-            LblArtists.Content = String.Join("; ", track.Artists);
-            LblAlbum.Content = track.Album;
-            ImgAlbumArt.Source = track.Artwork;
 
-            ((System.Windows.Controls.Label)this.FindResource("TrackInfo")).Content = $"{track.TrackNumber} / {track.TrackCount}";
-            ((System.Windows.Controls.Label)this.FindResource("DiscInfo")).Content = $"{track.DiscNumber} / {track.DiscCount}";
-            ((System.Windows.Controls.Label)this.FindResource("Year")).Content = track.Year;
-            ((System.Windows.Controls.Label)this.FindResource("Rating")).Content = track.Rating;
-            ((System.Windows.Controls.Label)this.FindResource("Genres")).Content = String.Join("; ", track.Genres);
-            ((System.Windows.Controls.Label)this.FindResource("BPM")).Content = track.BPM;
-            ((System.Windows.Controls.Label)this.FindResource("Key")).Content = track.Key;
+            ((System.Windows.Controls.TextBlock)this.FindResource("Title")).Text = track.Title; 
+            ((System.Windows.Controls.TextBlock)this.FindResource("Artists")).Text = String.Join("; ", track.Artists);
+            ((System.Windows.Controls.TextBlock)this.FindResource("Album")).Text = track.Album.Title;
+            ((System.Windows.Controls.TextBlock)this.FindResource("TrackInfo")).Text = $"{track.TrackNumber} / {track.TrackCount}";
+            ((System.Windows.Controls.TextBlock)this.FindResource("DiscInfo")).Text = $"{track.DiscNumber} / {track.DiscCount}";
+            ((System.Windows.Controls.TextBlock)this.FindResource("Year")).Text = track.Year.ToString();
+            ((System.Windows.Controls.TextBlock)this.FindResource("Rating")).Text = track.Rating.ToString();
+            ((System.Windows.Controls.TextBlock)this.FindResource("Genres")).Text = String.Join("; ", track.Genres);
+            ((System.Windows.Controls.TextBlock)this.FindResource("BPM")).Text = track.BPM.ToString();
+            ((System.Windows.Controls.TextBlock)this.FindResource("Key")).Text = track.Key;
+            ImgAlbumArt.Source = track.Artwork;
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             TrackSlider.Maximum = player.CurrentTrackLength;
