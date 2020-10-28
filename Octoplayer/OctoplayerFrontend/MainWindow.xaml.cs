@@ -23,6 +23,7 @@ namespace OctoplayerFrontend
         {
             InitializeComponent();
             player.TrackLoaded += OnTrackLoad;
+            player.QueueUpdated += OnQueueUpdated;
             player.MediaPlaying += () => BtnPlayPause.Content = FindResource("Pause");
             player.MediaPaused += () => BtnPlayPause.Content = FindResource("Play");
             GridPlayer.Visibility = Visibility.Hidden;
@@ -224,7 +225,16 @@ namespace OctoplayerFrontend
             timelineClock.Start();
         }
 
-        public void UnloadTrack()
+        private void OnQueueUpdated()
+        {
+            var queue = player.Queue.GetQueue();
+            if (queue.FirstOrDefault(t => t.Item1 == 1).Equals(default)) LblNextSong.Content = queue[0].Item2.Title;
+            else LblNextSong.Content = queue.Where(t => t.Item1 == 1).Select(t => t.Item2.Title).First();
+         
+             
+        }
+
+        private void UnloadTrack()
         {
             if (player.IsPlaying) player.Pause();
             if(timelineClock != null) timelineClock.Stop();

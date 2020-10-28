@@ -36,6 +36,7 @@ namespace OctoplayerBackend
         public event EmptyHandler MediaPlaying;
         public event EmptyHandler MediaPaused;
         public event EmptyHandler TrackLoaded;
+        public event EmptyHandler QueueUpdated;
         
         public Player()
         {
@@ -55,6 +56,7 @@ namespace OctoplayerBackend
         {
             Media.Open(new Uri(Queue.CurrentTrack.FilePath));
             TrackTimer = new DispatcherTimer();
+            QueueUpdated();
             if (IsPlaying) Media.Play();
         }
 
@@ -88,6 +90,7 @@ namespace OctoplayerBackend
         {
             Queue.Next();
             LoadTrack();
+            QueueUpdated();
         }
 
         public void Previous()
@@ -97,6 +100,7 @@ namespace OctoplayerBackend
             {
                 Queue.Previous();
                 LoadTrack();
+                QueueUpdated();
             }
         }
 
@@ -105,6 +109,7 @@ namespace OctoplayerBackend
             if(this.Queue != null)
             {
                 this.Queue.Shuffle();
+                QueueUpdated();
             }
         }
 
@@ -113,6 +118,7 @@ namespace OctoplayerBackend
             if (this.Queue != null)
             {
                 this.Queue.Unshuffle();
+                QueueUpdated();
             }
         }
 

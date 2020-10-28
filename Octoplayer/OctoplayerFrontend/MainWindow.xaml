@@ -314,6 +314,7 @@
                     <RowDefinition Height="500"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
                 <Grid Grid.Row="1" Margin="0, 10, 0, 10">
@@ -390,6 +391,18 @@
                         <Label Content="{DynamicResource Key}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
                 </Grid>
+                <Expander x:Name="QueueExpander" Grid.Row="3" HorizontalAlignment="Center">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Next Up:" FontWeight="Bold" Foreground="#E18A07"/>
+                            <Label x:Name="LblNextSong" Grid.Column="1" Foreground="#E18A07"/>
+                        </Grid>
+                    </Expander.Header>
+                </Expander>
             </Grid>
             <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
                 <Grid.RowDefinitions>
