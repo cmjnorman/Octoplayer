@@ -22,7 +22,7 @@ namespace OctoplayerBackend
         {
             this.Tracks = tracks;
             queueOrder = Enumerable.Range(0, tracks.Count).ToArray();
-            queuePosition = 0;
+            queuePosition = startPos;
             if (shuffle) Shuffle();
         }
 
