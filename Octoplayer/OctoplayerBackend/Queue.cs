@@ -9,12 +9,12 @@ namespace OctoplayerBackend
     {
         public List<Track> Tracks { get; }
         private int[] queueOrder;
-        private int currentIndex;
+        private int queuePosition;
         public Track CurrentTrack
         {
             get
             {
-                return Tracks[currentIndex];
+                return Tracks[queueOrder[queuePosition]];
             }
         }
 
@@ -22,30 +22,33 @@ namespace OctoplayerBackend
         {
             this.Tracks = tracks;
             queueOrder = Enumerable.Range(0, tracks.Count).ToArray();
-            currentIndex = startPos;
+            queuePosition = 0;
             if (shuffle) Shuffle();
         }
 
         public void Shuffle()
         {
+            queuePosition = 0;
             queueOrder = queueOrder.Shuffle().ToArray();
         }
 
         public void Unshuffle()
         {
+            queuePosition = queueOrder[queuePosition];
             queueOrder = queueOrder.OrderBy(q => q).ToArray();
+   
         }
 
         public void Next()
         {
-            if (currentIndex == queueOrder.Last()) currentIndex = queueOrder.First();
-            else currentIndex = queueOrder[Array.IndexOf(queueOrder, currentIndex) + 1];
+            if (queuePosition == queueOrder.Count() - 1) queuePosition = 0;
+            else queuePosition++;
         }
 
         public void Previous()
         {
-            if (currentIndex == queueOrder.First()) currentIndex = queueOrder.Last();
-            else currentIndex = queueOrder[Array.IndexOf(queueOrder, currentIndex) - 1];
+            if (queuePosition == 0) queuePosition = queueOrder.Count() - 1;
+            else queuePosition--;
         }
     }
 }
