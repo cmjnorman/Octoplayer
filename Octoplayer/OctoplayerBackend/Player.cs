@@ -9,27 +9,27 @@ namespace OctoplayerBackend
 {
     public class Player
     {
-        public MediaPlayer Media;
-        public DispatcherTimer TrackTimer;
-        public Queue Queue;
-        public bool IsPlaying;
+        private MediaPlayer media;
+        private DispatcherTimer trackTimer;
+        public Queue Queue { get; private set; }
+        public bool IsPlaying { get; private set; }
         public double CurrentTrackLength
         {
             get 
             { 
-                if (!Media.NaturalDuration.HasTimeSpan) return 0;
-                return Media.NaturalDuration.TimeSpan.TotalMilliseconds;
+                if (!media.NaturalDuration.HasTimeSpan) return 0;
+                return media.NaturalDuration.TimeSpan.TotalMilliseconds;
             }
         }
         public double CurrentTrackPosition
         {
             get
             {
-                return Media.Position.TotalMilliseconds;
+                return media.Position.TotalMilliseconds;
             }
             set
             {
-                this.Media.Position = TimeSpan.FromMilliseconds(value);
+                this.media.Position = TimeSpan.FromMilliseconds(value);
             }
         }
         public delegate void EmptyHandler(); 
@@ -40,13 +40,13 @@ namespace OctoplayerBackend
         
         public Player()
         {
-            this.Media = new MediaPlayer();
-            this.Media.MediaOpened += OnTrackLoad;
-            this.Media.MediaEnded += OnTrackEnd;
+            this.media = new MediaPlayer();
+            this.media.MediaOpened += OnTrackLoad;
+            this.media.MediaEnded += OnTrackEnd;
             this.IsPlaying = false;
         }
 
-        public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
+        public void SelectTracks(Track[] tracks, int startPos, bool shuffle)
         {
             this.Queue = new Queue(tracks, startPos, shuffle);
             LoadTrack();
@@ -54,22 +54,22 @@ namespace OctoplayerBackend
 
         public void LoadTrack()
         {
-            Media.Open(new Uri(Queue.CurrentTrack.FilePath));
-            TrackTimer = new DispatcherTimer();
+            media.Open(new Uri(Queue.CurrentTrack.FilePath));
+            trackTimer = new DispatcherTimer();
             QueueUpdated();
-            if (IsPlaying) Media.Play();
+            if (IsPlaying) media.Play();
         }
 
         public void Suspend()
         {
-            Media.Pause();
-            TrackTimer.Stop();
+            media.Pause();
+            trackTimer.Stop();
         }
 
         public void Unsuspend()
         {
-            Media.Play();
-            TrackTimer.Start();
+            media.Play();
+            trackTimer.Start();
         }
 
         public void Play()

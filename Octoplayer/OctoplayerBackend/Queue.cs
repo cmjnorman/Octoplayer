@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace OctoplayerBackend
 {
     public class Queue
     {
-        public List<Track> Tracks { get; }
+        public Track[] Tracks { get; }
         private int[] queueOrder;
         private int queuePosition;
         public Track CurrentTrack
@@ -18,11 +16,11 @@ namespace OctoplayerBackend
             }
         }
 
-        public Queue(List<Track> tracks, int startPos, bool shuffle)
+        public Queue(Track[] tracks, int startPos, bool shuffle)
         {
             this.Tracks = tracks;
-            queueOrder = Enumerable.Range(0, tracks.Count).ToArray();
-            queuePosition = startPos;
+            this.queueOrder = Enumerable.Range(0, tracks.Length).ToArray();
+            this.queuePosition = startPos;
             if (shuffle) Shuffle();
         }
 
@@ -42,22 +40,31 @@ namespace OctoplayerBackend
 
         public void Next()
         {
-            if (queuePosition == queueOrder.Count() - 1) queuePosition = 0;
+            if (queuePosition == Tracks.Length - 1) queuePosition = 0;
             else queuePosition++;
         }
 
         public void Previous()
         {
-            if (queuePosition == 0) queuePosition = queueOrder.Count() - 1;
+            if (queuePosition == 0) queuePosition = Tracks.Length - 1;
             else queuePosition--;
         }
 
-        public List<(int, Track)> GetQueue()
+        private int RelativeQueuePosition(Track track)
         {
-            var queue = new List<(int, Track)>();
-            for(var i = 0; i < queueOrder.Count(); i++)
+            var queuedTrack = Tracks.FirstOrDefault(t => t == track);
+            if (queuedTrack == null) throw new Exception("Track not found in queue");
+            var positionInQueue = Array.IndexOf(queueOrder, Array.IndexOf(Tracks, queuedTrack));
+            return positionInQueue - this.queuePosition;
+        }
+
+        public QueueItem[] GetQueueItems()
+        {
+            var queue = new QueueItem[Tracks.Length];
+            for(var i = 0; i < Tracks.Length; i++)
             {
-                queue.Add((i - queuePosition, Tracks[queueOrder[i]]));
+                var track = Tracks[queueOrder[i]];
+                queue[i] = new QueueItem(track, RelativeQueuePosition(track));
             }
             return queue;
         }

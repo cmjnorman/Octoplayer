@@ -26,7 +26,7 @@
         <TextBlock x:Key="Genres"/>
         <TextBlock x:Key="BPM"/>
         <TextBlock x:Key="Key"/>
-        <local:ListToStringConverter x:Key="ListToStringConverter" />
+        <local:ListToStringConverter x:Key="ListToStringConverter"/>
         <Style x:Key="ExpanderHeaderFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -309,7 +309,7 @@
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid x:Name="GridPlayer">
+            <Grid x:Name="GridPlayer" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="500"/>
                     <RowDefinition Height="Auto"/>
@@ -391,8 +391,8 @@
                         <Label Content="{DynamicResource Key}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
                 </Grid>
-                <Expander x:Name="QueueExpander" Grid.Row="3" HorizontalAlignment="Center">
-                    <Expander.Header>
+                <Canvas Grid.Row="3" Height="25" Width="120" Panel.ZIndex="99" Margin="0, 50, 0, 10" HorizontalAlignment="Center">
+                    <ToggleButton x:Name="QueueToggle" Background="#FF313131" BorderThickness="1" BorderBrush="#E18A07">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -401,8 +401,32 @@
                             <Label Content="Next Up:" FontWeight="Bold" Foreground="#E18A07"/>
                             <Label x:Name="LblNextSong" Grid.Column="1" Foreground="#E18A07"/>
                         </Grid>
-                    </Expander.Header>
-                </Expander>
+                    </ToggleButton>
+                    <Popup Placement="Top" HorizontalAlignment="Center" PlacementTarget="{Binding ElementName=QueueToggle}" IsOpen="{Binding ElementName=QueueToggle, Path=IsChecked}">
+                        <ListBox x:Name="QueueListBox" Background="#FF313131" BorderThickness="1" BorderBrush="#E18A07">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding RelativePosition}" Width="30" FontSize="30" Padding="0" HorizontalContentAlignment="Center" Foreground="#E18A07"/>
+                                        <Grid Grid.Column="1" Margin="10, 0, 0, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                            <Label Content="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Popup>
+                </Canvas>
             </Grid>
             <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
                 <Grid.RowDefinitions>

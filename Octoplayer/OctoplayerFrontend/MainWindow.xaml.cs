@@ -136,7 +136,7 @@ namespace OctoplayerFrontend
         {
             if(ListBoxTracks.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToList(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToArray(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -177,7 +177,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxAlbumTracks.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToList(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToArray(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -185,7 +185,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxTracksSubmenu.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToList(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToArray(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -227,11 +227,9 @@ namespace OctoplayerFrontend
 
         private void OnQueueUpdated()
         {
-            var queue = player.Queue.GetQueue();
-            if (queue.FirstOrDefault(t => t.Item1 == 1).Equals(default)) LblNextSong.Content = queue[0].Item2.Title;
-            else LblNextSong.Content = queue.Where(t => t.Item1 == 1).Select(t => t.Item2.Title).First();
-         
-             
+            var queue = player.Queue.GetQueueItems();
+            LblNextSong.Content = queue.First(q => q.RelativePosition == 1).Title;
+            QueueListBox.ItemsSource = queue;
         }
 
         private void UnloadTrack()
