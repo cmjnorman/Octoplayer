@@ -238,6 +238,7 @@ namespace OctoplayerFrontend
         {
             var menu = new ContextMenu();
             if (item.Content is Track)
+            {
                 if (player.Queue.GetQueueItems().FirstOrDefault(q => q.Track == item.Content) == null)
                 {
                     var menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
@@ -258,6 +259,17 @@ namespace OctoplayerFrontend
                     menuItem.Click += MenuItemMoveToBackOfQueue_Click;
                     menu.Items.Add(menuItem);
                 }
+            }
+            else if (item.Content is QueueItem)
+            {
+                var menuItem = new MenuItem() { Header = "Move To Front" };
+                menuItem.Click += MenuItemMoveToFrontOfQueue_Click;
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Move To Back" };
+                menuItem.Click += MenuItemMoveToBackOfQueue_Click;
+                menu.Items.Add(menuItem);
+            }
             item.ContextMenu = menu;
         }
 
@@ -367,16 +379,34 @@ namespace OctoplayerFrontend
 
         private void MenuItemMoveToFrontOfQueue_Click(object sender, RoutedEventArgs e)
         {
-            player.MoveTrackPosition((Track)((MenuItem)e.Source).DataContext, true);
+            Track track = null;
+            if(((MenuItem)e.Source).DataContext is Track)
+            {
+                track = (Track)((MenuItem)e.Source).DataContext;
+            }
+            else if(((MenuItem)e.Source).DataContext is QueueItem)
+            {
+                track = ((QueueItem)((MenuItem)e.Source).DataContext).Track;
+            }
+            player.MoveTrackPosition(track, true);
         }
         private void MenuItemMoveToBackOfQueue_Click(object sender, RoutedEventArgs e)
         {
-            player.MoveTrackPosition((Track)((MenuItem)e.Source).DataContext, false);
+            Track track = null;
+            if (((MenuItem)e.Source).DataContext is Track)
+            {
+                track = (Track)((MenuItem)e.Source).DataContext;
+            }
+            else if (((MenuItem)e.Source).DataContext is QueueItem)
+            {
+                track = ((QueueItem)((MenuItem)e.Source).DataContext).Track;
+            }
+            player.MoveTrackPosition(track, false);
         }
 
-        private void ListBoxTracks_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ListBoxRightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            UpdateContextMenu((ListBoxItem)ListBoxTracks.ItemContainerGenerator.ContainerFromItem(ListBoxTracks.SelectedItem));
+            UpdateContextMenu((ListBoxItem)((System.Windows.Controls.ListBox)sender).ItemContainerGenerator.ContainerFromItem(((System.Windows.Controls.ListBox)sender).SelectedItem));
         }
     }
 }

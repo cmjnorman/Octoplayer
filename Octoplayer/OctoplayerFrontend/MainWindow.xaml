@@ -418,7 +418,7 @@
                     </Grid>
                 </ToggleButton>
                 <Popup x:Name="QueuePopup" Placement="Top" HorizontalAlignment="Center" Width="400" MaxHeight="700" PlacementTarget="{Binding ElementName=QueueToggle}" IsOpen="{Binding ElementName=QueueToggle, Path=IsChecked}" StaysOpen="False">
-                    <ListBox x:Name="QueueListBox" Background="#FF313131" BorderThickness="1" BorderBrush="#E18A07" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="QueueListBox_MouseDoubleClick">
+                    <ListBox x:Name="QueueListBox" Background="#FF313131" BorderThickness="1" BorderBrush="#E18A07" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="QueueListBox_MouseDoubleClick" MouseRightButtonUp="ListBoxRightClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -468,7 +468,7 @@
                     <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Padding="5, 0, 5, 0" HorizontalAlignment="Right" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Height="21" VerticalAlignment="Top" Click="BtnSwapTrackAlbum_Click"/>
                 </Grid>
                 <Grid x:Name="ListBoxGrid" Grid.Row="2" Margin="0,10,0,0">
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" MouseRightButtonUp="ListBoxTracks_MouseRightButtonUp" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -527,7 +527,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbumTracks" MouseDoubleClick="ListBoxAlbumTracks_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbumTracks" MouseDoubleClick="ListBoxAlbumTracks_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -551,7 +551,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracksSubmenu" MouseDoubleClick="ListBoxTracksSubmenu_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracksSubmenu" MouseDoubleClick="ListBoxTracksSubmenu_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
