@@ -1,77 +1,133 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace OctoplayerBackend
 {
     public class Queue
     {
-        public Track[] Tracks { get; }
-        private int[] queueOrder;
-        public int queuePosition { get; private set; }
-        public Track CurrentTrack
-        {
-            get
-            {
-                return Tracks[queueOrder[queuePosition]];
-            }
-        }
+        public List<Track> Tracks { get; }
+        private LinkedList<Track> PreviousTracks;
+        private LinkedList<Track> NextTracks;
+        public Track CurrentTrack { get; private set; }
+    
 
-        public Queue(Track[] tracks, int startPos, bool shuffle)
+        public Queue(List<Track> tracks, int startPos, bool shuffle)
         {
             this.Tracks = tracks;
-            this.queueOrder = Enumerable.Range(0, tracks.Length).ToArray();
-            this.queuePosition = startPos;
+            this.PreviousTracks = new LinkedList<Track>(tracks.Take(startPos));
+            this.CurrentTrack = tracks[startPos];
+            this.NextTracks = new LinkedList<Track>(Tracks.Skip(startPos + 1));
             if (shuffle) Shuffle();
         }
 
+        //public void AddTrack(Track track, bool addToFront)
+        //{
+        //    Tracks.Add(track);
+        //    if (addToFront)
+        //    {
+                
+        //    }
+        //    else 
+        //}
+
         public void Shuffle()
         {
-            queueOrder = queueOrder.Shuffle().ToArray();
-            var index = Array.IndexOf(queueOrder, queuePosition);
-            queueOrder = queueOrder.Skip(index).Concat(queueOrder.Take(index)).ToArray();
-            queuePosition = 0;
+            PreviousTracks = new LinkedList<Track>();
+            NextTracks = new LinkedList<Track>(Tracks.Where(t => t != CurrentTrack).Shuffle());
+
+            //queueOrder = queueOrder.Shuffle().ToList();
+            //var index = queueOrder.IndexOf(queuePosition);
+            //queueOrder = queueOrder.Skip(index).Concat(queueOrder.Take(index)).ToList();
+            //queuePosition = 0;
         }
 
         public void Unshuffle()
         {
-            queuePosition = queueOrder[queuePosition];
-            queueOrder = queueOrder.OrderBy(q => q).ToArray();
+            PreviousTracks = new LinkedList<Track>(Tracks.Take(Tracks.IndexOf(CurrentTrack)));
+            NextTracks = new LinkedList<Track>(Tracks.Skip(Tracks.IndexOf(CurrentTrack) + 1));
+            //queuePosition = queueOrder[queuePosition];
+            //queueOrder = queueOrder.OrderBy(q => q).ToList();
         }
 
-        public void SkipTo(Track track)
+        public void SkipTo(int position)
         {
-            queuePosition = Array.IndexOf(queueOrder, Array.IndexOf(Tracks, track));
+            while(position != 0)
+            {
+                if(position < 0)
+                {
+                    Previous();
+                    position++;
+                }
+                else
+                {
+                    Next();
+                    position--;
+                }
+            }
+            //queuePosition = queueOrder.IndexOf(Tracks.IndexOf(track));
         }
 
         public void Next()
         {
-            if (queuePosition == Tracks.Length - 1) queuePosition = 0;
-            else queuePosition++;
+            if(NextTracks.Count > 0)
+            {
+                PreviousTracks.AddLast(CurrentTrack);
+                CurrentTrack = NextTracks.First();
+                NextTracks.RemoveFirst();
+            }
+            //if (queuePosition == Tracks.Count - 1) queuePosition = 0;
+            //else queuePosition++;
         }
 
         public void Previous()
         {
-            if (queuePosition == 0) queuePosition = Tracks.Length - 1;
-            else queuePosition--;
-        }
-
-        private int RelativeQueuePosition(Track track)
-        {
-            var queuedTrack = Tracks.FirstOrDefault(t => t == track);
-            if (queuedTrack == null) throw new Exception("Track not found in queue");
-            var positionInQueue = Array.IndexOf(queueOrder, Array.IndexOf(Tracks, queuedTrack));
-            return positionInQueue - this.queuePosition;
-        }
-
-        public QueueItem[] GetQueueItems()
-        {
-            var queue = new QueueItem[Tracks.Length];
-            for(var i = 0; i < Tracks.Length; i++)
+            if(PreviousTracks.Count > 0)
             {
-                var track = Tracks[queueOrder[i]];
-                queue[i] = new QueueItem(track, RelativeQueuePosition(track));
+                NextTracks.AddFirst(CurrentTrack);
+                CurrentTrack = PreviousTracks.Last();
+                PreviousTracks.RemoveLast();
+            }
+            //if (queuePosition == 0) queuePosition = Tracks.Count - 1;
+            //else queuePosition--;
+        }
+
+        public int TopScrollPosition()
+        {
+            if (PreviousTracks.Count > 2)
+            {
+                return -2 + PreviousTracks.Count;
+            }
+            else return 0;
+        }
+
+        public List<QueueItem> GetQueueItems()
+        {
+            var queue = new List<QueueItem>();
+            var index = -(PreviousTracks.Count);
+            foreach(var track in PreviousTracks)
+            {
+                queue.Add(new QueueItem(track, index));
+                index++;
+            }
+            queue.Add(new QueueItem(CurrentTrack, index));
+            index++;
+            foreach(var track in NextTracks)
+            {
+                queue.Add(new QueueItem(track, index));
+                index++;
             }
             return queue;
+
+        //    var queue = new list<queueitem>();
+        //    for (var i = 0; i < tracks.count; i++)
+        //    {
+        //        var track = tracks[queueorder[i]];
+        //        queue.add(new queueitem(track, relativequeueposition(track)));
+        //    }
+        //    return queue;
         }
 
     }

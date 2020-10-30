@@ -41,12 +41,14 @@ namespace OctoplayerBackend
         public Player()
         {
             this.media = new MediaPlayer();
+            //this.Queue = new Queue(new List<Track>(), 0, false);
             this.media.MediaOpened += OnTrackLoad;
             this.media.MediaEnded += OnTrackEnd;
             this.IsPlaying = false;
+            
         }
 
-        public void SelectTracks(Track[] tracks, int startPos, bool shuffle)
+        public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
         {
             this.Queue = new Queue(tracks, startPos, shuffle);
             LoadTrack();
@@ -104,9 +106,9 @@ namespace OctoplayerBackend
             }
         }
 
-        public void SkipTo(Track track)
+        public void SkipTo(int position)
         {
-            Queue.SkipTo(track);
+            Queue.SkipTo(position);
             LoadTrack();
         }
 

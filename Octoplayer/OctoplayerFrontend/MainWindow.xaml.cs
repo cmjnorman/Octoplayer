@@ -8,6 +8,7 @@ using OctoplayerBackend;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Controls;
 
 namespace OctoplayerFrontend
 {
@@ -137,7 +138,7 @@ namespace OctoplayerFrontend
         {
             if(ListBoxTracks.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToArray(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToList(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -178,7 +179,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxAlbumTracks.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToArray(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToList(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -186,7 +187,7 @@ namespace OctoplayerFrontend
         {
             if (ListBoxTracksSubmenu.SelectedItem != null)
             {
-                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToArray(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
+                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToList(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
             }
         }
 
@@ -317,19 +318,14 @@ namespace OctoplayerFrontend
 
         private void QueueListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            player.SkipTo(((QueueItem)QueueListBox.SelectedItem).Track);
+            player.SkipTo(((QueueItem)QueueListBox.SelectedItem).RelativePosition);
         }
 
         private void QueueToggle_Click(object sender, RoutedEventArgs e)
         {
             QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(QueueListBox.Items.Count - 1));
             QueueListBox.UpdateLayout();
-            if (player.Queue.queuePosition >= 2)
-                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition - 2));
-            else if (player.Queue.queuePosition == 1)
-                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition - 1));
-            else
-                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition));
+            QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.TopScrollPosition()));
         }
     }
 }
