@@ -13,6 +13,13 @@ namespace OctoplayerBackend
         private LinkedList<Track> NextTracks;
         public Track CurrentTrack { get; private set; }
     
+        
+        public Queue()
+        {
+            this.Tracks = new List<Track>();
+            this.PreviousTracks = new LinkedList<Track>();
+            this.NextTracks = new LinkedList<Track>();
+        }
 
         public Queue(List<Track> tracks, int startPos, bool shuffle)
         {
@@ -23,33 +30,31 @@ namespace OctoplayerBackend
             if (shuffle) Shuffle();
         }
 
-        //public void AddTrack(Track track, bool addToFront)
-        //{
-        //    Tracks.Add(track);
-        //    if (addToFront)
-        //    {
-                
-        //    }
-        //    else 
-        //}
+        public void AddTrack(Track track, bool addToFront)
+        {
+            Tracks.Insert(Tracks.IndexOf(CurrentTrack) + 1, track);
+            if (addToFront) NextTracks.AddFirst(track);
+            else NextTracks.AddLast(track);
+        }
+
+        public void MoveToFront(Track track)
+        {
+            Tracks.Remove(track);
+            Tracks.Insert(Tracks.IndexOf(CurrentTrack) + 1, track);
+            NextTracks.Remove(track);
+            NextTracks.AddFirst(track);
+        }
 
         public void Shuffle()
         {
             PreviousTracks = new LinkedList<Track>();
             NextTracks = new LinkedList<Track>(Tracks.Where(t => t != CurrentTrack).Shuffle());
-
-            //queueOrder = queueOrder.Shuffle().ToList();
-            //var index = queueOrder.IndexOf(queuePosition);
-            //queueOrder = queueOrder.Skip(index).Concat(queueOrder.Take(index)).ToList();
-            //queuePosition = 0;
         }
 
         public void Unshuffle()
         {
             PreviousTracks = new LinkedList<Track>(Tracks.Take(Tracks.IndexOf(CurrentTrack)));
             NextTracks = new LinkedList<Track>(Tracks.Skip(Tracks.IndexOf(CurrentTrack) + 1));
-            //queuePosition = queueOrder[queuePosition];
-            //queueOrder = queueOrder.OrderBy(q => q).ToList();
         }
 
         public void SkipTo(int position)
@@ -67,7 +72,6 @@ namespace OctoplayerBackend
                     position--;
                 }
             }
-            //queuePosition = queueOrder.IndexOf(Tracks.IndexOf(track));
         }
 
         public void Next()
@@ -78,8 +82,6 @@ namespace OctoplayerBackend
                 CurrentTrack = NextTracks.First();
                 NextTracks.RemoveFirst();
             }
-            //if (queuePosition == Tracks.Count - 1) queuePosition = 0;
-            //else queuePosition++;
         }
 
         public void Previous()
@@ -90,8 +92,6 @@ namespace OctoplayerBackend
                 CurrentTrack = PreviousTracks.Last();
                 PreviousTracks.RemoveLast();
             }
-            //if (queuePosition == 0) queuePosition = Tracks.Count - 1;
-            //else queuePosition--;
         }
 
         public int TopScrollPosition()
@@ -120,14 +120,6 @@ namespace OctoplayerBackend
                 index++;
             }
             return queue;
-
-        //    var queue = new list<queueitem>();
-        //    for (var i = 0; i < tracks.count; i++)
-        //    {
-        //        var track = tracks[queueorder[i]];
-        //        queue.add(new queueitem(track, relativequeueposition(track)));
-        //    }
-        //    return queue;
         }
 
     }
