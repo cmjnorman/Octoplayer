@@ -63,9 +63,9 @@ namespace OctoplayerBackend
             }
         }
 
-        public void MoveToFront(Track track)
+        public void MoveTrackPosition(Track track, bool moveToFront)
         {
-            Queue.MoveToFront(track);
+            Queue.MoveTrackPosition(track, moveToFront);
             QueueUpdated();
         }
 

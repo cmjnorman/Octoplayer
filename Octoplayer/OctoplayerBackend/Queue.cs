@@ -32,17 +32,24 @@ namespace OctoplayerBackend
 
         public void AddTrack(Track track, bool addToFront)
         {
-            Tracks.Insert(Tracks.IndexOf(CurrentTrack) + 1, track);
-            if (addToFront) NextTracks.AddFirst(track);
-            else NextTracks.AddLast(track);
+
+            if (addToFront)
+            {
+                Tracks.Insert(Tracks.IndexOf(CurrentTrack) + 1, track);
+                NextTracks.AddFirst(track);
+            }
+            else
+            {
+                Tracks.Add(CurrentTrack);
+                NextTracks.AddLast(track);
+            }
         }
 
-        public void MoveToFront(Track track)
+        public void MoveTrackPosition(Track track, bool moveToFront)
         {
             Tracks.Remove(track);
-            Tracks.Insert(Tracks.IndexOf(CurrentTrack) + 1, track);
             NextTracks.Remove(track);
-            NextTracks.AddFirst(track);
+            AddTrack(track, moveToFront);
         }
 
         public void Shuffle()
