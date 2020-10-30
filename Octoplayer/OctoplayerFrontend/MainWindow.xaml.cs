@@ -7,6 +7,7 @@ using System.Windows.Media;
 using OctoplayerBackend;
 using System.Windows.Threading;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OctoplayerFrontend
 {
@@ -228,7 +229,7 @@ namespace OctoplayerFrontend
         private void OnQueueUpdated()
         {
             var queue = player.Queue.GetQueueItems();
-            LblNextSong.Content = queue.First(q => q.RelativePosition == 1).Title;
+            NextTrackItemControl.ItemsSource = queue.Where(q => q.RelativePosition == 1);
             QueueListBox.ItemsSource = queue;
         }
 
@@ -312,6 +313,23 @@ namespace OctoplayerFrontend
             BtnShuffle.Tag = (ShuffleEnabled ? "On" : "Off");
             if (ShuffleEnabled) player.ShuffleQueue();
             else player.UnshuffleQueue();
+        }
+
+        private void QueueListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            player.SkipTo(((QueueItem)QueueListBox.SelectedItem).Track);
+        }
+
+        private void QueueToggle_Click(object sender, RoutedEventArgs e)
+        {
+            QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(QueueListBox.Items.Count - 1));
+            QueueListBox.UpdateLayout();
+            if (player.Queue.queuePosition >= 2)
+                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition - 2));
+            else if (player.Queue.queuePosition == 1)
+                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition - 1));
+            else
+                QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.queuePosition));
         }
     }
 }

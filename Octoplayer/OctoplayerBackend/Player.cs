@@ -104,6 +104,12 @@ namespace OctoplayerBackend
             }
         }
 
+        public void SkipTo(Track track)
+        {
+            Queue.SkipTo(track);
+            LoadTrack();
+        }
+
         public void ShuffleQueue()
         {
             if(this.Queue != null)

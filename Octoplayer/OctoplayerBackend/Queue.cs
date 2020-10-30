@@ -7,7 +7,7 @@ namespace OctoplayerBackend
     {
         public Track[] Tracks { get; }
         private int[] queueOrder;
-        private int queuePosition;
+        public int queuePosition { get; private set; }
         public Track CurrentTrack
         {
             get
@@ -36,6 +36,11 @@ namespace OctoplayerBackend
         {
             queuePosition = queueOrder[queuePosition];
             queueOrder = queueOrder.OrderBy(q => q).ToArray();
+        }
+
+        public void SkipTo(Track track)
+        {
+            queuePosition = Array.IndexOf(queueOrder, Array.IndexOf(Tracks, track));
         }
 
         public void Next()
