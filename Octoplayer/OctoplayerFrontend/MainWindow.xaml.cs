@@ -237,37 +237,34 @@ namespace OctoplayerFrontend
         private void UpdateContextMenu(ListBoxItem item)
         {
             var menu = new ContextMenu();
-            if (item.Content is Track)
+            if (item.Content is Track && (Track)item.Content != player.Queue.CurrentTrack)
             {
-                if (player.Queue.GetQueueItems().FirstOrDefault(q => q.Track == item.Content) == null)
-                {
-                    var menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
-                    menuItem.Click += MenuItemAddToFrontOfQueue_Click;
-                    menu.Items.Add(menuItem);
+                var menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                menuItem.Click += AddTrackToFront;
+                menu.Items.Add(menuItem);
 
-                    menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
-                    menuItem.Click += MenuItemAddToBackOfQueue_Click;
-                    menu.Items.Add(menuItem);
-                }
-                else
-                {
-                    var menuItem = new MenuItem() { Header = "Move To Front Of Queue" };
-                    menuItem.Click += MenuItemMoveToFrontOfQueue_Click;
-                    menu.Items.Add(menuItem);
-
-                    menuItem = new MenuItem() { Header = "Move To Back Of Queue" };
-                    menuItem.Click += MenuItemMoveToBackOfQueue_Click;
-                    menu.Items.Add(menuItem);
-                }
+                menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
+                menuItem.Click += AddTrackToBack;
+                menu.Items.Add(menuItem);
             }
-            else if (item.Content is QueueItem)
+            else if (item.Content is QueueItem && (Track)((QueueItem)item.Content).Track != player.Queue.CurrentTrack)
             {
                 var menuItem = new MenuItem() { Header = "Move To Front" };
-                menuItem.Click += MenuItemMoveToFrontOfQueue_Click;
+                menuItem.Click += MoveToFrontOfQueue;
                 menu.Items.Add(menuItem);
 
                 menuItem = new MenuItem() { Header = "Move To Back" };
-                menuItem.Click += MenuItemMoveToBackOfQueue_Click;
+                menuItem.Click += MoveToBackOfQueue;
+                menu.Items.Add(menuItem);
+            }
+            else
+            {
+                var menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                menuItem.Click += AddTracksToFront;
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
+                menuItem.Click += AddTracksToBack;
                 menu.Items.Add(menuItem);
             }
             item.ContextMenu = menu;
@@ -367,41 +364,85 @@ namespace OctoplayerFrontend
             QueueListBox.ScrollIntoView(QueueListBox.Items.GetItemAt(player.Queue.TopScrollPosition()));
         }
 
-        private void MenuItemAddToFrontOfQueue_Click(object sender, RoutedEventArgs e)
+        private void AddTracksToFront(object sender, RoutedEventArgs e)
+        {
+            if (((MenuItem)e.Source).DataContext is Album)
+            {
+                var tracks = ((Album)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, true, ShuffleEnabled);
+                }
+            }
+            else if (((MenuItem)e.Source).DataContext is Artist)
+            {
+                var tracks = ((Artist)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, true, ShuffleEnabled);
+                }
+            }
+            else
+            {
+                var tracks = ((Genre)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, true, ShuffleEnabled);
+                }
+            }
+        }
+
+        private void AddTracksToBack(object sender, RoutedEventArgs e)
+        {
+            if (((MenuItem)e.Source).DataContext is Album)
+            {
+                var tracks = ((Album)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, false, ShuffleEnabled);
+                }
+            }
+            else if (((MenuItem)e.Source).DataContext is Artist)
+            {
+                var tracks = ((Artist)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, false, ShuffleEnabled);
+                }
+            }
+            else
+            {
+                var tracks = ((Genre)((MenuItem)e.Source).DataContext).Tracks;
+                tracks.Reverse();
+                foreach (var track in tracks)
+                {
+                    player.AddTrack(track, false, ShuffleEnabled);
+                }
+            }
+        }
+
+        private void AddTrackToFront(object sender, RoutedEventArgs e)
         {
             player.AddTrack((Track)((MenuItem)e.Source).DataContext, true, ShuffleEnabled);
         }
 
-        private void MenuItemAddToBackOfQueue_Click(object sender, RoutedEventArgs e)
+        private void AddTrackToBack(object sender, RoutedEventArgs e)
         {
             player.AddTrack((Track)((MenuItem)e.Source).DataContext, false, ShuffleEnabled);
         }
 
-        private void MenuItemMoveToFrontOfQueue_Click(object sender, RoutedEventArgs e)
+        private void MoveToFrontOfQueue(object sender, RoutedEventArgs e)
         {
-            Track track = null;
-            if(((MenuItem)e.Source).DataContext is Track)
-            {
-                track = (Track)((MenuItem)e.Source).DataContext;
-            }
-            else if(((MenuItem)e.Source).DataContext is QueueItem)
-            {
-                track = ((QueueItem)((MenuItem)e.Source).DataContext).Track;
-            }
-            player.MoveTrackPosition(track, true);
+            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, true, ShuffleEnabled);
         }
-        private void MenuItemMoveToBackOfQueue_Click(object sender, RoutedEventArgs e)
+        private void MoveToBackOfQueue(object sender, RoutedEventArgs e)
         {
-            Track track = null;
-            if (((MenuItem)e.Source).DataContext is Track)
-            {
-                track = (Track)((MenuItem)e.Source).DataContext;
-            }
-            else if (((MenuItem)e.Source).DataContext is QueueItem)
-            {
-                track = ((QueueItem)((MenuItem)e.Source).DataContext).Track;
-            }
-            player.MoveTrackPosition(track, false);
+            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, false, ShuffleEnabled);
         }
 
         private void ListBoxRightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

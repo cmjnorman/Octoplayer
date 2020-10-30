@@ -491,7 +491,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbums" MouseDoubleClick="ListBoxAlbums_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbums" MouseDoubleClick="ListBoxAlbums_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -513,14 +513,14 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxArtists" MouseDoubleClick="ListBoxArtists_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxArtists" MouseDoubleClick="ListBoxArtists_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxGenres" MouseDoubleClick="ListBoxGenres_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxGenres" MouseDoubleClick="ListBoxGenres_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
@@ -574,7 +574,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbumsSubmenu" MouseDoubleClick="ListBoxAlbumsSubmenu_Select" Background="Transparent" BorderThickness="0">
+                    <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbumsSubmenu" MouseDoubleClick="ListBoxAlbumsSubmenu_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>

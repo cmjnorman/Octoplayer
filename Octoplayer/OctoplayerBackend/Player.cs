@@ -63,12 +63,6 @@ namespace OctoplayerBackend
             }
         }
 
-        public void MoveTrackPosition(Track track, bool moveToFront)
-        {
-            Queue.MoveTrackPosition(track, moveToFront);
-            QueueUpdated();
-        }
-
         public void LoadTrack()
         {
             media.Open(new Uri(Queue.CurrentTrack.FilePath));
