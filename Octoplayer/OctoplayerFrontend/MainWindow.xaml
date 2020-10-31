@@ -21,6 +21,7 @@
         <TextBlock x:Key="Artists"/>
         <TextBlock x:Key="TrackInfo"/>
         <TextBlock x:Key="DiscInfo"/>
+        <TextBlock x:Key="Remixers"/>
         <TextBlock x:Key="Year"/>
         <TextBlock x:Key="Rating"/>
         <TextBlock x:Key="Genres"/>
@@ -310,7 +311,7 @@
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid x:Name="GridPlayer" >
+            <Grid x:Name="GridPlayer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="500"/>
                     <RowDefinition Height="Auto"/>
@@ -330,12 +331,21 @@
                 </Grid>
                 <Grid Grid.Row="2" MinWidth="300" HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Grid>
+                    <Grid x:Name="RemixersInfo">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Remixers:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
+                        <Label Content="{DynamicResource Remixers}" Grid.Column="1" Foreground="#E18A07"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -343,7 +353,7 @@
                         <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource TrackInfo}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid HorizontalAlignment="Right">
+                    <Grid Grid.Row="1" HorizontalAlignment="Right">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -351,7 +361,7 @@
                         <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource DiscInfo}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -359,7 +369,7 @@
                         <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource Year}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid Grid.Row="1" HorizontalAlignment="Right">
+                    <Grid Grid.Row="2" HorizontalAlignment="Right">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -367,7 +377,7 @@
                         <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource Rating}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -375,7 +385,7 @@
                         <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource Genres}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid Grid.Row="3">
+                    <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -383,7 +393,7 @@
                         <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="#E18A07"/>
                         <Label Content="{DynamicResource BPM}" Grid.Column="1" Foreground="#E18A07"/>
                     </Grid>
-                    <Grid Grid.Row="3" HorizontalAlignment="Right">
+                    <Grid Grid.Row="4" HorizontalAlignment="Right">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -408,8 +418,8 @@
                                                 <RowDefinition Height="auto"/>
                                                 <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
-                                            <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                            <Label Content="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                            <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                            <TextBlock Text="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
@@ -426,14 +436,14 @@
                                         <ColumnDefinition Width="75"/>
                                         <ColumnDefinition Width="325"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding RelativePosition}" FontSize="30" Padding="0" HorizontalContentAlignment="Center" Foreground="#E18A07"/>
+                                    <TextBlock Text="{Binding RelativePosition}" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="#E18A07"/>
                                     <Grid Grid.Column="1">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0"  Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0"  Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -483,9 +493,9 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -506,8 +516,8 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -516,14 +526,14 @@
                     <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxArtists" MouseDoubleClick="ListBoxArtists_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                <TextBlock Text="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxGenres" MouseDoubleClick="ListBoxGenres_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                <TextBlock Text="{Binding Name}" FontSize="20" Padding="0" Foreground="#E18A07"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -536,7 +546,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding TrackNumber}" Width="30" FontSize="30" Padding="0" HorizontalContentAlignment="Center" Foreground="#E18A07"/>
+                                    <TextBlock Text="{Binding TrackNumber}" Width="30" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="#E18A07"/>
                                     <Image Source="{Binding Artwork}" Grid.Column="1" Margin="10, 0, 0, 0" Height="100"/>
                                     <Grid Grid.Column="2" Margin="10, 0, 0, 0">
                                         <Grid.RowDefinitions>
@@ -544,8 +554,8 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -566,9 +576,9 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Album}" Grid.Row="2" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -589,8 +599,8 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label Content="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
-                                        <Label Content="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="#E18A07"/>
+                                        <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="#E18A07"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>

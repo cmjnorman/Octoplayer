@@ -17,6 +17,7 @@ namespace OctoplayerBackend
         public uint TrackCount { get; set; }
         public uint DiscNumber { get; set; }
         public uint DiscCount { get; set; }
+        public List<Artist> Remixers { get; set; }
         public uint Year { get; set; }
         public uint Rating { get; set; }
         public List<Genre> Genres { get; set; }
@@ -49,23 +50,33 @@ namespace OctoplayerBackend
                     bitmap.EndInit();
                     this.Artwork = bitmap;
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             }
 
-            if(track.Tag.Performers.Length > 0)
+            this.Artists = new List<Artist>();
+            foreach (var artist in track.Tag.Performers)
             {
-                this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
-                this.Artists.ForEach(a => a.AddTrack(this));
+                this.Artists.AddRange(lib.FindOrCreateArtists(artist.Split("; ")));
             }
-            
+            this.Artists.ForEach(a => a.AddTrack(this));
+
+            this.Remixers = new List<Artist>();
+            var remixers = track.Tag.RemixedBy;
+            if (remixers != null)
+            {
+                this.Remixers.AddRange(lib.FindOrCreateArtists(remixers.Split("; ")));
+            }
+            this.Remixers.ForEach(a => a.AddRemix(this));
+
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
             this.Album.AddTrack(this);
 
-            if (track.Tag.Genres.Length > 0)
+            this.Genres = new List<Genre>();
+            foreach (var genre in track.Tag.Genres)
             {
-                this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
-                this.Genres.ForEach(g => g.AddTrack(this));
+                this.Genres.AddRange(lib.FindOrCreateGenres(genre.Split("; ")));
             }
+            this.Genres.ForEach(g => g.AddTrack(this));
         }
 
         public Track(string filePath, string title, uint rating, Library lib)
@@ -94,20 +105,30 @@ namespace OctoplayerBackend
                 catch (Exception) { }
             }
 
-            if (track.Tag.Performers.Length > 0)
+            this.Artists = new List<Artist>();
+            foreach (var artist in track.Tag.Performers)
             {
-                this.Artists = lib.FindOrCreateArtists(track.Tag.Performers[0].Split("; "));
-                this.Artists.ForEach(a => a.AddTrack(this));
+                this.Artists.AddRange(lib.FindOrCreateArtists(artist.Split("; ")));
             }
+            this.Artists.ForEach(a => a.AddTrack(this));
+
+            this.Remixers = new List<Artist>();
+            var remixers = track.Tag.RemixedBy;
+            if (remixers != null)
+            {
+                this.Remixers.AddRange(lib.FindOrCreateArtists(remixers.Split("; ")));
+            }
+            this.Remixers.ForEach(a => a.AddRemix(this));
 
             this.Album = lib.FindOrCreateAlbum(track.Tag.Album);
             this.Album.AddTrack(this);
 
-            if (track.Tag.Genres.Length > 0)
+            this.Genres = new List<Genre>();
+            foreach(var genre in track.Tag.Genres)
             {
-                this.Genres = lib.FindOrCreateGenres(track.Tag.Genres[0].Split("; "));
-                this.Genres.ForEach(g => g.AddTrack(this));
+                this.Genres.AddRange(lib.FindOrCreateGenres(genre.Trim().Split("; "))); 
             }
+            this.Genres.ForEach(g => g.AddTrack(this));
         }
     }
 }

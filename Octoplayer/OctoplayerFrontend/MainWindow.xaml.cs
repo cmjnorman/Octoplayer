@@ -156,7 +156,8 @@ namespace OctoplayerFrontend
         {
             if (ListBoxArtists.SelectedItem != null)
             {
-                ListBoxTracksSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Tracks;
+                var artist = (Artist)ListBoxArtists.SelectedItem;
+                ListBoxTracksSubmenu.ItemsSource = artist.Tracks.Concat(artist.Remixes).OrderBy(a => a.Title);
                 ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
                 ToggleListBox(ListBoxTracksSubmenu);
                 BtnBack.Visibility = Visibility.Visible;
@@ -212,12 +213,15 @@ namespace OctoplayerFrontend
             ((System.Windows.Controls.TextBlock)this.FindResource("Album")).Text = track.Album.Title;
             ((System.Windows.Controls.TextBlock)this.FindResource("TrackInfo")).Text = $"{track.TrackNumber} / {track.TrackCount}";
             ((System.Windows.Controls.TextBlock)this.FindResource("DiscInfo")).Text = $"{track.DiscNumber} / {track.DiscCount}";
+            ((System.Windows.Controls.TextBlock)this.FindResource("Remixers")).Text = String.Join("; ", track.Remixers);
             ((System.Windows.Controls.TextBlock)this.FindResource("Year")).Text = track.Year.ToString();
             ((System.Windows.Controls.TextBlock)this.FindResource("Rating")).Text = track.Rating.ToString();
             ((System.Windows.Controls.TextBlock)this.FindResource("Genres")).Text = String.Join("; ", track.Genres);
             ((System.Windows.Controls.TextBlock)this.FindResource("BPM")).Text = track.BPM.ToString();
             ((System.Windows.Controls.TextBlock)this.FindResource("Key")).Text = track.Key;
             ImgAlbumArt.Source = track.Artwork;
+
+            RemixersInfo.Visibility = (track.Remixers.Count > 0 ? Visibility.Visible : Visibility.Collapsed);
 
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             TrackSlider.Maximum = player.CurrentTrackLength;
