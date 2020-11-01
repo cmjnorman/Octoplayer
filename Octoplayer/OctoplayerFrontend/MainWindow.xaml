@@ -303,7 +303,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Style="{DynamicResource RoundedButton}" x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
+            <Button Style="{DynamicResource RoundedButton}" x:Name="BtnSelectFolder" Content="Select Library Folder" Padding="5, 0, 5, 0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnSelectFolder_Click" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07"/>
             <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Margin="0, 10, 0, 10">
@@ -464,18 +464,18 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewTracks_Click"/>
-                    <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewAlbums_Click"/>
-                    <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewArtists_Click"/>
-                    <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewGenres_Click"/>
+                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewTracks_Click"/>
+                    <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewAlbums_Click"/>
+                    <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewArtists_Click"/>
+                    <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnViewGenres_Click"/>
                 </Grid>
                 <Grid Grid.Row="1" Margin="5,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BtnBack" Style="{StaticResource RoundedButton}" Content="Back" Padding="5, 0, 5, 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnBack_Click"/>
-                    <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Padding="5, 0, 5, 0" HorizontalAlignment="Right" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Height="21" VerticalAlignment="Top" Click="BtnSwapTrackAlbum_Click"/>
+                    <Button x:Name="BtnBack" Style="{StaticResource RoundedButton}" Content="Back" Padding="5, 0, 5, 0" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnBack_Click"/>
+                    <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Padding="5, 0, 5, 0" FontSize="20" HorizontalAlignment="Right" Background="Transparent" Foreground="#E18A07" BorderBrush="#E18A07" Click="BtnSwapTrackAlbum_Click"/>
                 </Grid>
                 <Grid x:Name="ListBoxGrid" Grid.Row="2" Margin="0,10,0,0">
                     <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracks" MouseDoubleClick="ListBoxTracks_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0">
