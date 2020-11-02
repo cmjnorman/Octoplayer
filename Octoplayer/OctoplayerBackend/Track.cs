@@ -24,6 +24,8 @@ namespace OctoplayerBackend
         public uint BPM { get; set; }
         public string Key { get; set; }
         public BitmapImage Artwork { get; set; }
+        public uint PlayCount { get; set; }
+        public DateTime LastPlayed { get; set; }
 
 
         public Track(string filePath, Library lib)
@@ -40,6 +42,7 @@ namespace OctoplayerBackend
             this.Rating = 50;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
+            this.PlayCount = 0;
             if (track.Tag.Pictures.Length > 0)
             { 
                 try
@@ -79,12 +82,14 @@ namespace OctoplayerBackend
             this.Genres.ForEach(g => g.AddTrack(this));
         }
 
-        public Track(string filePath, string title, uint rating, Library lib)
+        public Track(string filePath, string title, uint rating, uint playCount, DateTime lastPlayed, Library lib)
         {
             this.FilePath = filePath;
             var track = TagLib.File.Create(filePath);
             this.Title = title;
             this.Rating = rating;
+            this.PlayCount = playCount;
+            this.LastPlayed = lastPlayed;
             this.TrackNumber = track.Tag.Track;
             this.TrackCount = track.Tag.TrackCount;
             this.DiscNumber = track.Tag.Disc;

@@ -11,6 +11,7 @@ namespace OctoplayerBackend
     {
         private MediaPlayer media;
         private DispatcherTimer trackTimer;
+        private uint playTime;
         public Queue Queue { get; private set; }
         public bool IsPlaying { get; private set; }
         public double CurrentTrackLength
@@ -44,11 +45,12 @@ namespace OctoplayerBackend
             this.Queue = new Queue();
             this.media.MediaOpened += OnTrackLoad;
             this.media.MediaEnded += OnTrackEnd;
-            this.IsPlaying = false;
+            this.IsPlaying = false; 
         }
 
         public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
         {
+            LogData();
             this.Queue = new Queue(tracks, startPos, shuffle);
             LoadTrack();
         }
@@ -63,12 +65,29 @@ namespace OctoplayerBackend
             }
         }
 
-        public void LoadTrack()
+        private void LoadTrack()
         {
             media.Open(new Uri(Queue.CurrentTrack.FilePath));
             trackTimer = new DispatcherTimer();
+            trackTimer.Interval = TimeSpan.FromMilliseconds(1);
+            trackTimer.Tick += OntrackTimerTick;
             QueueUpdated();
             if (IsPlaying) media.Play();
+        }
+
+        public void OntrackTimerTick(object sender, EventArgs e)
+        {
+            playTime++;
+        }
+
+        public void LogData()
+        {
+            var track = Queue.CurrentTrack;
+            if (playTime > 0)
+            {
+                track.PlayCount++;
+                track.LastPlayed = DateTime.Now;
+            }
         }
 
         public void Suspend()
@@ -99,6 +118,7 @@ namespace OctoplayerBackend
 
         public void Next()
         {
+            LogData();
             Queue.Next();
             LoadTrack();
             QueueUpdated();
@@ -109,6 +129,7 @@ namespace OctoplayerBackend
             if (CurrentTrackPosition > 5000) CurrentTrackPosition = 0;
             else
             {
+                LogData();
                 Queue.Previous();
                 LoadTrack();
                 QueueUpdated();
@@ -117,6 +138,7 @@ namespace OctoplayerBackend
 
         public void SkipTo(int position)
         {
+            LogData();
             Queue.SkipTo(position);
             LoadTrack();
         }
