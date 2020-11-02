@@ -16,7 +16,7 @@ namespace OctoplayerFrontend
 {
     public partial class MainWindow : Window
     {
-        private Player player = new Player();
+        private Player player;
         private DispatcherTimer timelineClock;
         private Library library;
         private bool trackSliderBeingDragged = false;
@@ -26,6 +26,8 @@ namespace OctoplayerFrontend
         public MainWindow()
         {
             InitializeComponent();
+            library = new Library();
+            this.player = new Player(library);
             player.TrackLoaded += OnTrackLoad;
             player.QueueUpdated += OnQueueUpdated;
             player.MediaPlaying += () => BtnPlayPause.Content = FindResource("Pause");
@@ -34,7 +36,6 @@ namespace OctoplayerFrontend
             LibraryBrowser.Visibility = Visibility.Hidden;
             BtnBack.Visibility = Visibility.Collapsed;
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
-            library = new Library();
             if (library.Tracks.Count > 0)
             {
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";

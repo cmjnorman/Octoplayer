@@ -19,7 +19,14 @@ namespace OctoplayerBackend
         public uint DiscCount { get; set; }
         public List<Artist> Remixers { get; set; }
         public uint Year { get; set; }
-        public uint Rating { get; set; }
+        private double rating;
+        public double Rating
+        {
+            get
+            {
+                return Math.Round(rating, 2);
+            }
+        }
         public List<Genre> Genres { get; set; }
         public uint BPM { get; set; }
         public string Key { get; set; }
@@ -39,7 +46,7 @@ namespace OctoplayerBackend
             this.DiscNumber = track.Tag.Disc;
             this.DiscCount = track.Tag.DiscCount;
             this.Year = track.Tag.Year;
-            this.Rating = 50;
+            this.rating = 50;
             this.BPM = track.Tag.BeatsPerMinute;
             this.Key = track.Tag.InitialKey;
             this.PlayCount = 0;
@@ -82,12 +89,12 @@ namespace OctoplayerBackend
             this.Genres.ForEach(g => g.AddTrack(this));
         }
 
-        public Track(string filePath, string title, uint rating, uint playCount, DateTime lastPlayed, Library lib)
+        public Track(string filePath, string title, double rating, uint playCount, DateTime lastPlayed, Library lib)
         {
             this.FilePath = filePath;
             var track = TagLib.File.Create(filePath);
             this.Title = title;
-            this.Rating = rating;
+            this.rating = rating;
             this.PlayCount = playCount;
             this.LastPlayed = lastPlayed;
             this.TrackNumber = track.Tag.Track;
@@ -134,6 +141,18 @@ namespace OctoplayerBackend
                 this.Genres.AddRange(lib.FindOrCreateGenres(genre.Trim().Split("; "))); 
             }
             this.Genres.ForEach(g => g.AddTrack(this));
+        }
+
+        public void ChangeRating(double amount)
+        {
+            if (rating + amount > 100) rating = 100;
+            else if (rating + amount < 0) rating = 0;
+            else rating += amount;
+        }
+
+        public override string ToString()
+        {
+            return $"{String.Join("; ", Artists)} - {Title}";
         }
     }
 }

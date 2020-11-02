@@ -43,6 +43,16 @@ namespace OctoplayerBackend
             this.Tracks = this.Tracks.OrderBy(a => a.Title).ToList();
         }
 
+        public void UpdateTrackRatings(Track track, double change)
+        {
+            track.ChangeRating(change);
+            var fraction = -change  / (Tracks.Count - 1);
+            foreach (var otherTrack in Tracks.Where(t => t != track))
+            {
+                otherTrack.ChangeRating(fraction);
+            }
+        }
+
         public List<Artist> FindOrCreateArtists(string[] names)
         {
             var artists = new List<Artist>();
@@ -115,7 +125,7 @@ namespace OctoplayerBackend
             {
                 this.Tracks.Add(new Track(track.Element("FilePath").Value,
                                     track.Element("Title").Value,
-                                    UInt32.Parse(track.Element("Rating").Value),
+                                    Double.Parse(track.Element("Rating").Value),
                                     UInt32.Parse(track.Element("PlayCount").Value),
                                     DateTime.Parse(track.Element("LastPlayed").Value),
                                     this));

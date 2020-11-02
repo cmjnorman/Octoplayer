@@ -4,14 +4,16 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Linq;
+using System.Diagnostics;
 
 namespace OctoplayerBackend
 {
     public class Player
     {
         private MediaPlayer media;
-        private DispatcherTimer trackTimer;
-        private uint playTime;
+        private Library library;
+        private Stopwatch trackTimer;
+        private List<Track> SelectedTracks;
         public Queue Queue { get; private set; }
         public bool IsPlaying { get; private set; }
         public double CurrentTrackLength
@@ -39,10 +41,12 @@ namespace OctoplayerBackend
         public event EmptyHandler TrackLoaded;
         public event EmptyHandler QueueUpdated;
         
-        public Player()
+        public Player(Library library)
         {
             this.media = new MediaPlayer();
             this.Queue = new Queue();
+            this.SelectedTracks = new List<Track>();
+            this.library = library;
             this.media.MediaOpened += OnTrackLoad;
             this.media.MediaEnded += OnTrackEnd;
             this.IsPlaying = false; 
@@ -50,8 +54,9 @@ namespace OctoplayerBackend
 
         public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
         {
-            LogData();
+            if(Queue.CurrentTrack != null) LogData();
             this.Queue = new Queue(tracks, startPos, shuffle);
+            SelectedTracks.Add(Queue.CurrentTrack);
             LoadTrack();
         }
 
@@ -61,6 +66,7 @@ namespace OctoplayerBackend
             else
             {
                 Queue.AddTrack(track, addToFront);
+                SelectedTracks.Add(track);
                 QueueUpdated();
             }
         }
@@ -68,26 +74,26 @@ namespace OctoplayerBackend
         private void LoadTrack()
         {
             media.Open(new Uri(Queue.CurrentTrack.FilePath));
-            trackTimer = new DispatcherTimer();
-            trackTimer.Interval = TimeSpan.FromMilliseconds(1);
-            trackTimer.Tick += OntrackTimerTick;
+            if (SelectedTracks.Contains(Queue.CurrentTrack))
+            {
+                library.UpdateTrackRatings(Queue.CurrentTrack, 1);
+                SelectedTracks.Remove(Queue.CurrentTrack);
+            }
+            trackTimer = new Stopwatch();
             QueueUpdated();
             if (IsPlaying) media.Play();
-        }
-
-        public void OntrackTimerTick(object sender, EventArgs e)
-        {
-            playTime++;
         }
 
         public void LogData()
         {
             var track = Queue.CurrentTrack;
-            if (playTime > 0)
+            if (trackTimer.ElapsedMilliseconds > 10000)
             {
                 track.PlayCount++;
                 track.LastPlayed = DateTime.Now;
             }
+            var change = -1 + (trackTimer.ElapsedMilliseconds * 2 / CurrentTrackLength);
+            library.UpdateTrackRatings(track, change);
         }
 
         public void Suspend()
