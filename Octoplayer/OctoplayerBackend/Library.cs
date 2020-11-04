@@ -19,7 +19,6 @@ namespace OctoplayerBackend
             this.Artists = new List<Artist>();
             this.Albums = new List<Album>();
             this.Genres = new List<Genre>();
-
             LoadLibrary();
         }
 
@@ -35,7 +34,6 @@ namespace OctoplayerBackend
             {
                 if (extensions.Contains(Path.GetExtension(file))) AddTrack(file);
             }
-            SaveLibrary();
         }
 
         public void AddTrack(string filePath)
@@ -43,6 +41,16 @@ namespace OctoplayerBackend
             var track = new Track(filePath, this);
             this.Tracks.Add(track);
             this.Tracks = this.Tracks.OrderBy(a => a.Title).ToList();
+        }
+
+        public void UpdateTrackRatings(Track track, double change)
+        {
+            track.ChangeRating(change);
+            var fraction = -change  / (Tracks.Count - 1);
+            foreach (var otherTrack in Tracks.Where(t => t != track))
+            {
+                otherTrack.ChangeRating(fraction);
+            }
         }
 
         public List<Artist> FindOrCreateArtists(string[] names)
@@ -101,7 +109,9 @@ namespace OctoplayerBackend
                 tracks.Add(new XElement("Track",
                                     new XElement("FilePath", track.FilePath),
                                     new XElement("Title", track.Title),
-                                    new XElement("Rating", track.Rating)));
+                                    new XElement("Rating", track.Rating),
+                                    new XElement("PlayCount", track.PlayCount),
+                                    new XElement("LastPlayed", track.LastPlayed)));
             }
             document.Add(tracks);
             document.Save("library.xml");
@@ -115,7 +125,9 @@ namespace OctoplayerBackend
             {
                 this.Tracks.Add(new Track(track.Element("FilePath").Value,
                                     track.Element("Title").Value,
-                                    UInt32.Parse(track.Element("Rating").Value),
+                                    Double.Parse(track.Element("Rating").Value),
+                                    UInt32.Parse(track.Element("PlayCount").Value),
+                                    DateTime.Parse(track.Element("LastPlayed").Value),
                                     this));
             }
         }

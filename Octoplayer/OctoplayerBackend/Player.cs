@@ -4,13 +4,16 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Linq;
+using System.Diagnostics;
 
 namespace OctoplayerBackend
 {
     public class Player
     {
         private MediaPlayer media;
-        private DispatcherTimer trackTimer;
+        private Library library;
+        private Stopwatch trackTimer;
+        private List<Track> SelectedTracks;
         public Queue Queue { get; private set; }
         public bool IsPlaying { get; private set; }
         public double CurrentTrackLength
@@ -38,18 +41,22 @@ namespace OctoplayerBackend
         public event EmptyHandler TrackLoaded;
         public event EmptyHandler QueueUpdated;
         
-        public Player()
+        public Player(Library library)
         {
             this.media = new MediaPlayer();
             this.Queue = new Queue();
+            this.SelectedTracks = new List<Track>();
+            this.library = library;
             this.media.MediaOpened += OnTrackLoad;
             this.media.MediaEnded += OnTrackEnd;
-            this.IsPlaying = false;
+            this.IsPlaying = false; 
         }
 
         public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
         {
+            if(Queue.CurrentTrack != null) LogData();
             this.Queue = new Queue(tracks, startPos, shuffle);
+            SelectedTracks.Add(Queue.CurrentTrack);
             LoadTrack();
         }
 
@@ -59,16 +66,34 @@ namespace OctoplayerBackend
             else
             {
                 Queue.AddTrack(track, addToFront);
+                SelectedTracks.Add(track);
                 QueueUpdated();
             }
         }
 
-        public void LoadTrack()
+        private void LoadTrack()
         {
             media.Open(new Uri(Queue.CurrentTrack.FilePath));
-            trackTimer = new DispatcherTimer();
+            if (SelectedTracks.Contains(Queue.CurrentTrack))
+            {
+                library.UpdateTrackRatings(Queue.CurrentTrack, 1);
+                SelectedTracks.Remove(Queue.CurrentTrack);
+            }
+            trackTimer = new Stopwatch();
             QueueUpdated();
             if (IsPlaying) media.Play();
+        }
+
+        public void LogData()
+        {
+            var track = Queue.CurrentTrack;
+            if (trackTimer.ElapsedMilliseconds > 10000)
+            {
+                track.PlayCount++;
+                track.LastPlayed = DateTime.Now;
+            }
+            var change = -1 + (trackTimer.ElapsedMilliseconds * 2 / CurrentTrackLength);
+            library.UpdateTrackRatings(track, change);
         }
 
         public void Suspend()
@@ -99,6 +124,7 @@ namespace OctoplayerBackend
 
         public void Next()
         {
+            LogData();
             Queue.Next();
             LoadTrack();
             QueueUpdated();
@@ -109,6 +135,7 @@ namespace OctoplayerBackend
             if (CurrentTrackPosition > 5000) CurrentTrackPosition = 0;
             else
             {
+                LogData();
                 Queue.Previous();
                 LoadTrack();
                 QueueUpdated();
@@ -117,6 +144,7 @@ namespace OctoplayerBackend
 
         public void SkipTo(int position)
         {
+            LogData();
             Queue.SkipTo(position);
             LoadTrack();
         }
