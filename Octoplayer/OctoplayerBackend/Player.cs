@@ -87,13 +87,16 @@ namespace OctoplayerBackend
         public void LogData()
         {
             var track = Queue.CurrentTrack;
-            if (trackTimer.ElapsedMilliseconds > 10000)
+            if(track != null)
             {
-                track.PlayCount++;
-                track.LastPlayed = DateTime.Now;
+                if (trackTimer.ElapsedMilliseconds > 10000)
+                {
+                    track.PlayCount++;
+                    track.LastPlayed = DateTime.Now;
+                }
+                var change = -1 + (trackTimer.ElapsedMilliseconds * 2 / CurrentTrackLength);
+                library.UpdateTrackRatings(track, change);
             }
-            var change = -1 + (trackTimer.ElapsedMilliseconds * 2 / CurrentTrackLength);
-            library.UpdateTrackRatings(track, change);
         }
 
         public void Suspend()
