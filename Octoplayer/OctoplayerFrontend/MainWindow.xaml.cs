@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Media;
 using OctoplayerBackend;
@@ -51,7 +50,7 @@ namespace OctoplayerFrontend
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            var folderBrowser = new FolderBrowserDialog();
+            var folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if(player.IsPlaying) player.Pause();
@@ -133,6 +132,15 @@ namespace OctoplayerFrontend
             BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
         }
 
+        private ListBox CreateBrowserPage<T>(List<T> items)
+        {
+            var page = new ListBox() { ItemsSource = items };
+            var template = new FrameworkElementFactory();
+
+
+            return page;
+        }
+
         private void HideSearchBar()
         {
             SearchBoxTracks.Visibility = SearchBoxAlbums.Visibility = SearchBoxArtists.Visibility = SearchBoxGenres.Visibility = Visibility.Collapsed;
@@ -146,9 +154,9 @@ namespace OctoplayerFrontend
             }
         }
 
-        private void SwitchListBox(System.Windows.Controls.ListBox box)
+        private void SwitchListBox(ListBox box)
         {
-            foreach (var listBox in LibraryBrowser.Children.OfType<System.Windows.Controls.ListBox>())
+            foreach (var listBox in LibraryBrowser.Children.OfType<ListBox>())
             {
                 listBox.Visibility = (listBox == box ? Visibility.Visible : Visibility.Collapsed);
             }
@@ -478,7 +486,7 @@ namespace OctoplayerFrontend
 
         private void ListBoxRightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            UpdateContextMenu((ListBoxItem)((System.Windows.Controls.ListBox)sender).ItemContainerGenerator.ContainerFromItem(((System.Windows.Controls.ListBox)sender).SelectedItem));
+            UpdateContextMenu((ListBoxItem)((ListBox)sender).ItemContainerGenerator.ContainerFromItem(((ListBox)sender).SelectedItem));
         }
 
         private void SearchBoxTracks_TextChanged(object sender, TextChangedEventArgs e)
