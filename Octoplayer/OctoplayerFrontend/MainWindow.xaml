@@ -11,8 +11,8 @@
         <!--Project Colours-->
         <SolidColorBrush x:Key="OctoOrange" Color="#E18A07"/>
         <!--Button Icons-->
-        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"/>
-        <Path x:Key="Pause" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
+        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        <Path x:Key="Pause" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
             <Path.Data>
                 <GeometryGroup>
                     <RectangleGeometry Rect="5,2,12,46"/>
@@ -36,7 +36,7 @@
         <TextBlock x:Key="BPM"/>
         <TextBlock x:Key="Key"/>
         <!--Browser Item Templates-->
-        <DataTemplate x:Key="TrackAndAlbumBrowserTemplate">
+        <DataTemplate x:Key="TrackAndAlbumBrowserItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -55,14 +55,14 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="ArtistAndGenreBrowserTemplate">
+        <DataTemplate x:Key="ArtistAndGenreBrowserItemTemplate">
             <TextBlock Text="{Binding Name}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
         </DataTemplate>
-        <DataTemplate x:Key="AlbumTrackBrowserTemplate">
+        <DataTemplate x:Key="AlbumTrackBrowserItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding TrackNumber}" Width="30" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
@@ -110,6 +110,31 @@
                                 </Thumb>
                             </Track.Thumb>
                         </Track>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="Padding" Value="5, 0, 5, 0"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="true">
+
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -246,29 +271,7 @@
             </Style.Triggers>
         </Style>
         
-        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsPressed" Value="true">
-
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="BorderThickness" Value="3"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
         <Style x:Key="DisableableButton" TargetType="{x:Type Button}">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -527,7 +530,6 @@
             <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid>
@@ -537,17 +539,14 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnViewTracks_Click"/>
-                    <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnViewAlbums_Click"/>
-                    <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnViewArtists_Click"/>
-                    <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnViewGenres_Click"/>
+                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                    <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                    <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                    <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
                 </Grid>
-                <TextBox x:Name="SearchBoxTracks" Style="{DynamicResource LibrarySearchBar}" Grid.Row="1" Margin="5, 10, 5, 10" Height="30" FontSize="20" TextChanged="SearchBoxTracks_TextChanged" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}"/>
-                <TextBox x:Name="SearchBoxAlbums" Style="{DynamicResource LibrarySearchBar}" Grid.Row="1" Margin="5, 10, 5, 10" Height="30" FontSize="20" TextChanged="SearchBoxAlbums_TextChanged" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}"/>
-                <TextBox x:Name="SearchBoxArtists" Style="{DynamicResource LibrarySearchBar}" Grid.Row="1" Margin="5, 10, 5, 10" Height="30" FontSize="20" TextChanged="SearchBoxArtists_TextChanged" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}"/>
-                <TextBox x:Name="SearchBoxGenres" Style="{DynamicResource LibrarySearchBar}" Grid.Row="1" Margin="5, 10, 5, 10" Height="30" FontSize="20" TextChanged="SearchBoxGenres_TextChanged" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}"/>
+                <!--<TextBox x:Name="SearchBar" Style="{DynamicResource LibrarySearchBar}" Grid.Row="1" Margin="5, 10, 5, 10" Height="30" FontSize="20" TextChanged="SearchBoxTracks_TextChanged" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}"/>
                 <Button x:Name="BtnBack" Style="{StaticResource RoundedButton}" Content="Back" Grid.Row="1" Padding="5, 0, 5, 0" Margin="5,10,0,10" FontSize="20" HorizontalAlignment="Left" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnBack_Click"/>
-                <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Grid.Row="1" Padding="5, 0, 5, 0" Margin="0,10,5,10" FontSize="20" HorizontalAlignment="Right" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnSwapTrackAlbum_Click"/>
+                <Button x:Name="BtnSwapTrackAlbum" Grid.Column="1" Style="{StaticResource RoundedButton}" Content="View Albums" Grid.Row="1" Padding="5, 0, 5, 0" Margin="0,10,5,10" FontSize="20" HorizontalAlignment="Right" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="BtnSwapTrackAlbum_Click"/>-->
                 <!--<ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxTracks" Grid.Row="2" MouseDoubleClick="ListBoxTracks_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0" ItemTemplate="{StaticResource TrackAndAlbumBrowserTemplate}"/>
                 <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxAlbums" Grid.Row="2" MouseDoubleClick="ListBoxAlbums_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0" ItemTemplate="{StaticResource TrackAndAlbumBrowserTemplate}"/>
                 <ListBox ItemContainerStyle="{DynamicResource LibraryBrowserItemStyle}" x:Name="ListBoxArtists" Grid.Row="2" MouseDoubleClick="ListBoxArtists_Select" MouseRightButtonUp="ListBoxRightClick" Background="Transparent" BorderThickness="0" ItemTemplate="{StaticResource ArtistAndGenreBrowserTemplate}"/>

@@ -12,7 +12,7 @@ namespace OctoplayerBackend
         public List<Track> Tracks { get; private set; }
         public List<Artist> Artists
         {
-            get { return Tracks.SelectMany(t => t.Artists).Distinct().OrderBy(a => a.Name).ToList(); } 
+            get { return Tracks.SelectMany(t => t.Artists).Concat(Tracks.SelectMany(t => t.Remixers)).Distinct().OrderBy(a => a.Name).ToList(); } 
         }
         public BitmapImage Artwork
         { 
