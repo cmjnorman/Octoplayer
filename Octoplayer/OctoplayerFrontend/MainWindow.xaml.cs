@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Net.WebSockets;
 
 namespace OctoplayerFrontend
 {
@@ -38,14 +39,14 @@ namespace OctoplayerFrontend
             if (library.Tracks.Count > 0)
             {
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                ListBoxTracks.ItemsSource = library.Tracks;
-                ListBoxAlbums.ItemsSource = library.Albums;
-                ListBoxArtists.ItemsSource = library.Artists;
-                ListBoxGenres.ItemsSource = library.Genres;
+                //ListBoxTracks.ItemsSource = library.Tracks;
+                //ListBoxAlbums.ItemsSource = library.Albums;
+                //ListBoxArtists.ItemsSource = library.Artists;
+                //ListBoxGenres.ItemsSource = library.Genres;
                 LibraryBrowser.Visibility = Visibility.Visible;
-                SwitchListBox(ListBoxTracks);
+                //SwitchListBox(ListBoxTracks);
                 SwitchSearchBar(SearchBoxTracks);
-                BtnViewTracks.IsEnabled = false;
+                //BtnViewTracks.IsEnabled = false;
             }
         }
 
@@ -60,12 +61,12 @@ namespace OctoplayerFrontend
                 library = new Library(Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories));
 
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                ListBoxTracks.ItemsSource = library.Tracks;
-                ListBoxAlbums.ItemsSource = library.Albums;
-                ListBoxArtists.ItemsSource = library.Artists;
-                ListBoxGenres.ItemsSource = library.Genres;
+                //ListBoxTracks.ItemsSource = library.Tracks;
+                //ListBoxAlbums.ItemsSource = library.Albums;
+                //ListBoxArtists.ItemsSource = library.Artists;
+                //ListBoxGenres.ItemsSource = library.Genres;
                 LibraryBrowser.Visibility = Visibility.Visible;
-                SwitchListBox(ListBoxTracks);
+                //SwitchListBox(ListBoxTracks);
                 BtnViewTracks.IsEnabled = false;
             }
         }
@@ -95,50 +96,81 @@ namespace OctoplayerFrontend
 
         private void BtnViewTracks_Click(object sender, RoutedEventArgs e)
         {
-            BtnViewTracks.IsEnabled = false;
-            BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            SwitchListBox(ListBoxTracks);
-            SwitchSearchBar(SearchBoxTracks);
-            BtnBack.Visibility = Visibility.Collapsed;
-            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            //BtnViewTracks.IsEnabled = false;
+            //BtnViewAlbums.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
+            //SwitchListBox(ListBoxTracks);
+            //SwitchSearchBar(SearchBoxTracks);
+            //BtnBack.Visibility = Visibility.Collapsed;
+            //BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            var trackBrowser = CreateBrowserPage<Track>(library.Tracks);
+            var openBrowserPage = LibraryBrowser.Children.OfType<ListBox>().FirstOrDefault();
+            if (openBrowserPage != null) LibraryBrowser.Children.Remove(openBrowserPage);
+            LibraryBrowser.Children.Add(trackBrowser);
+            Grid.SetRow(trackBrowser, 2);
         }
 
         private void BtnViewAlbums_Click(object sender, RoutedEventArgs e)
         {
-            BtnViewAlbums.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
-            SwitchListBox(ListBoxAlbums);
-            SwitchSearchBar(SearchBoxAlbums);
-            BtnBack.Visibility = Visibility.Collapsed;
-            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            //BtnViewAlbums.IsEnabled = false;
+            //BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewGenres.IsEnabled = true;
+            //SwitchListBox(ListBoxAlbums);
+            //SwitchSearchBar(SearchBoxAlbums);
+            //BtnBack.Visibility = Visibility.Collapsed;
+            //BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            var albumBrowser = CreateBrowserPage<Album>(library.Albums);
+            var openBrowserPage = LibraryBrowser.Children.OfType<ListBox>().FirstOrDefault();
+            if (openBrowserPage != null) LibraryBrowser.Children.Remove(openBrowserPage);
+            LibraryBrowser.Children.Add(albumBrowser);
+            Grid.SetRow(albumBrowser, 2);
         }
 
         private void BtnViewArtists_Click(object sender, RoutedEventArgs e)
         {
-            BtnViewArtists.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
-            SwitchListBox(ListBoxArtists);
-            SwitchSearchBar(SearchBoxArtists);
-            BtnBack.Visibility = Visibility.Collapsed;
-            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            //BtnViewArtists.IsEnabled = false;
+            //BtnViewTracks.IsEnabled = BtnViewAlbums.IsEnabled = BtnViewGenres.IsEnabled = true;
+            //SwitchListBox(ListBoxArtists);
+            //SwitchSearchBar(SearchBoxArtists);
+            //BtnBack.Visibility = Visibility.Collapsed;
+            //BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            var artistBrowser = CreateBrowserPage<Artist>(library.Artists);
+            var openBrowserPage = LibraryBrowser.Children.OfType<ListBox>().FirstOrDefault();
+            if (openBrowserPage != null) LibraryBrowser.Children.Remove(openBrowserPage);
+            LibraryBrowser.Children.Add(artistBrowser);
+            Grid.SetRow(artistBrowser, 2);
         }
 
         private void BtnViewGenres_Click(object sender, RoutedEventArgs e)
         {
-            BtnViewGenres.IsEnabled = false;
-            BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
-            SwitchListBox(ListBoxGenres);
-            SwitchSearchBar(SearchBoxGenres);
-            BtnBack.Visibility = Visibility.Collapsed;
-            BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            //BtnViewGenres.IsEnabled = false;
+            //BtnViewTracks.IsEnabled = BtnViewArtists.IsEnabled = BtnViewAlbums.IsEnabled = true;
+            //SwitchListBox(ListBoxGenres);
+            //SwitchSearchBar(SearchBoxGenres);
+            //BtnBack.Visibility = Visibility.Collapsed;
+            //BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            var genreBrowser = CreateBrowserPage<Genre>(library.Genres);
+            var openBrowserPage = LibraryBrowser.Children.OfType<ListBox>().FirstOrDefault();
+            if (openBrowserPage != null) LibraryBrowser.Children.Remove(openBrowserPage);
+            LibraryBrowser.Children.Add(genreBrowser);
+            Grid.SetRow(genreBrowser, 2);
         }
 
         private ListBox CreateBrowserPage<T>(List<T> items)
         {
-            var page = new ListBox() { ItemsSource = items };
-            var template = new FrameworkElementFactory();
+            var page = new ListBox() { ItemsSource = items, ItemContainerStyle = (Style)this.FindResource("LibraryBrowserItemStyle"), 
+                                        Background = Brushes.Transparent, BorderThickness = new Thickness(0)};
+            page.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
 
-
+            switch (typeof(T))
+            {
+                case var track when track == typeof(Track):
+                case var album when album == typeof(Album):
+                    page.ItemTemplate = (DataTemplate)this.FindResource("TrackAndAlbumBrowserTemplate");
+                    break;
+                case var artist when artist == typeof(Artist):
+                case var genre when genre == typeof(Genre):
+                    page.ItemTemplate = (DataTemplate)this.FindResource("ArtistAndGenreBrowserTemplate");
+                    break;
+            }
             return page;
         }
 
@@ -163,77 +195,77 @@ namespace OctoplayerFrontend
             }
         }
 
-        private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
-        {
-            if(ListBoxTracks.SelectedItem != null)
-            {
-                player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToList(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
-            }
-        }
+        //private void ListBoxTracks_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if(ListBoxTracks.SelectedItem != null)
+        //    {
+        //        player.SelectTracks(ListBoxTracks.Items.OfType<Track>().ToList(), ListBoxTracks.SelectedIndex, ShuffleEnabled);
+        //    }
+        //}
 
-        private void ListBoxAlbums_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxAlbums.SelectedItem != null)
-            {
-                ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
-                SwitchListBox(ListBoxAlbumTracks);
-                BtnBack.Visibility = Visibility.Visible;
-                HideSearchBar();
-            }
-        }
+        //private void ListBoxAlbums_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxAlbums.SelectedItem != null)
+        //    {
+        //        ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbums.SelectedItem).Tracks;
+        //        SwitchListBox(ListBoxAlbumTracks);
+        //        BtnBack.Visibility = Visibility.Visible;
+        //        HideSearchBar();
+        //    }
+        //}
 
-        private void ListBoxArtists_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxArtists.SelectedItem != null)
-            {
-                var artist = (Artist)ListBoxArtists.SelectedItem;
-                ListBoxTracksSubmenu.ItemsSource = artist.Tracks.Concat(artist.Remixes).OrderBy(a => a.Title);
-                ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
-                SwitchListBox(ListBoxTracksSubmenu);
-                BtnBack.Visibility = Visibility.Visible;
-                BtnSwapTrackAlbum.Content = "Show Artist Albums";
-                BtnSwapTrackAlbum.Visibility = Visibility.Visible;
-                HideSearchBar();
-            }
-        }
+        //private void ListBoxArtists_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxArtists.SelectedItem != null)
+        //    {
+        //        var artist = (Artist)ListBoxArtists.SelectedItem;
+        //        ListBoxTracksSubmenu.ItemsSource = artist.Tracks.Concat(artist.Remixes).OrderBy(a => a.Title);
+        //        ListBoxAlbumsSubmenu.ItemsSource = ((Artist)ListBoxArtists.SelectedItem).Albums;
+        //        SwitchListBox(ListBoxTracksSubmenu);
+        //        BtnBack.Visibility = Visibility.Visible;
+        //        BtnSwapTrackAlbum.Content = "Show Artist Albums";
+        //        BtnSwapTrackAlbum.Visibility = Visibility.Visible;
+        //        HideSearchBar();
+        //    }
+        //}
 
-        private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxGenres.SelectedItem != null)
-            {
-                ListBoxTracksSubmenu.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
-                SwitchListBox(ListBoxTracksSubmenu);
-                BtnBack.Visibility = Visibility.Visible;
-                HideSearchBar();
-            }
-        }
+        //private void ListBoxGenres_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxGenres.SelectedItem != null)
+        //    {
+        //        ListBoxTracksSubmenu.ItemsSource = ((Genre)ListBoxGenres.SelectedItem).Tracks;
+        //        SwitchListBox(ListBoxTracksSubmenu);
+        //        BtnBack.Visibility = Visibility.Visible;
+        //        HideSearchBar();
+        //    }
+        //}
 
-        private void ListBoxAlbumTracks_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxAlbumTracks.SelectedItem != null)
-            {
-                player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToList(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
-            }
-        }
+        //private void ListBoxAlbumTracks_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxAlbumTracks.SelectedItem != null)
+        //    {
+        //        player.SelectTracks(ListBoxAlbumTracks.Items.OfType<Track>().ToList(), ListBoxAlbumTracks.SelectedIndex, ShuffleEnabled);
+        //    }
+        //}
 
-        private void ListBoxTracksSubmenu_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxTracksSubmenu.SelectedItem != null)
-            {
-                player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToList(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
-            }
-        }
+        //private void ListBoxTracksSubmenu_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxTracksSubmenu.SelectedItem != null)
+        //    {
+        //        player.SelectTracks(ListBoxTracksSubmenu.Items.OfType<Track>().ToList(), ListBoxTracksSubmenu.SelectedIndex, ShuffleEnabled);
+        //    }
+        //}
 
-        private void ListBoxAlbumsSubmenu_Select(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxAlbumsSubmenu.SelectedItem != null)
-            {
-                ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbumsSubmenu.SelectedItem).Tracks;
-                SwitchListBox(ListBoxAlbumTracks);
-                BtnBack.Visibility = Visibility.Visible;
-                HideSearchBar();
-            }
-        }
+        //private void ListBoxAlbumsSubmenu_Select(object sender, RoutedEventArgs e)
+        //{
+        //    if (ListBoxAlbumsSubmenu.SelectedItem != null)
+        //    {
+        //        ListBoxAlbumTracks.ItemsSource = ((Album)ListBoxAlbumsSubmenu.SelectedItem).Tracks;
+        //        SwitchListBox(ListBoxAlbumTracks);
+        //        BtnBack.Visibility = Visibility.Visible;
+        //        HideSearchBar();
+        //    }
+        //}
 
         private void OnTrackLoad()
         {
@@ -241,17 +273,17 @@ namespace OctoplayerFrontend
 
             var track = player.Queue.CurrentTrack;
 
-            ((System.Windows.Controls.TextBlock)this.FindResource("Title")).Text = track.Title; 
-            ((System.Windows.Controls.TextBlock)this.FindResource("Artists")).Text = String.Join("; ", track.Artists);
-            ((System.Windows.Controls.TextBlock)this.FindResource("Album")).Text = track.Album.Title;
-            ((System.Windows.Controls.TextBlock)this.FindResource("TrackInfo")).Text = $"{track.TrackNumber} / {track.TrackCount}";
-            ((System.Windows.Controls.TextBlock)this.FindResource("DiscInfo")).Text = $"{track.DiscNumber} / {track.DiscCount}";
-            ((System.Windows.Controls.TextBlock)this.FindResource("Remixers")).Text = String.Join("; ", track.Remixers);
-            ((System.Windows.Controls.TextBlock)this.FindResource("Year")).Text = track.Year.ToString();
-            ((System.Windows.Controls.TextBlock)this.FindResource("Rating")).Text = track.Rating.ToString();
-            ((System.Windows.Controls.TextBlock)this.FindResource("Genres")).Text = String.Join("; ", track.Genres);
-            ((System.Windows.Controls.TextBlock)this.FindResource("BPM")).Text = track.BPM.ToString();
-            ((System.Windows.Controls.TextBlock)this.FindResource("Key")).Text = track.Key;
+            ((TextBlock)this.FindResource("Title")).Text = track.Title; 
+            ((TextBlock)this.FindResource("Artists")).Text = String.Join("; ", track.Artists);
+            ((TextBlock)this.FindResource("Album")).Text = track.Album.Title;
+            ((TextBlock)this.FindResource("TrackInfo")).Text = $"{track.TrackNumber} / {track.TrackCount}";
+            ((TextBlock)this.FindResource("DiscInfo")).Text = $"{track.DiscNumber} / {track.DiscCount}";
+            ((TextBlock)this.FindResource("Remixers")).Text = String.Join("; ", track.Remixers);
+            ((TextBlock)this.FindResource("Year")).Text = track.Year.ToString();
+            ((TextBlock)this.FindResource("Rating")).Text = track.Rating.ToString();
+            ((TextBlock)this.FindResource("Genres")).Text = String.Join("; ", track.Genres);
+            ((TextBlock)this.FindResource("BPM")).Text = track.BPM.ToString();
+            ((TextBlock)this.FindResource("Key")).Text = track.Key;
             ImgAlbumArt.Source = track.Artwork;
 
             RemixersInfo.Visibility = (track.Remixers.Count > 0 ? Visibility.Visible : Visibility.Collapsed);
@@ -345,43 +377,43 @@ namespace OctoplayerFrontend
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            if (!BtnViewAlbums.IsEnabled)
-            {
-                SwitchListBox(ListBoxAlbums);
-                BtnBack.Visibility = Visibility.Collapsed;
-                SwitchSearchBar(SearchBoxAlbums);
-            }
-            else if (!BtnViewArtists.IsEnabled)
-            {
-                if (ListBoxAlbumTracks.Visibility == Visibility.Visible) SwitchListBox(ListBoxAlbumsSubmenu);
-                else
-                {
-                    SwitchListBox(ListBoxArtists);
-                    BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
-                    BtnBack.Visibility = Visibility.Collapsed;
-                    SwitchSearchBar(SearchBoxArtists);
-                }
-            }
-            else if (!BtnViewGenres.IsEnabled)
-            {
-                SwitchListBox(ListBoxGenres);
-                BtnBack.Visibility = Visibility.Collapsed;
-                SwitchSearchBar(SearchBoxGenres);
-            }
+            //if (!BtnViewAlbums.IsEnabled)
+            //{
+            //    SwitchListBox(ListBoxAlbums);
+            //    BtnBack.Visibility = Visibility.Collapsed;
+            //    SwitchSearchBar(SearchBoxAlbums);
+            //}
+            //else if (!BtnViewArtists.IsEnabled)
+            //{
+            //    if (ListBoxAlbumTracks.Visibility == Visibility.Visible) SwitchListBox(ListBoxAlbumsSubmenu);
+            //    else
+            //    {
+            //        SwitchListBox(ListBoxArtists);
+            //        BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
+            //        BtnBack.Visibility = Visibility.Collapsed;
+            //        SwitchSearchBar(SearchBoxArtists);
+            //    }
+            //}
+            //else if (!BtnViewGenres.IsEnabled)
+            //{
+            //    SwitchListBox(ListBoxGenres);
+            //    BtnBack.Visibility = Visibility.Collapsed;
+            //    SwitchSearchBar(SearchBoxGenres);
+            //}
         }
 
         private void BtnSwapTrackAlbum_Click(object sender, RoutedEventArgs e)
         {
-            if((string)BtnSwapTrackAlbum.Content == "Show Artist Albums")
-            {
-                SwitchListBox(ListBoxAlbumsSubmenu);
-                BtnSwapTrackAlbum.Content = "Show Artist Tracks";
-            }
-            else
-            {
-                SwitchListBox(ListBoxTracksSubmenu);
-                BtnSwapTrackAlbum.Content = "Show Artist Albums";
-            }
+            //if((string)BtnSwapTrackAlbum.Content == "Show Artist Albums")
+            //{
+            //    SwitchListBox(ListBoxAlbumsSubmenu);
+            //    BtnSwapTrackAlbum.Content = "Show Artist Tracks";
+            //}
+            //else
+            //{
+            //    SwitchListBox(ListBoxTracksSubmenu);
+            //    BtnSwapTrackAlbum.Content = "Show Artist Albums";
+            //}
         }
 
         private void BtnShuffle_Click(object sender, RoutedEventArgs e)
@@ -492,42 +524,42 @@ namespace OctoplayerFrontend
 
         private void SearchBoxTracks_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var items = CollectionViewSource.GetDefaultView(ListBoxTracks.ItemsSource);
-            if (items != null)
-            {
-                items.Filter = TrackSearch;
-            }
-            ListBoxTracks.ItemsSource = items;
+            //var items = CollectionViewSource.GetDefaultView(ListBoxTracks.ItemsSource);
+            //if (items != null)
+            //{
+            //    items.Filter = TrackSearch;
+            //}
+            //ListBoxTracks.ItemsSource = items;
         }
 
         private void SearchBoxAlbums_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var items = CollectionViewSource.GetDefaultView(ListBoxAlbums.ItemsSource);
-            if (items != null)
-            {
-                items.Filter = AlbumSearch;
-            }
-            ListBoxAlbums.ItemsSource = items;
+            //var items = CollectionViewSource.GetDefaultView(ListBoxAlbums.ItemsSource);
+            //if (items != null)
+            //{
+            //    items.Filter = AlbumSearch;
+            //}
+            //ListBoxAlbums.ItemsSource = items;
         }
 
         private void SearchBoxArtists_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var items = CollectionViewSource.GetDefaultView(ListBoxArtists.ItemsSource);
-            if (items != null)
-            {
-                items.Filter = ArtistSearch;
-            }
-            ListBoxArtists.ItemsSource = items;
+            //var items = CollectionViewSource.GetDefaultView(ListBoxArtists.ItemsSource);
+            //if (items != null)
+            //{
+            //    items.Filter = ArtistSearch;
+            //}
+            //ListBoxArtists.ItemsSource = items;
         }
 
         private void SearchBoxGenres_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var items = CollectionViewSource.GetDefaultView(ListBoxGenres.ItemsSource);
-            if (items != null)
-            {
-                items.Filter = GenreSearch;
-            }
-            ListBoxGenres.ItemsSource = items;
+            //var items = CollectionViewSource.GetDefaultView(ListBoxGenres.ItemsSource);
+            //if (items != null)
+            //{
+            //    items.Filter = GenreSearch;
+            //}
+            //ListBoxGenres.ItemsSource = items;
         }
 
         private bool TrackSearch(object item)
