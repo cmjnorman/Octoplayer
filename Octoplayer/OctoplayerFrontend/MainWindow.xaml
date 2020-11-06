@@ -8,8 +8,6 @@
         Closed="Window_Closed"
         Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="Black" >
     <Window.Resources>
-        <!--Program Colours-->
-        <SolidColorBrush x:Key="OctoOrange" Color="#E18A07"/>
         <!--Button Icons-->
         <Path x:Key="PlayIcon" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
         <Path x:Key="PauseIcon" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
@@ -291,27 +289,6 @@
             </Style.Triggers>
         </Style>
         <!--Custom Button Styling-->
-        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
-            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="10, 1, 10 ,1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="Transparent" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource OctoOrange}" CornerRadius="4" SnapsToDevicePixels="true">
-                            <ContentPresenter Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="true"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="BorderThickness" Value="2"/>
-                                <Setter Property="Padding" Value="10, 0, 10, 0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="TransparentToggle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -423,9 +400,12 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    
+    
+    
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Background="Transparent">
-            <MenuItem Header="Library" Foreground="White">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="#808080" Background="#505050">
+            <MenuItem Header="Library">
                 <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
             </MenuItem>
         </Menu>

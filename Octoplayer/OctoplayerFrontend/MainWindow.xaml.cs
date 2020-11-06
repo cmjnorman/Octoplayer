@@ -44,7 +44,8 @@ namespace OctoplayerFrontend
 
         private void OpenLibrarySelectionDialog(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new LibrarySelectionDialog();
+            dialog.Show();
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)

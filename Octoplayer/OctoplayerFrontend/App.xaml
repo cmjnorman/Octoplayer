@@ -4,6 +4,30 @@
              xmlns:local="clr-namespace:OctoplayerFrontend"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!--Program Colours-->
+        <SolidColorBrush x:Key="OctoOrange" Color="#E18A07"/>
+        <!--Custom Button Styling-->
+        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10, 1, 10 ,1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="Transparent" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource OctoOrange}" CornerRadius="4" SnapsToDevicePixels="true">
+                            <ContentPresenter Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="true"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="10, 0, 10, 0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Application.Resources>
 </Application>

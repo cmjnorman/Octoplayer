@@ -26,14 +26,8 @@ namespace OctoplayerBackend
         }
         public double CurrentTrackPosition
         {
-            get
-            {
-                return media.Position.TotalMilliseconds;
-            }
-            set
-            {
-                this.media.Position = TimeSpan.FromMilliseconds(value);
-            }
+            get => media.Position.TotalMilliseconds;
+            set => this.media.Position = TimeSpan.FromMilliseconds(value);
         }
         public delegate void EmptyHandler(); 
         public event EmptyHandler MediaPlaying;

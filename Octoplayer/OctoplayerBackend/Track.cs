@@ -20,13 +20,7 @@ namespace OctoplayerBackend
         public List<Artist> Remixers { get; set; }
         public uint Year { get; set; }
         private double rating;
-        public double Rating
-        {
-            get
-            {
-                return Math.Round(rating, 2);
-            }
-        }
+        public double Rating => Math.Round(rating, 2);
         public List<Genre> Genres { get; set; }
         public uint BPM { get; set; }
         public string Key { get; set; }
