@@ -20,5 +20,21 @@ namespace OctoplayerBackend
                 list[r] = list[i];
             }
         }
+
+        public static IEnumerable<T> RecursiveSelect<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> selector)
+        {
+            foreach(var item in source)
+            {
+                yield return item;
+                var children = selector(item);
+                if (children != null)
+                {
+                    foreach (var child in children.RecursiveSelect(selector))
+                    {
+                        yield return child;
+                    }
+                }
+            }
+        }
     }
 }

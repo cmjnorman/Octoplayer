@@ -15,20 +15,12 @@
         </HierarchicalDataTemplate>
 
     </Window.Resources>
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource RoundedButton}" Content="Select Library Folder" Click="SelectFolder"/>
-        </Grid>
-        <TreeView x:Name="FolderViewer" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}" Grid.Row="1"/>
-
-    </Grid>
+    <DockPanel Margin="10">
+        <Button Style="{StaticResource RoundedButton}" Content="Select Library Folder" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="SelectFolder"/>
+        <DockPanel DockPanel.Dock="Bottom" Margin="0, 5, 0, 0">
+            <Button Style="{StaticResource RoundedButton}" Content="Confirm" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="Confirm"/>
+            <Button Style="{StaticResource RoundedButton}" Content="Cancel" DockPanel.Dock="Left" HorizontalAlignment="Left" Click="Cancel"/>
+        </DockPanel>
+        <TreeView x:Name="FolderViewer" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}"/>
+    </DockPanel>
 </Window>

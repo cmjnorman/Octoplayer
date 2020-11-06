@@ -48,16 +48,13 @@ namespace OctoplayerFrontend
             dialog.Show();
         }
 
-        private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
+        public void SelectLibraryFolders(IEnumerable<string> folders)
         {
-            var folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-            if(folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (player.IsPlaying) player.Pause();
+            UnloadTrack();
+            foreach (var folder in folders)
             {
-                if(player.IsPlaying) player.Pause();
-                UnloadTrack();
-
-                library = new Library(Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories));
-
+                library = new Library(Directory.EnumerateFiles(folder).Where(f => f.EndsWith(".mp3") || f.EndsWith(".flac")).ToArray());
 
                 LibraryBrowser.Visibility = Visibility.Visible;
                 OpenBrowserPage(library.Tracks);
@@ -85,7 +82,9 @@ namespace OctoplayerFrontend
         private void BtnNext_Click(object sender, RoutedEventArgs e)
         {
             player.Next();
-        } 
+        }
+
+#nullable enable
 
         private Grid CreateBrowserPage<T>(List<T> items, Type? sourceType = null)
         {
@@ -167,6 +166,8 @@ namespace OctoplayerFrontend
             browserPages.Push(page);
             ToggleBrowserViewButtons();
         }
+
+#nullable disable
 
         private void CloseAllBrowserPages()
         {

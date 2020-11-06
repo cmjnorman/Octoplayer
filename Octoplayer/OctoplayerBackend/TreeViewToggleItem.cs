@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+#nullable enable
+
 namespace OctoplayerBackend
 {
-    public class TreeViewToggleItem 
+    public class TreeViewToggleItem : INotifyPropertyChanged
     {
         public string Path { get; }
         public string Header => Path.Substring(Path.LastIndexOf("\\") + 1);
@@ -16,12 +18,12 @@ namespace OctoplayerBackend
             get => isChecked;
             set => SetCheckedState(value, true, true);
         }
-        private TreeViewToggleItem parent;
+        private TreeViewToggleItem? parent;
         public List<TreeViewToggleItem> Children { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public TreeViewToggleItem(string path, TreeViewToggleItem parent = null)
+        public TreeViewToggleItem(string path, TreeViewToggleItem? parent = null)
         {
             this.Path = path;
             this.parent = parent;
@@ -36,7 +38,7 @@ namespace OctoplayerBackend
 
             if (updateChildren) Children.ForEach(c => c.SetCheckedState(value, true, false));
             if (updateParent && parent != null) parent.ComputeCheckedStateFromChildren();
-            //OnPropertyChanged("IsChecked");
+            OnPropertyChanged("IsChecked");
         }
 
         private void ComputeCheckedStateFromChildren()
@@ -47,12 +49,12 @@ namespace OctoplayerBackend
             SetCheckedState(state, false, true);
         }
 
-        //private void OnPropertyChanged(string property)
-        //{
-        //    if(PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyChangedEventArgs(property));
-        //    }
-        //}
+        private void OnPropertyChanged(string property)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
     }
 }

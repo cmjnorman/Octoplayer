@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,6 +25,19 @@ namespace OctoplayerFrontend
             {
                 FolderViewer.Items.Add(GetTreeItem(folderBrowser.SelectedPath));
             }
+        }
+
+        private void Confirm(object sender, RoutedEventArgs e)
+        {
+            var folders = FolderViewer.Items.OfType<TreeViewToggleItem>().RecursiveSelect(i => i.Children).Where(i => !i.Children.Any());
+            var selected = folders.Where(i => i.IsChecked == true).Select(i => i.Path);
+            ((MainWindow)Application.Current.MainWindow).SelectLibraryFolders(selected);
+            Close();
+        }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private TreeViewToggleItem GetTreeItem(string path)
