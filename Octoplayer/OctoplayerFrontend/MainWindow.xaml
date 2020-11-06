@@ -263,7 +263,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--SearchBar Prompt Styling-->
+        <!--Custom SearchBar Styling-->
         <TextBox x:Key="SearchPromptText" BorderThickness="0" Width="10000" Height="500" FontSize="20" VerticalContentAlignment="Center" Foreground="Gray" Padding="5, 0, 0, 0" FontStyle="Italic"/>
         <Style x:Key="LibrarySearchBar" TargetType="{x:Type TextBox}">
             <Setter Property="FontSize" Value="20"/>
@@ -331,7 +331,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style x:Key="TransparentButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="Transparent">
+                            <ContentPresenter Focusable="False"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#553300"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         
 
@@ -404,250 +422,212 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <!--<Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
-
-
-
-        <Style x:Key="DisableableButton" TargetType="{x:Type Button}">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="#553300"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        
     </Window.Resources>
-
-    <Grid Margin="10" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid x:Name="GridLibrarySelection">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Style="{DynamicResource RoundedButton}" Content="Select Library Folder" Click="BtnSelectFolder_Click"/>
-            <Label x:Name="LblFilesLoaded" Grid.Column="1" VerticalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
-        </Grid>
-        <Grid Grid.Row="1" Margin="0, 10, 0, 10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="500"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid x:Name="GridPlayer">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="500"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
-                <Grid Grid.Row="1" Margin="0, 10, 0, 10">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Background="Transparent">
+            <MenuItem Header="Library" Foreground="White">
+                <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
+            </MenuItem>
+        </Menu>
+        <Grid Margin="10" >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="0, 10, 0, 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="GridPlayer">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="500"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label Content="{DynamicResource Title}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" Foreground="{StaticResource OctoOrange}"/>
-                    <Label Content="{DynamicResource Artists}" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                    <Label Content="{DynamicResource Album}" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                </Grid>
-                <Grid Grid.Row="2" MinWidth="300" HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid x:Name="RemixersInfo">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Remixers:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource Remixers}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                    <Image x:Name="ImgAlbumArt" VerticalAlignment="Top"/>
+                    <Grid Grid.Row="1" Margin="0, 10, 0, 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="{DynamicResource Title}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" FontSize="20" Foreground="{StaticResource OctoOrange}"/>
+                        <Label Content="{DynamicResource Artists}" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                        <Label Content="{DynamicResource Album}" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="0" Foreground="{StaticResource OctoOrange}"/>
                     </Grid>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource TrackInfo}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                    <Grid Grid.Row="2" MinWidth="300" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="RemixersInfo">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Remixers:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource Remixers}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Track:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource TrackInfo}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="1" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource DiscInfo}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource Year}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="2" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource Rating}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource Genres}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource BPM}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
+                        <Grid Grid.Row="4" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Key:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                            <Label Content="{DynamicResource Key}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Row="1" HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Disc:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource DiscInfo}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Year:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource Year}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                    <Grid Grid.Row="2" HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Rating:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource Rating}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Genre(s):" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource Genres}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Bpm:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource BPM}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                    <Grid Grid.Row="4" HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Key:" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
-                        <Label Content="{DynamicResource Key}" Grid.Column="1" Foreground="{StaticResource OctoOrange}"/>
-                    </Grid>
-                </Grid>
-                <ToggleButton x:Name="QueueToggle" Grid.Row="3" Width="400" Height="60" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#FF313131" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}" IsHitTestVisible="{Binding ElementName=QueuePopup, Path=IsOpen, Converter={StaticResource BoolToInvertedBoolConverter}}" Click="QueueToggle_Click">
-                    <Grid>
-                        <ItemsControl x:Name="NextTrackItemControl">
-                            <ItemsControl.ItemTemplate>
+                    <ToggleButton x:Name="QueueToggle" Grid.Row="3" Width="400" Height="60" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#FF313131" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}" IsHitTestVisible="{Binding ElementName=QueuePopup, Path=IsOpen, Converter={StaticResource BoolToInvertedBoolConverter}}" Click="QueueToggle_Click">
+                        <Grid>
+                            <ItemsControl x:Name="NextTrackItemControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="400">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="75"/>
+                                                <ColumnDefinition Width="325"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Up Next:" Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                                            <Grid Grid.Column="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                                                <TextBlock Text="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </ToggleButton>
+                    <Popup x:Name="QueuePopup" Placement="Top" HorizontalAlignment="Center" Width="400" MaxHeight="700" PlacementTarget="{Binding ElementName=QueueToggle}" IsOpen="{Binding ElementName=QueueToggle, Path=IsChecked}" StaysOpen="False">
+                        <ListBox x:Name="QueueListBox" Background="#FF313131" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="QueueListBox_MouseDoubleClick" MouseRightButtonUp="ListBoxRightClick">
+                            <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Width="400">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="75"/>
                                             <ColumnDefinition Width="325"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Up Next:" Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource OctoOrange}"/>
+                                        <TextBlock Text="{Binding RelativePosition}" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
                                         <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="auto"/>
                                                 <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                                            <TextBlock Text="{Binding Title}" FontSize="20" Padding="0"  Foreground="{StaticResource OctoOrange}"/>
                                             <TextBlock Text="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="{StaticResource OctoOrange}"/>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Popup>
+                </Grid>
+                <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
                     </Grid>
-                </ToggleButton>
-                <Popup x:Name="QueuePopup" Placement="Top" HorizontalAlignment="Center" Width="400" MaxHeight="700" PlacementTarget="{Binding ElementName=QueueToggle}" IsOpen="{Binding ElementName=QueueToggle, Path=IsChecked}" StaysOpen="False">
-                    <ListBox x:Name="QueueListBox" Background="#FF313131" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="QueueListBox_MouseDoubleClick" MouseRightButtonUp="ListBoxRightClick">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="75"/>
-                                        <ColumnDefinition Width="325"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding RelativePosition}" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
-                                    <Grid Grid.Column="1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Title}" FontSize="20" Padding="0"  Foreground="{StaticResource OctoOrange}"/>
-                                        <TextBlock Text="{Binding Artists}" Grid.Row="1" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Popup>
+                </Grid>
             </Grid>
-            <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
+            <Grid x:Name="GridControls" Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                    <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                    <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                    <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                    <ToggleButton x:Name="ShuffleToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource ShuffleIcon}" Grid.Column="1" Padding="0" BorderThickness="0" Width="30" Click="ShuffleToggle_Changed"/>
+                    <Button x:Name="BtnPrevious" Style="{StaticResource TransparentButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Tag="Off" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
+                    <Button x:Name="BtnPlayPause" Style="{StaticResource TransparentButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
+                    <Button x:Name="BtnNext" Style="{StaticResource TransparentButton}" Content="{StaticResource NextIcon}" Grid.Column="4" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
+                    <ToggleButton x:Name="LoopToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource LoopIcon}" Grid.Column="5" Padding="0" BorderThickness="0" Width="30" Click="LoopToggle_Changed"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" VerticalAlignment="Bottom" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
+                    <Label x:Name="LabelTrackTime" Content="" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource OctoOrange}"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid x:Name="GridControls" Grid.Row="2" >
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <ToggleButton x:Name="ShuffleToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource ShuffleIcon}" Grid.Column="1" Padding="0" BorderThickness="0" Width="30" Click="ShuffleToggle_Changed"/>
-                <Button x:Name="BtnPrevious" Style="{StaticResource DisableableButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Tag="Off" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
-                <Button x:Name="BtnPlayPause" Style="{StaticResource DisableableButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
-                <Button x:Name="BtnNext" Style="{StaticResource DisableableButton}" Content="{StaticResource NextIcon}" Grid.Column="4" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
-                <ToggleButton x:Name="LoopToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource LoopIcon}" Grid.Column="5" Padding="0" BorderThickness="0" Width="30" Click="LoopToggle_Changed"/>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" VerticalAlignment="Bottom" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
-                <Label x:Name="LabelTrackTime" Content="" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource OctoOrange}"/>
-            </Grid>
-        </Grid>
-    </Grid>
+    </DockPanel>
 </Window>

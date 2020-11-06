@@ -36,12 +36,15 @@ namespace OctoplayerFrontend
             LibraryBrowser.Visibility = Visibility.Hidden;
             if (library.Tracks.Count > 0)
             {
-                LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
                 LibraryBrowser.Visibility = Visibility.Visible;
-
                 ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Tracks...";
                 OpenBrowserPage(library.Tracks);
             }
+        }
+
+        private void OpenLibrarySelectionDialog(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
@@ -54,7 +57,6 @@ namespace OctoplayerFrontend
 
                 library = new Library(Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories));
 
-                LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
 
                 LibraryBrowser.Visibility = Visibility.Visible;
                 OpenBrowserPage(library.Tracks);
