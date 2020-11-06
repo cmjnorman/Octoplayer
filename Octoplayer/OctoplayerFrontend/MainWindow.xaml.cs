@@ -21,8 +21,6 @@ namespace OctoplayerFrontend
         private Library library;
         private Stack<Grid> browserPages;
         private bool trackSliderBeingDragged = false;
-        private bool ShuffleEnabled = false;
-
 
         public MainWindow()
         {
@@ -40,6 +38,8 @@ namespace OctoplayerFrontend
             {
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
                 LibraryBrowser.Visibility = Visibility.Visible;
+
+                ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Tracks...";
                 OpenBrowserPage(library.Tracks);
             }
         }
@@ -209,7 +209,7 @@ namespace OctoplayerFrontend
                 switch(selectedItem)
                 {
                     case Track track:
-                        player.SelectTracks(items.OfType<Track>().ToList(), items.IndexOf(track), ShuffleEnabled);
+                        player.SelectTracks(items.OfType<Track>().ToList(), items.IndexOf(track), ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                         break;
                     case Album album:
                         OpenBrowserPage<Track>(album.Tracks, typeof(Album));
@@ -542,14 +542,6 @@ namespace OctoplayerFrontend
             }
         }
 
-        private void BtnShuffle_Click(object sender, RoutedEventArgs e)
-        {
-            ShuffleEnabled = !ShuffleEnabled;
-            BtnShuffle.Tag = (ShuffleEnabled ? "On" : "Off");
-            if (ShuffleEnabled) player.ShuffleQueue();
-            else player.UnshuffleQueue();
-        }
-
         private void QueueListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             player.SkipTo(((QueueItem)QueueListBox.SelectedItem).RelativePosition);
@@ -570,7 +562,7 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, true, ShuffleEnabled);
+                    player.AddTrack(track, true, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
             else if (((MenuItem)e.Source).DataContext is Artist)
@@ -579,7 +571,7 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, true, ShuffleEnabled);
+                    player.AddTrack(track, true, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
             else
@@ -588,7 +580,7 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, true, ShuffleEnabled);
+                    player.AddTrack(track, true, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
         }
@@ -601,7 +593,7 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, false, ShuffleEnabled);
+                    player.AddTrack(track, false, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
             else if (((MenuItem)e.Source).DataContext is Artist)
@@ -610,7 +602,7 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, false, ShuffleEnabled);
+                    player.AddTrack(track, false, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
             else
@@ -619,28 +611,28 @@ namespace OctoplayerFrontend
                 tracks.Reverse();
                 foreach (var track in tracks)
                 {
-                    player.AddTrack(track, false, ShuffleEnabled);
+                    player.AddTrack(track, false, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                 }
             }
         }
 
         private void AddTrackToFront(object sender, RoutedEventArgs e)
         {
-            player.AddTrack((Track)((MenuItem)e.Source).DataContext, true, ShuffleEnabled);
+            player.AddTrack((Track)((MenuItem)e.Source).DataContext, true, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
         }
 
         private void AddTrackToBack(object sender, RoutedEventArgs e)
         {
-            player.AddTrack((Track)((MenuItem)e.Source).DataContext, false, ShuffleEnabled);
+            player.AddTrack((Track)((MenuItem)e.Source).DataContext, false, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
         }
 
         private void MoveToFrontOfQueue(object sender, RoutedEventArgs e)
         {
-            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, true, ShuffleEnabled);
+            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, true, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
         }
         private void MoveToBackOfQueue(object sender, RoutedEventArgs e)
         {
-            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, false, ShuffleEnabled);
+            player.AddTrack(((QueueItem)((MenuItem)e.Source).DataContext).Track, false, ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
         }
 
         private void ListBoxRightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -653,6 +645,17 @@ namespace OctoplayerFrontend
         {
             player.LogData();
             library.SaveLibrary();
+        }
+
+        private void ShuffleToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            if (ShuffleToggle.IsChecked.Value) player.ShuffleQueue();
+            else player.UnshuffleQueue();
+        }
+
+        private void LoopToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            player.Queue.loopEnabled = (LoopToggle.IsChecked.Value ? true : false);
         }
     }
 }

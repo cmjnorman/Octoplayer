@@ -11,6 +11,7 @@ namespace OctoplayerBackend
         public List<Track> Tracks { get; }
         private LinkedList<Track> PreviousTracks;
         private LinkedList<Track> NextTracks;
+        public bool loopEnabled { private get; set; }
         public Track CurrentTrack { get; private set; }
     
         
@@ -21,12 +22,13 @@ namespace OctoplayerBackend
             this.NextTracks = new LinkedList<Track>();
         }
 
-        public Queue(List<Track> tracks, int startPos, bool shuffle)
+        public Queue(List<Track> tracks, int startPos, bool shuffle, bool loop)
         {
             this.Tracks = tracks;
             this.PreviousTracks = new LinkedList<Track>(tracks.Take(startPos));
             this.CurrentTrack = tracks[startPos];
             this.NextTracks = new LinkedList<Track>(Tracks.Skip(startPos + 1));
+            this.loopEnabled = loop;
             if (shuffle) Shuffle();
         }
 
@@ -84,9 +86,20 @@ namespace OctoplayerBackend
 
         public void Next()
         {
-            if(NextTracks.Count > 0)
+            if(NextTracks.Any())
             {
                 PreviousTracks.AddLast(CurrentTrack);
+                CurrentTrack = NextTracks.First();
+                NextTracks.RemoveFirst();
+            }
+            else if(loopEnabled)
+            {
+                PreviousTracks.AddLast(CurrentTrack);
+                foreach(var track in PreviousTracks)
+                {
+                    NextTracks.AddLast(track);
+                }
+                PreviousTracks.Clear();
                 CurrentTrack = NextTracks.First();
                 NextTracks.RemoveFirst();
             }
@@ -94,9 +107,20 @@ namespace OctoplayerBackend
 
         public void Previous()
         {
-            if(PreviousTracks.Count > 0)
+            if (PreviousTracks.Any())
             {
                 NextTracks.AddFirst(CurrentTrack);
+                CurrentTrack = PreviousTracks.Last();
+                PreviousTracks.RemoveLast();
+            }
+            else if(loopEnabled)
+            {
+                NextTracks.AddFirst(CurrentTrack);
+                foreach (var track in NextTracks)
+                {
+                    PreviousTracks.AddLast(track);
+                }
+                NextTracks.Clear();
                 CurrentTrack = PreviousTracks.Last();
                 PreviousTracks.RemoveLast();
             }

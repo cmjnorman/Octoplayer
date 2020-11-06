@@ -52,17 +52,17 @@ namespace OctoplayerBackend
             this.IsPlaying = false; 
         }
 
-        public void SelectTracks(List<Track> tracks, int startPos, bool shuffle)
+        public void SelectTracks(List<Track> tracks, int startPos, bool shuffle, bool loop)
         {
             if(Queue.CurrentTrack != null) LogData();
-            this.Queue = new Queue(tracks, startPos, shuffle);
+            this.Queue = new Queue(tracks, startPos, shuffle, loop);
             SelectedTracks.Add(Queue.CurrentTrack);
             LoadTrack();
         }
 
-        public void AddTrack(Track track, bool addToFront, bool shuffle)
+        public void AddTrack(Track track, bool addToFront, bool shuffle, bool loop)
         {
-            if (Queue.CurrentTrack == null) SelectTracks(new List<Track>() { track }, 0, shuffle);
+            if (Queue.CurrentTrack == null) SelectTracks(new List<Track>() { track }, 0, shuffle, loop);
             else
             {
                 Queue.AddTrack(track, addToFront);
