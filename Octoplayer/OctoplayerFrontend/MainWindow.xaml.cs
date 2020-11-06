@@ -36,18 +36,11 @@ namespace OctoplayerFrontend
             browserPages = new Stack<Grid>();
             GridPlayer.Visibility = Visibility.Hidden;
             LibraryBrowser.Visibility = Visibility.Hidden;
-            //BtnBack.Visibility = Visibility.Collapsed;
-            //BtnSwapTrackAlbum.Visibility = Visibility.Collapsed;
             if (library.Tracks.Count > 0)
             {
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                //ListBoxTracks.ItemsSource = library.Tracks;
-                //ListBoxAlbums.ItemsSource = library.Albums;
-                //ListBoxArtists.ItemsSource = library.Artists;
-                //ListBoxGenres.ItemsSource = library.Genres;
                 LibraryBrowser.Visibility = Visibility.Visible;
-                //SwitchListBox(ListBoxTracks);
-                //BtnViewTracks.IsEnabled = false;
+                OpenBrowserPage(library.Tracks);
             }
         }
 
@@ -62,13 +55,9 @@ namespace OctoplayerFrontend
                 library = new Library(Directory.GetFiles(folderBrowser.SelectedPath, "*", SearchOption.AllDirectories));
 
                 LblFilesLoaded.Content = $"{library.Tracks.Count} file{(library.Tracks.Count > 1 ? "s" : "")} loaded.";
-                //ListBoxTracks.ItemsSource = library.Tracks;
-                //ListBoxAlbums.ItemsSource = library.Albums;
-                //ListBoxArtists.ItemsSource = library.Artists;
-                //ListBoxGenres.ItemsSource = library.Genres;
+
                 LibraryBrowser.Visibility = Visibility.Visible;
-                //SwitchListBox(ListBoxTracks);
-                BtnViewTracks.IsEnabled = false;
+                OpenBrowserPage(library.Tracks);
             }
         }
 
@@ -173,7 +162,7 @@ namespace OctoplayerFrontend
             Grid.SetRow(page, 1);
 
             browserPages.Push(page);
-            if (browserPages.Count > 1) ToggleBrowserViewButtons();
+            ToggleBrowserViewButtons();
         }
 
         private void CloseAllBrowserPages()
@@ -208,7 +197,6 @@ namespace OctoplayerFrontend
                     OpenBrowserPage<Genre>(library.Genres);
                     break;
             }
-            ToggleBrowserViewButtons();
         }
 
         private void SelectBrowserItem(object sender, RoutedEventArgs e)
@@ -241,10 +229,7 @@ namespace OctoplayerFrontend
             //Goes back to previous page
             LibraryBrowser.Children.Remove(browserPages.Pop());
             browserPages.Peek().Visibility = Visibility.Visible;
-            if(browserPages.Count == 1)
-            {
-                ToggleBrowserViewButtons();
-            }
+            ToggleBrowserViewButtons();
         }
 
         private void ToggleBrowserViewButtons()
@@ -370,25 +355,106 @@ namespace OctoplayerFrontend
         private void UpdateContextMenu(ListBoxItem item)
         {
             var menu = new ContextMenu();
-            if (item.Content is Track && (Track)item.Content != player.Queue.CurrentTrack)
+            if (item.Content is Track)
             {
-                var menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
-                menuItem.Click += AddTrackToFront;
+                var track = (Track)item.Content;
+                var menuItem = new MenuItem() { Header = "Go To Album" };
+                menuItem.Click += GoToAlbum;
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Go To Artist" };
+                foreach (var artist in track.Artists.Concat(track.Remixers))
+                {
+                    var submenuItem = new MenuItem() { Header = artist.Name };
+                    submenuItem.Click += GoToArtist;
+                    menuItem.Items.Add(submenuItem);
+                }
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Go To Genre" };
+                foreach (var genre in track.Genres)
+                {
+                    var submenuItem = new MenuItem() { Header = genre.Name };
+                    submenuItem.Click += GoToGenre;
+                    menuItem.Items.Add(submenuItem);
+                }
+                menu.Items.Add(menuItem);
+
+                if (track != player.Queue.CurrentTrack)
+                {
+                    menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                    menuItem.Click += AddTrackToFront;
+                    menu.Items.Add(menuItem);
+
+                    menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
+                    menuItem.Click += AddTrackToBack;
+                    menu.Items.Add(menuItem);
+                }
+            }
+            else if (item.Content is Album)
+            {
+                var album = (Album)item.Content;
+                var menuItem = new MenuItem() { Header = "Go To Artist" };
+                foreach (var artist in album.Artists)
+                {
+                    var submenuItem = new MenuItem() { Header = artist.Name };
+                    submenuItem.Click += GoToArtist;
+                    menuItem.Items.Add(submenuItem);
+                }
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Go To Genre" };
+                foreach (var genre in album.Tracks.SelectMany(t => t.Genres))
+                {
+                    var submenuItem = new MenuItem() { Header = genre.Name };
+                    submenuItem.Click += GoToGenre;
+                    menuItem.Items.Add(submenuItem);
+                }
+                menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                menuItem.Click += AddTracksToFront;
                 menu.Items.Add(menuItem);
 
                 menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
-                menuItem.Click += AddTrackToBack;
+                menuItem.Click += AddTracksToBack;
                 menu.Items.Add(menuItem);
             }
-            else if (item.Content is QueueItem && (Track)((QueueItem)item.Content).Track != player.Queue.CurrentTrack)
+            else if (item.Content is QueueItem)
             {
-                var menuItem = new MenuItem() { Header = "Move To Front" };
-                menuItem.Click += MoveToFrontOfQueue;
+                var track = ((QueueItem)item.Content).Track;
+                var menuItem = new MenuItem() { Header = "Go To Album" };
+                menuItem.Click += GoToAlbum;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Move To Back" };
-                menuItem.Click += MoveToBackOfQueue;
+                menuItem = new MenuItem() { Header = "Go To Artist" };
+                foreach (var artist in track.Artists.Concat(track.Remixers))
+                {
+                    var submenuItem = new MenuItem() { Header = artist.Name };
+                    submenuItem.Click += GoToArtist;
+                    menuItem.Items.Add(submenuItem);
+                }
                 menu.Items.Add(menuItem);
+
+                menuItem = new MenuItem() { Header = "Go To Genre" };
+                foreach (var genre in track.Genres)
+                {
+                    var submenuItem = new MenuItem() { Header = genre.Name };
+                    submenuItem.Click += GoToGenre;
+                    menuItem.Items.Add(submenuItem);
+                }
+                menu.Items.Add(menuItem);
+
+                if(((QueueItem)item.Content).Track != player.Queue.CurrentTrack)
+                {
+                    menuItem = new MenuItem() { Header = "Move To Front" };
+                    menuItem.Click += MoveToFrontOfQueue;
+                    menu.Items.Add(menuItem);
+
+                    menuItem = new MenuItem() { Header = "Move To Back" };
+                    menuItem.Click += MoveToBackOfQueue;
+                    menu.Items.Add(menuItem);
+                }
             }
             else
             {
@@ -401,6 +467,33 @@ namespace OctoplayerFrontend
                 menu.Items.Add(menuItem);
             }
             item.ContextMenu = menu;
+        }
+
+        private void GoToArtist(object sender, RoutedEventArgs e)
+        {
+            var artist = library.Artists.First(a => a.Name == (string)((MenuItem)e.Source).Header);
+            OpenBrowserPage(artist.Tracks.Concat(artist.Remixes).ToList(), typeof(Artist));
+        }
+
+        private void GoToAlbum(object sender, RoutedEventArgs e)
+        {
+            Album album;
+            if(((MenuItem)e.Source).DataContext is Track)
+            {
+                album = ((Track)((MenuItem)e.Source).DataContext).Album;
+            }
+            else
+            {
+                album = ((QueueItem)((MenuItem)e.Source).DataContext).Track.Album;
+            }
+           
+            OpenBrowserPage(album.Tracks, typeof(Album));
+        }
+
+        private void GoToGenre(object sender, RoutedEventArgs e)
+        {
+            var genre = library.Genres.First(a => a.Name == (string)((MenuItem)e.Source).Header);
+            OpenBrowserPage(genre.Tracks);
         }
 
         private void UnloadTrack()
@@ -542,8 +635,9 @@ namespace OctoplayerFrontend
 
         private void ListBoxRightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            UpdateContextMenu((ListBoxItem)((ListBox)sender).ItemContainerGenerator.ContainerFromItem(((ListBox)sender).SelectedItem));
+            if (((ListBox)sender).SelectedItem != null) UpdateContextMenu((ListBoxItem)((ListBox)sender).ItemContainerGenerator.ContainerFromItem(((ListBox)sender).SelectedItem));
         }
+
 
         private void Window_Closed(object sender, EventArgs e)
         {
