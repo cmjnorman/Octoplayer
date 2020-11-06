@@ -11,8 +11,8 @@
         <!--Program Colours-->
         <SolidColorBrush x:Key="OctoOrange" Color="#E18A07"/>
         <!--Button Icons-->
-        <Path x:Key="Play" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
-        <Path x:Key="Pause" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
+        <Path x:Key="PlayIcon" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        <Path x:Key="PauseIcon" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
             <Path.Data>
                 <GeometryGroup>
                     <RectangleGeometry Rect="5,2,12,46"/>
@@ -20,7 +20,89 @@
                 </GeometryGroup>
             </Path.Data>
         </Path>
-       <!--Value Converters-->
+        <Path x:Key="PreviousIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="29,2.5" IsClosed="True" IsFilled="true">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="29,27.5"/>
+                                    <LineSegment Point="7,15"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <RectangleGeometry Rect="1,2,6,26"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="NextIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1,2.5" IsClosed="True" IsFilled="true">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="1,27.5"/>
+                                    <LineSegment Point="23,15"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <RectangleGeometry Rect="23,2,6,26"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="ShuffleIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="3,6" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <BezierSegment Point1="12, 6" Point2="12, 21" Point3="21, 21"/>
+                                    <LineSegment Point="21, 24"/>
+                                    <BezierSegment Point1="12, 24" Point2="12, 9" Point3="3, 9"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="3,24" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <BezierSegment Point1="12, 24" Point2="12, 9" Point3="21, 9"/>
+                                    <LineSegment Point="21, 6"/>
+                                    <BezierSegment Point1="12, 6" Point2="12, 21" Point3="3, 21"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="21,4" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="26, 7.5"/>
+                                    <LineSegment Point="21, 11"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="21,19" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="26, 22.5"/>
+                                    <LineSegment Point="21, 26"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <!--Value Converters-->
         <local:ListToStringConverter x:Key="ListToStringConverter"/>
         <local:BoolToInvertedBoolConverter x:Key="BoolToInvertedBoolConverter"/>
         <!--Track Data-->
@@ -562,97 +644,10 @@
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BtnShuffle" Style="{StaticResource ToggleableButton}" Grid.Column="1" Padding="0" BorderThickness="0" Width="30" Click="BtnShuffle_Click">
-                    <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
-                        <Path.Data>
-                            <GeometryGroup>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="3,6" IsClosed="True" IsFilled="True">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <BezierSegment Point1="12, 6" Point2="12, 21" Point3="21, 21"/>
-                                                <LineSegment Point="21, 24"/>
-                                                <BezierSegment Point1="12, 24" Point2="12, 9" Point3="3, 9"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="3,24" IsClosed="True" IsFilled="True">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <BezierSegment Point1="12, 24" Point2="12, 9" Point3="21, 9"/>
-                                                <LineSegment Point="21, 6"/>
-                                                <BezierSegment Point1="12, 6" Point2="12, 21" Point3="3, 21"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="21,4" IsClosed="True" IsFilled="True">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <LineSegment Point="26, 7.5"/>
-                                                <LineSegment Point="21, 11"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="21,19" IsClosed="True" IsFilled="True">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <LineSegment Point="26, 22.5"/>
-                                                <LineSegment Point="21, 26"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                            </GeometryGroup>
-                        </Path.Data>
-                    </Path>
-                </Button>
-                <Button Style="{StaticResource DisableableButton}" x:Name="BtnPrevious" Tag="Off" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPrevious_Click">
-                    <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
-                        <Path.Data>
-                            <GeometryGroup>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="29,2.5" IsClosed="True" IsFilled="true">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <LineSegment Point="29,27.5"/>
-                                                <LineSegment Point="7,15"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                                <RectangleGeometry Rect="1,2,6,26"/>
-                            </GeometryGroup>
-                        </Path.Data>
-                    </Path>
-                </Button>
-                <Button Style="{StaticResource DisableableButton}" x:Name="BtnPlayPause" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPlayPause_Click">
-                    <DynamicResource ResourceKey="Play"/>
-                </Button>
-                <Button Style="{StaticResource DisableableButton}" x:Name="BtnNext" Grid.Column="4" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnNext_Click">
-                    <Path Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
-                        <Path.Data>
-                            <GeometryGroup>
-                                <PathGeometry>
-                                    <PathFigure StartPoint="1,2.5" IsClosed="True" IsFilled="true">
-                                        <PathFigure.Segments>
-                                            <PathSegmentCollection>
-                                                <LineSegment Point="1,27.5"/>
-                                                <LineSegment Point="23,15"/>
-                                            </PathSegmentCollection>
-                                        </PathFigure.Segments>
-                                    </PathFigure>
-                                </PathGeometry>
-                                <RectangleGeometry Rect="23,2,6,26"/>
-                            </GeometryGroup>
-                        </Path.Data>
-                    </Path>
-                </Button>
+                <Button x:Name="BtnShuffle" Style="{StaticResource ToggleableButton}" Content="{StaticResource ShuffleIcon}" Grid.Column="1" Padding="0" BorderThickness="0" Width="30" Click="BtnShuffle_Click"/>
+                <Button x:Name="BtnPrevious" Style="{StaticResource DisableableButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Tag="Off" Grid.Column="2" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
+                <Button x:Name="BtnPlayPause" Style="{StaticResource DisableableButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Grid.Column="3" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
+                <Button x:Name="BtnNext" Style="{StaticResource DisableableButton}" Content="{StaticResource NextIcon}" Grid.Column="4" Padding="0" BorderThickness="0" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>

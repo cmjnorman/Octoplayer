@@ -31,8 +31,8 @@ namespace OctoplayerFrontend
             this.player = new Player(library);
             player.TrackLoaded += OnTrackLoad;
             player.QueueUpdated += OnQueueUpdated;
-            player.MediaPlaying += () => BtnPlayPause.Content = FindResource("Pause");
-            player.MediaPaused += () => BtnPlayPause.Content = FindResource("Play");
+            player.MediaPlaying += () => BtnPlayPause.Content = FindResource("PauseIcon");
+            player.MediaPaused += () => BtnPlayPause.Content = FindResource("PlayIcon");
             browserPages = new Stack<Grid>();
             GridPlayer.Visibility = Visibility.Hidden;
             LibraryBrowser.Visibility = Visibility.Hidden;
