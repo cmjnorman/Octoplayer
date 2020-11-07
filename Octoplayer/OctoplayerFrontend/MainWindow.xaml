@@ -218,9 +218,6 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource OctoOrangeTint}"/>
                             </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource OctoOrange}"/>
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
