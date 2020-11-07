@@ -44,18 +44,17 @@ namespace OctoplayerFrontend
 
         private void OpenLibrarySelectionDialog(object sender, RoutedEventArgs e)
         {
-            var dialog = new LibrarySelectionDialog();
+            var dialog = new LibrarySelectionDialog(library.libraryFolders);
             dialog.Show();
         }
 
-        public void SelectLibraryFolders(IEnumerable<string> folders)
+        public void SelectLibraryFiles(List<string> files, List<string> folders)
         {
             if (player.IsPlaying) player.Pause();
             UnloadTrack();
-            foreach (var folder in folders)
-            {
-                library = new Library(Directory.EnumerateFiles(folder).Where(f => f.EndsWith(".mp3") || f.EndsWith(".flac")).ToArray());
-
+            library = new Library(files, folders);
+            if(library.Tracks.Any())
+            { 
                 LibraryBrowser.Visibility = Visibility.Visible;
                 OpenBrowserPage(library.Tracks);
             }

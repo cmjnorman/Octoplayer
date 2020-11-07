@@ -12,6 +12,7 @@ namespace OctoplayerBackend
         public List<Artist> Artists { get; set; }
         public List<Album> Albums { get; set; }
         public List<Genre> Genres { get; set; }
+        public List<string> libraryFolders { get; }
 
         public Library()
         {
@@ -19,20 +20,21 @@ namespace OctoplayerBackend
             this.Artists = new List<Artist>();
             this.Albums = new List<Album>();
             this.Genres = new List<Genre>();
+            this.libraryFolders = new List<string>();
             LoadLibrary();
         }
 
-        public Library(string[] files) 
+        public Library(List<string> files, List<string> libraryFolders) 
         {
             this.Tracks = new List<Track>();
             this.Artists = new List<Artist>();
             this.Albums = new List<Album>();
             this.Genres = new List<Genre>();
-
-            string[] extensions = { ".mp3", ".wav", ".flac" };
+            this.libraryFolders = libraryFolders;
+            
             foreach (var file in files)
             {
-                if (extensions.Contains(Path.GetExtension(file))) AddTrack(file);
+                AddTrack(file);
             }
         }
 
@@ -103,6 +105,12 @@ namespace OctoplayerBackend
         {
             var document = new XDocument();
 
+            var folders = new XElement("LibraryFolders");
+            foreach(var folder in this.libraryFolders)
+            {
+                folders.Add(new XElement("FolderPath", folder));
+            }
+
             var tracks = new XElement("Tracks");
             foreach (var track in this.Tracks)
             {
@@ -113,14 +121,21 @@ namespace OctoplayerBackend
                                     new XElement("PlayCount", track.PlayCount),
                                     new XElement("LastPlayed", track.LastPlayed)));
             }
-            document.Add(tracks);
+
+            var library = new XElement("Library", folders, tracks);
+            document.Add(library);
             document.Save("library.xml");
         }
 
         public void LoadLibrary()
         {
-            var tracks = XDocument.Load("library.xml").Element("Tracks").Elements("Track");
+            var folders = XDocument.Load("library.xml").Element("Library").Element("LibraryFolders").Elements("FolderPath");
+            foreach(var folder in folders)
+            {
+                this.libraryFolders.Add(folder.Value);
+            }
 
+            var tracks = XDocument.Load("library.xml").Element("Library").Element("Tracks").Elements("Track");
             foreach (var track in tracks)
             {
                 this.Tracks.Add(new Track(track.Element("FilePath").Value,

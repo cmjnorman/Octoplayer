@@ -23,10 +23,11 @@ namespace OctoplayerBackend
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public TreeViewToggleItem(string path, TreeViewToggleItem? parent = null)
+        public TreeViewToggleItem(string path, bool initialState, TreeViewToggleItem? parent = null)
         {
             this.Path = path;
             this.parent = parent;
+            isChecked = initialState;
             this.Children = new List<TreeViewToggleItem>();
         }
 
