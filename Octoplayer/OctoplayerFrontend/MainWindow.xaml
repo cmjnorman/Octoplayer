@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OctoplayerFrontend" 
         mc:Ignorable="d"
         Closed="Window_Closed"
-        Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="Black" >
+        Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="{StaticResource DarkBase}" >
     <Window.Resources>
         <!--Button Icons-->
         <Path x:Key="PlayIcon" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
@@ -536,10 +536,10 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" FontSize="20" Background="Transparent" Foreground="{StaticResource OctoOrange}" BorderBrush="{StaticResource OctoOrange}" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" Click="SelectBrowserView"/>
                     </Grid>
                 </Grid>
             </Grid>
