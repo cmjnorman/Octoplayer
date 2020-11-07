@@ -184,7 +184,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ArtistAndGenreBrowserItemTemplate">
-            <TextBlock Text="{Binding Name}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+            <TextBlock Text="{Binding Name}" FontSize="20" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
         </DataTemplate>
         <DataTemplate x:Key="AlbumTrackBrowserItemTemplate">
             <Grid>
@@ -211,15 +211,15 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Bd" BorderThickness="1">
+                        <Border x:Name="border" Background="{StaticResource DarkOverlay}" BorderThickness="1" BorderBrush="{StaticResource DarkBase}" CornerRadius="4" Padding="2, 2">
                             <ContentPresenter/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="#FFDADADA"/>
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource OctoOrangeTint}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource OctoOrange}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource OctoOrange}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -536,10 +536,10 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5,0,5,0" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5,0,5,0" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5,0,5,0" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5,0,5,0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Click="SelectBrowserView"/>
                     </Grid>
                 </Grid>
             </Grid>
