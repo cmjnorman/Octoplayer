@@ -41,12 +41,22 @@ namespace OctoplayerFrontend
             }
         }
 
-        private void AddFolder(object sender, RoutedEventArgs e)
+        private void SelectFolder(object sender, RoutedEventArgs e)
         {
             var folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             if (folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                FolderViewer.Items.Clear();
                 FolderViewer.Items.Add(GetTreeView(folderBrowser.SelectedPath, true));
+            }
+        }
+
+        private void RemoveFolder(object sender, RoutedEventArgs e)
+        {
+            var selected = FolderViewer.Items.OfType<TreeViewToggleItem>().RecursiveSelect(i => i.Children).First(i => i == FolderViewer.SelectedItem);
+            if (selected != null)
+            {
+                selected.Parent.Children.Remove(selected);
             }
         }
 
@@ -71,6 +81,7 @@ namespace OctoplayerFrontend
         private TreeViewToggleItem GetTreeView(string path, bool initialState)
         {
             var item = new TreeViewToggleItem(path, initialState);
+            item.Children.Add(new TreeViewToggleItem("Loading Items...", false));
             item.Children = GetSubfolders(item, initialState);
             return item;
         }

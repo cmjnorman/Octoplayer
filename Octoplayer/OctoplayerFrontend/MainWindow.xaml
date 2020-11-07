@@ -226,41 +226,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="ScrollBar">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollBar">
-                        <Track Name="PART_Track" ViewportSize="NaN" Grid.Row="1" IsDirectionReversed="true">
-                            <Track.Thumb>
-                                <Thumb Height="50">
-                                    <Thumb.Style>
-                                        <Style TargetType="Thumb">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="Thumb">
-                                                        <Path Width="14" Height="50" Stroke="{StaticResource OctoOrange}" Fill="{StaticResource OctoOrange}">
-                                                            <Path.Data>
-                                                                <GeometryGroup FillRule="Nonzero">
-                                                                    <EllipseGeometry Center="7,5" RadiusX="5" RadiusY="5"/>
-                                                                    <RectangleGeometry Rect="2,5,10,40"/>
-                                                                    <EllipseGeometry Center="7,45" RadiusX="5" RadiusY="5"/>
-                                                                </GeometryGroup>
-                                                            </Path.Data>
-                                                        </Path>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </Thumb.Style>
-                                </Thumb>
-                            </Track.Thumb>
-                        </Track>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <!--Custom SearchBar Styling-->
         <TextBox x:Key="SearchPromptText" BorderThickness="0" Width="10000" Height="500" FontSize="20" VerticalContentAlignment="Center" Foreground="Gray" Padding="5, 0, 0, 0" FontStyle="Italic"/>
         <Style x:Key="LibrarySearchBar" TargetType="{x:Type TextBox}">

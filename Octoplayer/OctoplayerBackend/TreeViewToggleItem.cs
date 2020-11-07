@@ -18,7 +18,7 @@ namespace OctoplayerBackend
             get => isChecked;
             set => SetCheckedState(value, true, true);
         }
-        private TreeViewToggleItem? parent;
+        public TreeViewToggleItem? Parent { get; }
         public List<TreeViewToggleItem> Children { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -26,7 +26,7 @@ namespace OctoplayerBackend
         public TreeViewToggleItem(string path, bool initialState, TreeViewToggleItem? parent = null)
         {
             this.Path = path;
-            this.parent = parent;
+            this.Parent = parent;
             isChecked = initialState;
             this.Children = new List<TreeViewToggleItem>();
         }
@@ -38,7 +38,7 @@ namespace OctoplayerBackend
             isChecked = value;
 
             if (updateChildren) Children.ForEach(c => c.SetCheckedState(value, true, false));
-            if (updateParent && parent != null) parent.ComputeCheckedStateFromChildren();
+            if (updateParent && Parent != null) Parent.ComputeCheckedStateFromChildren();
             OnPropertyChanged("IsChecked");
         }
 

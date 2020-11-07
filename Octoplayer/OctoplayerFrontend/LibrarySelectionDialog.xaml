@@ -5,31 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OctoplayerFrontend"
         mc:Ignorable="d"
-        Title="LibrarySelectionDialog" Height="450" Width="800" Background="Black">
+        Title="LibrarySelectionDialog" Height="800" Width="1000" Background="Black">
     <Window.Resources>
+        <Style x:Key="FolderTreeViewer" TargetType="TreeView">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeView">
+                        <Border Background="#626262" BorderThickness="1" BorderBrush="{StaticResource OctoOrange}" CornerRadius="4">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DataContext.IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
+                    <Setter Property="IsExpanded" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <HierarchicalDataTemplate x:Key="TreeViewToggleItemTemplate" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" Focusable="False"/>
                 <ContentPresenter Content="{Binding Header}" Margin="2, 0"/>
             </StackPanel>
         </HierarchicalDataTemplate>
-        <Style x:Key="TreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
-            <Setter Property="IsExpanded" Value="True" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding DataContext.IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
-                    <Setter Property="IsExpanded" Value="False" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-
     </Window.Resources>
+    
     <DockPanel Margin="10">
-        <Button Style="{StaticResource RoundedButton}" Content="Add New Folder" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="AddFolder"/>
+        <Button Style="{StaticResource RoundedButton}" Content="Select Library Location" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="SelectFolder"/>
+        <Label Content="Select Library Folders..." DockPanel.Dock="Top"  Foreground="{StaticResource OctoOrange}"/>
         <DockPanel DockPanel.Dock="Bottom" Margin="0, 5, 0, 0">
             <Button Style="{StaticResource RoundedButton}" Content="Confirm" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="Confirm"/>
             <Button Style="{StaticResource RoundedButton}" Content="Cancel" DockPanel.Dock="Left" HorizontalAlignment="Left" Click="Cancel"/>
         </DockPanel>
-        <TreeView x:Name="FolderViewer" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}" ItemContainerStyle="{StaticResource TreeViewItemStyle}"/>
+        <TreeView x:Name="FolderViewer" Style="{StaticResource FolderTreeViewer}" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}" ItemContainerStyle="{StaticResource TreeViewItemStyle}"/>
     </DockPanel>
 </Window>

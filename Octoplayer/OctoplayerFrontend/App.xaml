@@ -6,6 +6,7 @@
     <Application.Resources>
         <!--Program Colours-->
         <SolidColorBrush x:Key="OctoOrange" Color="#E18A07"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E18A07"/>            
         <!--Custom Button Styling-->
         <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
@@ -28,6 +29,41 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+        <!--Custom Scroll Bar-->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Track Name="PART_Track" ViewportSize="NaN" Grid.Row="1" IsDirectionReversed="true">
+                            <Track.Thumb>
+                                <Thumb Height="50">
+                                    <Thumb.Style>
+                                        <Style TargetType="Thumb">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Path Width="14" Height="50" Stroke="{StaticResource OctoOrange}" Fill="{StaticResource OctoOrange}">
+                                                            <Path.Data>
+                                                                <GeometryGroup FillRule="Nonzero">
+                                                                    <EllipseGeometry Center="7,5" RadiusX="5" RadiusY="5"/>
+                                                                    <RectangleGeometry Rect="2,5,10,40"/>
+                                                                    <EllipseGeometry Center="7,45" RadiusX="5" RadiusY="5"/>
+                                                                </GeometryGroup>
+                                                            </Path.Data>
+                                                        </Path>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Thumb.Style>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
