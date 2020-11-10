@@ -338,8 +338,6 @@ namespace OctoplayerFrontend
             ((TextBlock)this.FindResource("Key")).Text = track.Key;
             ImgAlbumArt.Source = track.Artwork;
 
-            RemixersInfo.Visibility = (track.Remixers.Count > 0 ? Visibility.Visible : Visibility.Collapsed);
-
             BtnNext.IsEnabled = BtnPlayPause.IsEnabled = BtnPrevious.IsEnabled = TrackSlider.IsEnabled = true;
             TrackSlider.Maximum = player.CurrentTrackLength;
             timelineClock = new DispatcherTimer();
@@ -351,7 +349,9 @@ namespace OctoplayerFrontend
         private void OnQueueUpdated()
         {
             var queue = player.Queue.GetQueueItems();
-            NextTrackItemControl.ItemsSource = queue.Where(q => q.RelativePosition == 1);
+            var nextInQueue = queue.FirstOrDefault(q => q.RelativePosition == 1);
+            if (nextInQueue == null && LoopToggle.IsChecked.Value) QueueToggle.Content = queue.First();
+            else QueueToggle.Content = nextInQueue;
             QueueListBox.ItemsSource = queue;
         }
 
@@ -659,6 +659,7 @@ namespace OctoplayerFrontend
         private void LoopToggle_Changed(object sender, RoutedEventArgs e)
         {
             player.Queue.loopEnabled = (LoopToggle.IsChecked.Value ? true : false);
+            OnQueueUpdated();
         }
     }
 }
