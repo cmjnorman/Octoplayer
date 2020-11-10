@@ -533,10 +533,10 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Click="SelectBrowserView"/>
-                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5, 0" Click="SelectBrowserView"/>
                     </Grid>
                 </Grid>
             </Grid>
