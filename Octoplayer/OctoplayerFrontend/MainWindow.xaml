@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OctoplayerFrontend" 
         mc:Ignorable="d"
         Closed="Window_Closed"
-        Title="Octoplayer" Icon="assets\octoplayer-icon.png" Height="1080" Width="1920" FontSize="14" Background="{StaticResource DarkBase}" >
+        Title="Octoplayer" Icon="assets\octoplayer-icon.png" WindowStyle="None" WindowState="Maximized" Height="720" Width="1280" FontSize="14" Background="{StaticResource DarkBase}" >
     <Window.Resources>
         <!--Button Icons-->
         <Path x:Key="PlayIcon" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
@@ -148,6 +148,68 @@
                 </GeometryGroup>
             </Path.Data>
         </Path>
+        <Path x:Key="CloseIcon" Width="16" Height="16" Stroke="White" StrokeThickness="1">
+            <Path.Data>
+                <GeometryGroup>
+                    <LineGeometry StartPoint="0, 0" EndPoint="16, 16"/>
+                    <LineGeometry StartPoint="0, 16" EndPoint="16, 0"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="MinimiseIcon" Data=" M 0, 8 L 16, 8" Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
+        <Canvas x:Key="MaximiseIcon" Width="16" Height="16">
+            <Rectangle Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
+        </Canvas>
+        <Canvas x:Key="RestoreIcon" Width="16" Height="16">
+            <Path StrokeThickness="0.5" Stroke="White">
+                <Path.Data>
+                    <PathGeometry Figures="M 0.25 2.25 V 15.75 H 13.75 V 2.25 Z"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="0.5" Stroke="White">
+                <Path.Data>
+                    <PathGeometry Figures="M 2.25 0.25 V 2.25 H 13.75 V 13.75 h 2 V 0.25 Z"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        
+
+        <!--Menu Icons-->
+        <Canvas x:Key="ArtistMenuIcon" Width="16" Height="16">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-64.06234" Y="-70.183929"/>
+            </Canvas.RenderTransform>
+            <Ellipse Canvas.Left="67.6" Width="8.9" Canvas.Top="70.2" Height="8.9" Fill="{StaticResource OctoOrange}"/>
+            <Path  Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 64.08007 86.153913 c 0 0 8e-6 -5.323784 3.543249 -5.32333 2.763957 3.43e-4 8.858119 0 8.858119 0 0 0 3.543245 0 3.543245 5.32333" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="AlbumMenuIcon" Width="16" Height="16">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-6.0931857" Y="-4.7145665"/>
+            </Canvas.RenderTransform>
+            <Path Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 14.093186 4.7145665 a 8.0000004 8.0000002 0 0 0 -8.0000003 7.9999995 8.0000004 8.0000002 0 0 0 8.0000003 8.000001 8.0000004 8.0000002 0 0 0 8 -8.000001 8.0000004 8.0000002 0 0 0 -8 -7.9999995 z m -0.873047 0.3007824 0.355469 3.1249999 0.265625 2.3378902 a 2.25 2.25 0 0 0 -1.808594 1.33789 L 9.8724826 10.876676 6.9896701 9.6227695 A 7.7500006 7.7499999 0 0 1 13.220139 5.0153489 Z m 0.822266 5.6992191 a 2 2 0 0 1 0.05078 0 2 2 0 0 1 2 1.999999 2 2 0 0 1 -2 2.000001 2 2 0 0 1 -2 -2.000001 2 2 0 0 1 1.949219 -1.999999 z m 2.113281 2.898437 2.160156 0.939453 2.882813 1.253907 a 7.7500007 7.7499999 0 0 1 -6.230469 4.607421 l -0.355469 -3.125001 -0.265625 -2.337891 a 2.25 2.25 0 0 0 1.808594 -1.337889 z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="GenreMenuIcon" Width="16" Height="16">
+            <Ellipse Canvas.Left="2.72" Width="6.1" Canvas.Top="12.73" Height="3.8" Fill="{StaticResource OctoOrange}">
+                <Ellipse.RenderTransform>
+                    <MatrixTransform Matrix="0.98376468 -0.17946324 0.16801018 0.98578526 0 0"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Rectangle Canvas.Left="8.4875946" Canvas.Top="1.090824" Width="0.57419199" Height="12.611949" Fill="{StaticResource OctoOrange}"/>
+            <Path Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 8.5129706 0.07866813 c 0 0 1.7449694 1.98353017 2.9815434 2.90210717 1.139719 0.8466311 1.504555 1.7302068 1.474145 2.7718514 -0.02959 1.0134713 -1.947483 4.5210653 -1.947483 4.5210653 0 0 0.779763 -2.7293221 0.735872 -3.971315 C 11.719354 5.2356502 11.677613 4.2848678 10.324277 3.5979545 8.4983022 2.671143 8.5163212 2.2078424 8.5163212 2.2078424 Z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        
         <!--Value Converters-->
         <local:ListToStringConverter x:Key="ListToStringConverter"/>
         <local:BoolToInvertedBoolConverter x:Key="BoolToInvertedBoolConverter"/>
@@ -193,7 +255,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TrackNumber}" Width="30" FontSize="30" Padding="0" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
+                <TextBlock Text="{Binding TrackNumber, StringFormat={}{0,-3:0}}" FontSize="30" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
                 <Image Source="{Binding Artwork}" Grid.Column="1" Margin="10, 0, 0, 0" Height="100"/>
                 <Grid Grid.Column="2" Margin="10, 0, 0, 0">
                     <Grid.RowDefinitions>
@@ -284,7 +346,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border Background="Transparent">
-                            <ContentPresenter Focusable="False"/>
+                            <ContentPresenter Focusable="False" Margin="{TemplateBinding Padding}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="true">
@@ -328,8 +390,81 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--Custom StackPanel Styling-->
-   
+        <!--Custom Context Menu Styling-->
+        <Style TargetType="ContextMenu">
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkOverlay}" CornerRadius="4" Margin="1" Padding="5, 0">
+                <StackPanel Orientation="Horizontal">
+                    <ContentPresenter Name="icon" ContentSource="Icon" VerticalAlignment="Center"/>
+                    <ContentPresenter ContentSource="Header" Margin="5, 0, 0, 0"/>
+                </StackPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter TargetName="icon" Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkOverlay}" CornerRadius="4" Margin="1" Padding="5, 0">
+                <DockPanel>
+                    <ContentPresenter Name="icon" ContentSource="Icon" DockPanel.Dock="Left" VerticalAlignment="Center" />
+                    <ContentPresenter ContentSource="Header" Margin="5, 0"/>
+                    <Path DockPanel.Dock="Right" Margin="5, 0" VerticalAlignment="Center" Data="M 0 0 L 0 7 L 4 3.5 Z" Fill="{StaticResource OctoOrange}"/>
+                    <Popup Placement="Right" VerticalOffset="-2" IsOpen="{TemplateBinding IsSubmenuOpen}" Focusable="False" PopupAnimation="Fade">
+                        <Border SnapsToDevicePixels="True" Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </Popup>
+                </DockPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter TargetName="icon" Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style TargetType="Menu">
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkBase}" CornerRadius="4" Margin="3" Padding="1">
+                <Grid>
+                    <ContentPresenter ContentSource="Header" Margin="5, 0"/>
+                    <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" Focusable="False" PopupAnimation="Fade">
+                        <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
 
 
 
@@ -407,11 +542,20 @@
     
     
     <DockPanel>
-        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="#808080" Background="#505050">
-            <MenuItem Header="Library">
-                <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
-            </MenuItem>
-        </Menu>
+        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
+            <Menu DockPanel.Dock="Left">
+                <MenuItem Header="Library">
+                    <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
+                </MenuItem>
+            </Menu>
+            <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="MinimizeBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource MinimiseIcon}" Padding="10, 5" Click="MinimiseWindow"/>
+                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource MaximiseIcon}" Padding="10, 5" Click="MaximiseWindow"/>
+                    <Button x:Name="CloseBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource CloseIcon}" Padding="10, 5" Click="CloseWindow"/>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
         <Grid Margin="10" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -423,12 +567,12 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <DockPanel x:Name="GridPlayer">
-                    <Image x:Name="ImgAlbumArt" DockPanel.Dock="Top"/>
-                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" MinWidth="300" Margin="0, 20" Padding="10, 0, 10, 10" Background="{StaticResource DarkOverlay}" CornerRadius="4">
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" MinWidth="300" Padding="10" Background="{StaticResource DarkOverlay}" CornerRadius="4">
                         <StackPanel>
-                            <Label Content="{DynamicResource Title}" HorizontalAlignment="Center" Padding="0" FontSize="20"/>
-                            <Label Content="{DynamicResource Artists}" HorizontalAlignment="Center" Padding="2"/>
-                            <Label Content="{DynamicResource Album}" HorizontalAlignment="Center" Padding="2"/>
+                            <Image x:Name="ImgAlbumArt" DockPanel.Dock="Top" MaxWidth="500"/>
+                            <Label Content="{DynamicResource Title}" HorizontalAlignment="Center" Padding="0, 10, 0, 0" FontSize="20"/>
+                            <Label Content="{DynamicResource Artists}" HorizontalAlignment="Center" Padding="0"/>
+                            <Label Content="{DynamicResource Album}" HorizontalAlignment="Center" Padding="0"/>
                             <StackPanel MinWidth="300" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Remixers:" FontWeight="Bold"/>

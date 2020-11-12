@@ -10,7 +10,7 @@
         <SolidColorBrush x:Key="OctoOrangeTint" Color="#E18A07" Opacity="0.2"/>
         <SolidColorBrush x:Key="DarkBase" Color="#121212"/>
         <SolidColorBrush x:Key="DarkOverlay" Color="#272727"/>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E18A07"/>   
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E18A07" Opacity="0.2"/>
         <!--Custom Label Styling-->
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>

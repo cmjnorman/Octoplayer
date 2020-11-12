@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="assets\icons\**" />
+    <EmbeddedResource Remove="assets\icons\**" />
+    <None Remove="assets\icons\**" />
+    <Page Remove="assets\icons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="assets\artist-icon-reverse.png" />
     <None Remove="assets\octoplayer-icon-dark.png" />
     <None Remove="assets\octoplayer-icon.png" />
   </ItemGroup>
@@ -26,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="assets\artist-icon-reverse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="assets\octoplayer-icon-dark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

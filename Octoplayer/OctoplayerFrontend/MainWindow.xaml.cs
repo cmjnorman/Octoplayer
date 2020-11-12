@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Net.WebSockets;
+using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace OctoplayerFrontend
 {
@@ -376,20 +378,20 @@ namespace OctoplayerFrontend
                     menu.Items.Add(menuItem);
                 }
 
-                menuItem = new MenuItem() { Header = "Go To Album" };
+                menuItem = new MenuItem() { Header = "Go To Album", Icon = (Canvas)this.FindResource("AlbumMenuIcon") };
                 menuItem.Click += GoToAlbum;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Artist" };
+                menuItem = new MenuItem() { Header = "Go To Artist", Icon=(Canvas)this.FindResource("ArtistMenuIcon") };
                 foreach (var artist in track.Artists.Concat(track.Remixers))
                 {
                     var submenuItem = new MenuItem() { Header = artist.Name };
                     submenuItem.Click += GoToArtist;
-                    menuItem.Items.Add(submenuItem);
+                    menuItem.Items.Add(submenuItem); 
                 }
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Genre" };
+                menuItem = new MenuItem() { Header = "Go To Genre", Icon = (Canvas)this.FindResource("GenreMenuIcon") };
                 foreach (var genre in track.Genres)
                 {
                     var submenuItem = new MenuItem() { Header = genre.Name };
@@ -643,6 +645,39 @@ namespace OctoplayerFrontend
             if (((ListBox)sender).SelectedItem != null) OpenContextMenu((ListBoxItem)((ListBox)sender).ItemContainerGenerator.ContainerFromItem(((ListBox)sender).SelectedItem));
         }
 
+        private void MinimiseWindow(object sender, EventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void MaximiseWindow(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                
+            }
+            else if (this.WindowState == WindowState.Normal)
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if(this.WindowState == WindowState.Maximized) MaximizeRestoreBtn.Content = (Canvas)this.FindResource("RestoreIcon");
+            else MaximizeRestoreBtn.Content = (Canvas)this.FindResource("MaximiseIcon");
+        }
+
+        private void CloseWindow(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed) this.DragMove();
+        }
 
         private void Window_Closed(object sender, EventArgs e)
         {
