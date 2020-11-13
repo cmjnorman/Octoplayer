@@ -1,0 +1,687 @@
+﻿<Window x:Class="OctoplayerFrontend.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OctoplayerFrontend" 
+        mc:Ignorable="d"
+        Closed="Window_Closed"
+        Title="Octoplayer" Icon="assets\octoplayer-icon.png" WindowStyle="None" WindowState="Maximized" Height="720" Width="1280" FontSize="14" Background="{StaticResource DarkBase}" >
+    <Window.Resources>
+        <!--Button Icons-->
+        <Path x:Key="PlayIcon" Data="M 5,2 L 5,48 L 45,25 L 5,2 L 5,25"  Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        <Path x:Key="PauseIcon" Width="50" Height="50" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <RectangleGeometry Rect="5,2,12,46"/>
+                    <RectangleGeometry Rect="33,2,12,46"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="PreviousIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="29,2.5" IsClosed="True" IsFilled="true">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="29,27.5"/>
+                                    <LineSegment Point="7,15"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <RectangleGeometry Rect="1,2,6,26"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="NextIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1,2.5" IsClosed="True" IsFilled="true">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="1,27.5"/>
+                                    <LineSegment Point="23,15"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <RectangleGeometry Rect="23,2,6,26"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="ShuffleIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="3,6" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <BezierSegment Point1="12, 6" Point2="12, 21" Point3="21, 21"/>
+                                    <LineSegment Point="21, 24"/>
+                                    <BezierSegment Point1="12, 24" Point2="12, 9" Point3="3, 9"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="3,24" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <BezierSegment Point1="12, 24" Point2="12, 9" Point3="21, 9"/>
+                                    <LineSegment Point="21, 6"/>
+                                    <BezierSegment Point1="12, 6" Point2="12, 21" Point3="3, 21"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="21,4" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="26, 7.5"/>
+                                    <LineSegment Point="21, 11"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="21,19" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <PathSegmentCollection>
+                                    <LineSegment Point="26, 22.5"/>
+                                    <LineSegment Point="21, 26"/>
+                                </PathSegmentCollection>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="LoopIcon" Width="30" Height="30" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry>
+                        <PathFigure StartPoint="4, 13" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <LineSegment Point="4, 9"/>
+                                <BezierSegment Point1="4, 6.5" Point2="6.5, 4" Point3="9,4"/>
+                                <LineSegment Point="21, 4"/>
+                                <BezierSegment Point1="23.5, 4" Point2="26, 6.5" Point3="26, 9"/>
+                                <LineSegment Point="23, 9"/>
+                                <BezierSegment Point1="23, 8" Point2="22, 7" Point3="21, 7"/>
+                                <LineSegment Point="9, 7"/>
+                                <BezierSegment Point1="8,7" Point2="7,8" Point3="7, 9"/>
+                                <LineSegment Point="7, 13"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="4, 21" IsClosed="True" IsFilled="True">
+                            <PathFigure.Segments>
+                                <BezierSegment Point1="4, 23.5" Point2="6.5, 26" Point3="9, 26"/>
+                                <LineSegment Point="21, 26"/>
+                                <BezierSegment Point1="23.5, 26" Point2="26, 23.5" Point3="26, 21"/>
+                                <LineSegment Point="26, 17"/>
+                                <LineSegment Point="23, 17"/>
+                                <LineSegment Point="23, 21"/>
+                                <BezierSegment Point1="23, 22" Point2="22, 23" Point3="21, 23"/>
+                                <LineSegment Point="9, 23"/>
+                                <BezierSegment Point1="8, 23" Point2="7, 22" Point3="7, 21"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="2, 21" IsClosed="True" IsFilled="True">
+                            <LineSegment Point="5.5, 16"/>
+                            <LineSegment Point="9, 21"/>
+                        </PathFigure>
+                    </PathGeometry>
+                    <PathGeometry>
+                        <PathFigure StartPoint="21, 9" IsClosed="True" IsFilled="True">
+                            <LineSegment Point="24.5, 14"/>
+                            <LineSegment Point="28, 9"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <Path x:Key="MinimiseIcon" Data=" M 0, 8 L 16, 8" Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
+        <Canvas x:Key="MaximiseIcon" Width="16" Height="16">
+            <Rectangle Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
+        </Canvas>
+        <Canvas x:Key="RestoreIcon" Width="16" Height="16">
+            <Path StrokeThickness="1" Stroke="White">
+                <Path.Data>
+                    <PathGeometry Figures="M 0.25 2.25 V 15.75 H 13.75 V 2.25 Z"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="White">
+                <Path.Data>
+                    <PathGeometry Figures="M 2.25 0.25 V 2.25 H 13.75 V 13.75 h 2 V 0.25 Z"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Path x:Key="CloseIcon" Width="16" Height="16" Stroke="White" StrokeThickness="1">
+            <Path.Data>
+                <GeometryGroup>
+                    <LineGeometry StartPoint="0, 0" EndPoint="16, 16"/>
+                    <LineGeometry StartPoint="0, 16" EndPoint="16, 0"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+        <!--Menu Icons-->
+        <Canvas x:Key="ArtistMenuIcon" x:Shared="False" Width="16" Height="16">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-64.06234" Y="-70.183929"/>
+            </Canvas.RenderTransform>
+            <Ellipse Canvas.Left="67.6" Width="8.9" Canvas.Top="70.2" Height="8.9" Fill="{StaticResource OctoOrange}"/>
+            <Path  Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 64.08007 86.153913 c 0 0 8e-6 -5.323784 3.543249 -5.32333 2.763957 3.43e-4 8.858119 0 8.858119 0 0 0 3.543245 0 3.543245 5.32333" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="AlbumMenuIcon" x:Shared="False" Width="16" Height="16">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="-6.0931857" Y="-4.7145665"/>
+            </Canvas.RenderTransform>
+            <Path Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 14.093186 4.7145665 a 8.0000004 8.0000002 0 0 0 -8.0000003 7.9999995 8.0000004 8.0000002 0 0 0 8.0000003 8.000001 8.0000004 8.0000002 0 0 0 8 -8.000001 8.0000004 8.0000002 0 0 0 -8 -7.9999995 z m -0.873047 0.3007824 0.355469 3.1249999 0.265625 2.3378902 a 2.25 2.25 0 0 0 -1.808594 1.33789 L 9.8724826 10.876676 6.9896701 9.6227695 A 7.7500006 7.7499999 0 0 1 13.220139 5.0153489 Z m 0.822266 5.6992191 a 2 2 0 0 1 0.05078 0 2 2 0 0 1 2 1.999999 2 2 0 0 1 -2 2.000001 2 2 0 0 1 -2 -2.000001 2 2 0 0 1 1.949219 -1.999999 z m 2.113281 2.898437 2.160156 0.939453 2.882813 1.253907 a 7.7500007 7.7499999 0 0 1 -6.230469 4.607421 l -0.355469 -3.125001 -0.265625 -2.337891 a 2.25 2.25 0 0 0 1.808594 -1.337889 z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="GenreMenuIcon" x:Shared="False" Width="16" Height="16">
+            <Ellipse Canvas.Left="2.72" Width="6.1" Canvas.Top="12.73" Height="3.8" Fill="{StaticResource OctoOrange}">
+                <Ellipse.RenderTransform>
+                    <MatrixTransform Matrix="0.98376468 -0.17946324 0.16801018 0.98578526 0 0"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Rectangle Canvas.Left="8.4875946" Canvas.Top="1.090824" Width="0.57419199" Height="12.611949" Fill="{StaticResource OctoOrange}"/>
+            <Path Fill="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 8.5129706 0.07866813 c 0 0 1.7449694 1.98353017 2.9815434 2.90210717 1.139719 0.8466311 1.504555 1.7302068 1.474145 2.7718514 -0.02959 1.0134713 -1.947483 4.5210653 -1.947483 4.5210653 0 0 0.779763 -2.7293221 0.735872 -3.971315 C 11.719354 5.2356502 11.677613 4.2848678 10.324277 3.5979545 8.4983022 2.671143 8.5163212 2.2078424 8.5163212 2.2078424 Z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="PlayNextIcon" Width="16" Height="16">
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 2.5 0.5 v 5"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 0 3 H 5"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 0 8 H 16"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 0.001942 13.060816 15.996116 -0.06082"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 6 3 H 16"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas x:Key="AddToQueueIcon" Width="16" Height="16">
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="m 2.5 10.5 v 5"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 0 13 H 5"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 16 8 H 0"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 15.998058 2.9999964 0.001942 3.0608154"/>
+                </Path.Data>
+            </Path>
+            <Path StrokeThickness="1" Stroke="{StaticResource OctoOrange}">
+                <Path.Data>
+                    <PathGeometry Figures="M 6 13 H 16"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <!--Value Converters-->
+        <local:ListToStringConverter x:Key="ListToStringConverter"/>
+        <local:BoolToInvertedBoolConverter x:Key="BoolToInvertedBoolConverter"/>
+        <!--Track Data-->
+        <TextBlock x:Key="Title"/>
+        <TextBlock x:Key="Album"/>
+        <TextBlock x:Key="Artists"/>
+        <TextBlock x:Key="TrackInfo"/>
+        <TextBlock x:Key="DiscInfo"/>
+        <TextBlock x:Key="Remixers"/>
+        <TextBlock x:Key="Year"/>
+        <TextBlock x:Key="Rating"/>
+        <TextBlock x:Key="Genres"/>
+        <TextBlock x:Key="BPM"/>
+        <TextBlock x:Key="Key"/>
+        <!--Item Templates-->
+        <DataTemplate x:Key="TrackAndAlbumBrowserItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding Artwork}" Height="100"/>
+                <StackPanel Margin="10, 0, 0, 0">
+                    <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                    <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                    <TextBlock Text="{Binding Album}" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ArtistAndGenreBrowserItemTemplate">
+            <TextBlock Text="{Binding Name}" FontSize="20" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="AlbumTrackBrowserItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding TrackNumber, StringFormat={}{0,-3:0}}" FontSize="30" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
+                <StackPanel Margin="10, 0, 0, 0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="QueueItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding RelativePosition, StringFormat={}{0,-5:0}}" FontSize="30" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding Title}" FontSize="20" Padding="0"  Foreground="{StaticResource OctoOrange}"/>
+                    <TextBlock Text="{Binding Artists}" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <StackPanel x:Key="AlbumHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Image Source="{Binding Artwork}" Height="300"/>
+            <StackPanel Margin="20">
+                <TextBlock Text="{Binding Title}" FontSize="40" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" FontSize="25" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel x:Key="GenreHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Viewbox Child="{StaticResource GenreMenuIcon}" Height="100"/>
+            <TextBlock Text="{Binding Name}" FontSize="40" Padding="0" Margin="20" Foreground="{StaticResource OctoOrange}"/>
+        </StackPanel>
+        <StackPanel x:Key="ArtistHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Viewbox Child="{StaticResource ArtistMenuIcon}" Height="100"/>
+            <TextBlock Text="{Binding Name}" FontSize="40" Padding="0" Margin="20" Foreground="{StaticResource OctoOrange}"/>
+        </StackPanel>
+        <!--Custom Listbox Styling-->
+        <Style x:Key="LibraryBrowserItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="border" Background="{StaticResource DarkOverlay}" BorderThickness="1" BorderBrush="{StaticResource DarkBase}" CornerRadius="4" Padding="2, 2">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource OctoOrangeTint}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--Custom SearchBar Styling-->
+        <TextBox x:Key="SearchPromptText" BorderThickness="0" Width="10000" Height="500" FontSize="20" VerticalContentAlignment="Center" Foreground="Gray" Padding="5, 0, 0, 0" FontStyle="Italic"/>
+        <Style x:Key="LibrarySearchBar" TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="5, 0, 0, 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Margin="5, 0">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <VisualBrush Stretch="None" AlignmentX="Left" AlignmentY="Center" Visual="{DynamicResource SearchPromptText}"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--Custom Button Styling-->
+        <Style x:Key="TransparentToggle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="Transparent">
+                            <ContentPresenter Focusable="False"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TransparentButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="Transparent">
+                            <ContentPresenter Focusable="False" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="QueueToggle" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" MinWidth="300" HorizontalAlignment="Center" CornerRadius="4">
+                            <StackPanel Margin="5, 10" >
+                                <Path x:Name="arrow" Width="8" Height="6" Data="M 0,6 L 4,0 L 8,6" Stroke="Black"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Up Next:" FontWeight="Bold" VerticalAlignment="Center" Foreground="Black"/>
+                                    <StackPanel VerticalAlignment="Center" Margin="5, 0">
+                                        <TextBlock Text="{Binding Content.Track.Title, RelativeSource={RelativeSource AncestorType=ToggleButton}}" FontSize="20"/>
+                                        <TextBlock Text="{Binding Content.Track.Artists, RelativeSource={RelativeSource AncestorType=ToggleButton}, Converter={StaticResource ListToStringConverter}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource OctoOrangeHighlight}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="arrow" Property="Data" Value="M 0,0 L 4,6 L 8,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--Custom Context Menu Styling-->
+        <Style TargetType="ContextMenu">
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkOverlay}" CornerRadius="4" Margin="1" Padding="5, 0">
+                <StackPanel Orientation="Horizontal">
+                    <ContentPresenter ContentSource="Icon" VerticalAlignment="Center"/>
+                    <ContentPresenter ContentSource="Header" Margin="5, 0, 0, 0"/>
+                </StackPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkOverlay}" CornerRadius="4" Margin="1" Padding="5, 0">
+                <DockPanel>
+                    <ContentPresenter ContentSource="Icon" DockPanel.Dock="Left" VerticalAlignment="Center" />
+                    <ContentPresenter ContentSource="Header" Margin="5, 0"/>
+                    <Path DockPanel.Dock="Right" Margin="5, 0" VerticalAlignment="Center" Data="M 0 0 L 0 7 L 4 3.5 Z" Fill="{StaticResource OctoOrange}"/>
+                    <Popup Placement="Right" VerticalOffset="-2" IsOpen="{TemplateBinding IsSubmenuOpen}" Focusable="False" PopupAnimation="Fade">
+                        <Border SnapsToDevicePixels="True" Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </Popup>
+                </DockPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style TargetType="Menu">
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="MenuItem">
+            <Border Name="border" Background="{StaticResource DarkBase}" CornerRadius="4" Margin="3" Padding="1">
+                <Grid>
+                    <ContentPresenter ContentSource="Header" Margin="5, 0"/>
+                    <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" Focusable="False" PopupAnimation="Fade">
+                        <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{StaticResource DarkBase}" CornerRadius="4" Padding="1">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="border" Property="Background" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+
+
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border BorderThickness="1" BorderBrush="{StaticResource DarkOverlay}" Background="{StaticResource OctoOrangeTint}" Height="5"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="{StaticResource DarkOverlay}" Background="{StaticResource OctoOrange}" Height="5"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Height="20" Width="20" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" StrokeThickness="1"></Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="TrackSlider" TargetType="Slider">
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template" Value="{StaticResource Slider}" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    
+    
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
+            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon-transparent.png" Height="45" Margin="2"/>
+            <Menu DockPanel.Dock="Left" VerticalAlignment="Center">
+                <MenuItem Header="Library">
+                    <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7">
+                <Button x:Name="MinimizeBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource MinimiseIcon}" Height="40" Width="40" Click="MinimiseWindow"/>
+                <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource RestoreIcon}" Height="40" Width="40" Click="MaximiseWindow"/>
+                <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" Height="40" Width="40" Click="CloseWindow"/>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel>
+            <StackPanel x:Name="GridControls" DockPanel.Dock="Bottom" Margin="10" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ToggleButton x:Name="ShuffleToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource ShuffleIcon}" Width="30" Click="ShuffleToggle_Changed"/>
+                    <Button x:Name="BtnPrevious" Style="{StaticResource TransparentButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
+                    <Button x:Name="BtnPlayPause" Style="{StaticResource TransparentButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
+                    <Button x:Name="BtnNext" Style="{StaticResource TransparentButton}" Content="{StaticResource NextIcon}" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
+                    <ToggleButton x:Name="LoopToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource LoopIcon}" Width="30" Click="LoopToggle_Changed"/>
+                </StackPanel>
+                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
+                <Label x:Name="LabelTrackTime" Content="" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
+            </StackPanel>
+            <Grid x:Name="GridPlayer" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" MinWidth="300" Padding="10" Background="{StaticResource DarkOverlay}" CornerRadius="4">
+                        <StackPanel>
+                            <Image x:Name="ImgAlbumArt" DockPanel.Dock="Top" MaxWidth="500"/>
+                            <Label Content="{DynamicResource Title}" HorizontalAlignment="Center" Padding="0, 10, 0, 0" FontSize="20"/>
+                            <Label Content="{DynamicResource Artists}" HorizontalAlignment="Center" Padding="0"/>
+                            <Label Content="{DynamicResource Album}" HorizontalAlignment="Center" Padding="0"/>
+                            <StackPanel MinWidth="300" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Remixers:" FontWeight="Bold"/>
+                                    <Label x:Name="RemixersInfo" Content="{DynamicResource Remixers}"/>
+                                    <!--Collapse StackPanel when Remixers property is empty-->
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Content.Text, ElementName=RemixersInfo}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                </StackPanel>
+                                <DockPanel>
+                                    <Label Content="Track:" DockPanel.Dock="Left" FontWeight="Bold"/>
+                                    <Label Content="{DynamicResource TrackInfo}" DockPanel.Dock="Left"/>
+                                    <Label Content="{DynamicResource DiscInfo}" DockPanel.Dock="Right"/>
+                                    <Label Content="Disc:" DockPanel.Dock="Right" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                </DockPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Genre(s):" FontWeight="Bold"/>
+                                    <Label Content="{DynamicResource Genres}"/>
+                                </StackPanel>
+                                <DockPanel>
+                                    <Label Content="Year:" DockPanel.Dock="Left" FontWeight="Bold"/>
+                                    <Label Content="{DynamicResource Year}" DockPanel.Dock="Left"/>
+                                    <Label Content="{DynamicResource Rating}" DockPanel.Dock="Right"/>
+                                    <Label Content="Rating:" DockPanel.Dock="Right" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <Label Content="Bpm:" DockPanel.Dock="Left" FontWeight="Bold"/>
+                                    <Label Content="{DynamicResource BPM}" DockPanel.Dock="Left"/>
+                                    <Label Content="{DynamicResource Key}"  DockPanel.Dock="Right"/>
+                                    <Label Content="Key:"  DockPanel.Dock="Right" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <ToggleButton x:Name="QueueToggle" Style="{DynamicResource QueueToggle}" DockPanel.Dock="Bottom" IsHitTestVisible="{Binding ElementName=QueuePopup, Path=IsOpen, Converter={StaticResource BoolToInvertedBoolConverter}}" Click="QueueToggle_Click"/>
+                    <Popup x:Name="QueuePopup" Placement="Top" HorizontalOffset="50" Width="400" MaxHeight="700" PlacementTarget="{Binding ElementName=QueueToggle}" IsOpen="{Binding ElementName=QueueToggle, Path=IsChecked}" StaysOpen="False">
+                        <ListBox x:Name="QueueListBox" ItemContainerStyle="{StaticResource LibraryBrowserItemStyle}" ItemTemplate="{StaticResource QueueItemTemplate}" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="QueueListBox_MouseDoubleClick" MouseRightButtonUp="ListBoxRightClick"/>
+                    </Popup>
+                </DockPanel>
+                <Grid x:Name="LibraryBrowser" Grid.Column="1" Margin="10, 0, 0, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BtnViewTracks" Style="{StaticResource RoundedButton}" Content="Tracks" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewAlbums" Style="{StaticResource RoundedButton}" Grid.Column="1" Content="Albums" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewArtists" Style="{StaticResource RoundedButton}" Grid.Column="2" Content="Artists" Margin="5, 0" Click="SelectBrowserView"/>
+                        <Button x:Name="BtnViewGenres" Style="{StaticResource RoundedButton}" Grid.Column="3" Content="Genres" Margin="5, 0" Click="SelectBrowserView"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
+</Window>

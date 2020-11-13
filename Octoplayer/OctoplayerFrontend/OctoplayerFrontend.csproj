@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>OctoplayerFrontend</RootNamespace>
+    <UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="assets\icons\**" />
+    <EmbeddedResource Remove="assets\icons\**" />
+    <None Remove="assets\icons\**" />
+    <Page Remove="assets\icons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="assets\artist-icon-reverse.png" />
+    <None Remove="assets\octoplayer-icon-dark.png" />
+    <None Remove="assets\octoplayer-icon-transparent-dark.png" />
+    <None Remove="assets\octoplayer-icon-transparent.png" />
+    <None Remove="assets\octoplayer-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TagLibSharp" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OctoplayerBackend\OctoplayerBackend.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\netcoreapp3.1\assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\octoplayer-icon-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\octoplayer-icon-transparent-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\octoplayer-icon-transparent.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\octoplayer-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

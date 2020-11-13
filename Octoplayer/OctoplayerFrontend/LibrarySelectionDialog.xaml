@@ -1,0 +1,63 @@
+﻿<Window x:Class="OctoplayerFrontend.LibrarySelectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OctoplayerFrontend"
+        mc:Ignorable="d"
+        Title="Select Library" Height="800" Width="1000" WindowStyle="None" ResizeMode="NoResize" Background="{StaticResource DarkBase}">
+    <Window.Resources>
+        <Style x:Key="FolderTreeViewer" TargetType="TreeView">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeView">
+                        <Border Background="{StaticResource DarkOverlay}" Padding="0, 20" CornerRadius="4">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DataContext.IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
+                    <Setter Property="IsExpanded" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <HierarchicalDataTemplate x:Key="TreeViewToggleItemTemplate" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" Focusable="False"/>
+                <ContentPresenter Content="{Binding Header}" Margin="2, 0"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <Path x:Key="CloseIcon" Width="16" Height="16" Stroke="White" StrokeThickness="1">
+            <Path.Data>
+                <GeometryGroup>
+                    <LineGeometry StartPoint="0, 0" EndPoint="16, 16"/>
+                    <LineGeometry StartPoint="0, 16" EndPoint="16, 0"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+    </Window.Resources>
+    
+    
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
+            <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="30" Height="30" Margin="7" Click="CloseWindow"/>
+        </DockPanel>
+            <DockPanel DockPanel.Dock="Top" Margin="10">
+            <Button Style="{StaticResource RoundedButton}" Content="Select Library Location" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="SelectFolder"/>
+            <Label Content="Select Library Folders..." DockPanel.Dock="Top"  Foreground="{StaticResource OctoOrange}"/>
+            <DockPanel DockPanel.Dock="Bottom" Margin="0, 20, 0, 0">
+                <Button Style="{StaticResource RoundedButton}" Content="Confirm" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="Confirm"/>
+                <Button Style="{StaticResource RoundedButton}" Content="Cancel" DockPanel.Dock="Left" HorizontalAlignment="Left" Click="CloseWindow"/>
+            </DockPanel>
+            <TreeView x:Name="FolderViewer" Style="{StaticResource FolderTreeViewer}" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}" ItemContainerStyle="{StaticResource TreeViewItemStyle}"/>
+        </DockPanel>
+    </DockPanel>
+</Window>

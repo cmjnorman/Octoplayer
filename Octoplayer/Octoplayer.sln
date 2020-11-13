@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoplayerFrontend", "OctoplayerFrontend\OctoplayerFrontend.csproj", "{217F6899-2CFD-441C-9682-1FC8995ECA52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoplayerBackend", "OctoplayerBackend\OctoplayerBackend.csproj", "{ABDA27E2-296F-45FF-9983-3E4B6D57724B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{217F6899-2CFD-441C-9682-1FC8995ECA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217F6899-2CFD-441C-9682-1FC8995ECA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217F6899-2CFD-441C-9682-1FC8995ECA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217F6899-2CFD-441C-9682-1FC8995ECA52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABDA27E2-296F-45FF-9983-3E4B6D57724B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDA27E2-296F-45FF-9983-3E4B6D57724B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABDA27E2-296F-45FF-9983-3E4B6D57724B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABDA27E2-296F-45FF-9983-3E4B6D57724B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F919408-688D-45F6-83BF-C24E897BA40B}
+	EndGlobalSection
+EndGlobal
