@@ -6,6 +6,8 @@
     <RootNamespace>OctoplayerFrontend</RootNamespace>
     <UseWPF>true</UseWPF>
 	<UseWindowsForms>true</UseWindowsForms>
+	<ApplicationIcon>octoplayer-icon.ico</ApplicationIcon>
+	<AssemblyName>Octoplayer</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
