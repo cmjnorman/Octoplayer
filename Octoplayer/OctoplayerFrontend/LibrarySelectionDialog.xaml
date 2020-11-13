@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OctoplayerFrontend"
         mc:Ignorable="d"
-        Title="Select Library" Height="800" Width="1000" WindowStyle="None" ResizeMode="NoResize" Background="{StaticResource DarkBase}">
+        Title="Select Library" Height="800" Width="1000" WindowStyle="None" Background="{StaticResource DarkBase}">
     <Window.Resources>
         <Style x:Key="FolderTreeViewer" TargetType="TreeView">
             <Setter Property="Template">
@@ -50,7 +50,7 @@
         <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
             <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="30" Height="30" Margin="7" Click="CloseWindow"/>
         </DockPanel>
-            <DockPanel DockPanel.Dock="Top" Margin="10">
+        <DockPanel DockPanel.Dock="Top" Margin="10">
             <Button Style="{StaticResource RoundedButton}" Content="Select Library Location" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="SelectFolder"/>
             <Label Content="Select Library Folders..." DockPanel.Dock="Top"  Foreground="{StaticResource OctoOrange}"/>
             <DockPanel DockPanel.Dock="Bottom" Margin="0, 20, 0, 0">
@@ -60,4 +60,7 @@
             <TreeView x:Name="FolderViewer" Style="{StaticResource FolderTreeViewer}" ItemTemplate="{StaticResource TreeViewToggleItemTemplate}" ItemContainerStyle="{StaticResource TreeViewItemStyle}"/>
         </DockPanel>
     </DockPanel>
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
 </Window>
