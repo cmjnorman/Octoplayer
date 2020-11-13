@@ -36,11 +36,16 @@ namespace OctoplayerFrontend
             browserPages = new Stack<Grid>();
             GridPlayer.Visibility = Visibility.Hidden;
             LibraryBrowser.Visibility = Visibility.Hidden;
-            if (library.Tracks.Count > 0)
+            var loaded = library.LoadLibrary();
+            if (loaded && library.Tracks.Count > 0)
             {
                 LibraryBrowser.Visibility = Visibility.Visible;
                 ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Tracks...";
                 OpenBrowserPage(library.Tracks, library);
+            }
+            else
+            {
+                Loaded += OpenLibrarySelectionDialog;
             }
         }
 

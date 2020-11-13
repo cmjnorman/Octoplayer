@@ -21,7 +21,6 @@ namespace OctoplayerBackend
             this.Albums = new List<Album>();
             this.Genres = new List<Genre>();
             this.libraryFolders = new List<string>();
-            LoadLibrary();
         }
 
         public Library(List<string> files, List<string> libraryFolders) 
@@ -127,24 +126,30 @@ namespace OctoplayerBackend
             document.Save("library.xml");
         }
 
-        public void LoadLibrary()
+        public bool LoadLibrary()
         {
-            var folders = XDocument.Load("library.xml").Element("Library").Element("LibraryFolders").Elements("FolderPath");
-            foreach(var folder in folders)
+            try
             {
-                this.libraryFolders.Add(folder.Value);
-            }
+                var folders = XDocument.Load("library.xml").Element("Library").Element("LibraryFolders").Elements("FolderPath");
+                foreach (var folder in folders)
+                {
+                    this.libraryFolders.Add(folder.Value);
+                }
 
-            var tracks = XDocument.Load("library.xml").Element("Library").Element("Tracks").Elements("Track");
-            foreach (var track in tracks)
-            {
-                this.Tracks.Add(new Track(track.Element("FilePath").Value,
-                                    track.Element("Title").Value,
-                                    Double.Parse(track.Element("Rating").Value),
-                                    UInt32.Parse(track.Element("PlayCount").Value),
-                                    DateTime.Parse(track.Element("LastPlayed").Value),
-                                    this));
+                var tracks = XDocument.Load("library.xml").Element("Library").Element("Tracks").Elements("Track");
+                foreach (var track in tracks)
+                {
+                    this.Tracks.Add(new Track(track.Element("FilePath").Value,
+                                        track.Element("Title").Value,
+                                        Double.Parse(track.Element("Rating").Value),
+                                        UInt32.Parse(track.Element("PlayCount").Value),
+                                        DateTime.Parse(track.Element("LastPlayed").Value),
+                                        this));
+                    return true;
+                }
             }
+            catch (Exception) { }
+            return false;
         }
     }
 }
