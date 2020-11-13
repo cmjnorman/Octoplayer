@@ -1,7 +1,7 @@
 ![Octoplayer Logo](ReadmeAssets/octoplayer-full-logo.png)
 
 # Octoplayer
-A dark theme fullscreen music player. Currently upports .wav .mp3 and .flac file types.
+A dark theme fullscreen music player. Currently supports .wav .mp3 and .flac file types.
 
 
 ## Screenshots
@@ -15,7 +15,7 @@ Browse by track, album, artist, or genre
 
 
 ![Playing Queue](ReadmeAssets/screenshot-playing-queue.png)
-View and manage the playing queue to control what tracks are played next
+View and manage the playing queue to control which tracks are played next
 
 
 ![Library Search](ReadmeAssets/screenshot-search.png)
