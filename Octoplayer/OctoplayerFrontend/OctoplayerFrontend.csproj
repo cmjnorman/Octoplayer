@@ -18,6 +18,8 @@
   <ItemGroup>
     <None Remove="assets\artist-icon-reverse.png" />
     <None Remove="assets\octoplayer-icon-dark.png" />
+    <None Remove="assets\octoplayer-icon-transparent-dark.png" />
+    <None Remove="assets\octoplayer-icon-transparent.png" />
     <None Remove="assets\octoplayer-icon.png" />
   </ItemGroup>
 
@@ -35,6 +37,12 @@
 
   <ItemGroup>
     <Resource Include="assets\octoplayer-icon-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\octoplayer-icon-transparent-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\octoplayer-icon-transparent.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="assets\octoplayer-icon.png">

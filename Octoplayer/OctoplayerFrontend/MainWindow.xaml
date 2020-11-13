@@ -261,7 +261,6 @@
                 </Path.Data>
             </Path>
         </Canvas>
-
         <!--Value Converters-->
         <local:ListToStringConverter x:Key="ListToStringConverter"/>
         <local:BoolToInvertedBoolConverter x:Key="BoolToInvertedBoolConverter"/>
@@ -386,7 +385,7 @@
                                 <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter Property="Foreground" Value="#553300"/>
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -405,7 +404,24 @@
                                 <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="#553300"/>
+                                <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TransparentHighlightableButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter Focusable="False" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource OctoOrangeTint}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -491,7 +507,7 @@
         <Style TargetType="Menu">
             <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="20"/>
         </Style>
         <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="MenuItem">
             <Border Name="border" Background="{StaticResource DarkBase}" CornerRadius="4" Margin="3" Padding="1">
@@ -522,7 +538,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RepeatButton">
-                        <Border BorderThickness="1" BorderBrush="#2F2F2F" Background="#553300" Height="5"/>
+                        <Border BorderThickness="1" BorderBrush="{StaticResource DarkOverlay}" Background="{StaticResource OctoOrangeTint}" Height="5"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -533,7 +549,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RepeatButton">
-                        <Border SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="#2F2F2F" Background="{StaticResource OctoOrange}" Height="5"/>
+                        <Border SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="{StaticResource DarkOverlay}" Background="{StaticResource OctoOrange}" Height="5"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -579,7 +595,7 @@
                     <Setter Property="Foreground" Value="{StaticResource OctoOrange}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="#553300"/>
+                    <Setter Property="Foreground" Value="{StaticResource OctoOrangeTint}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -588,17 +604,18 @@
     
     
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
-            <Menu DockPanel.Dock="Left">
+        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}" Margin="10, 5, 10, 0">
+            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon-transparent.png" Height="50"/>
+            <Menu DockPanel.Dock="Left" VerticalAlignment="Center">
                 <MenuItem Header="Library">
                     <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
                 </MenuItem>
             </Menu>
             <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="MinimizeBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource MinimiseIcon}" Padding="10, 5" Click="MinimiseWindow"/>
-                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource RestoreIcon}" Padding="10, 5" Click="MaximiseWindow"/>
-                    <Button x:Name="CloseBtn" Style="{StaticResource TransparentButton}" Content="{StaticResource CloseIcon}" Padding="10, 5" Click="CloseWindow"/>
+                    <Button x:Name="MinimizeBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource MinimiseIcon}" Padding="10, 5" Click="MinimiseWindow"/>
+                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource RestoreIcon}" Padding="10, 5" Click="MaximiseWindow"/>
+                    <Button x:Name="CloseBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource CloseIcon}" Padding="10, 5" Click="CloseWindow"/>
                 </StackPanel>
             </Grid>
         </DockPanel>
