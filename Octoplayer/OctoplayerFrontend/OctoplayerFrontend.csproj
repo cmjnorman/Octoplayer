@@ -34,9 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\artist-icon-reverse.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="assets\octoplayer-icon-dark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

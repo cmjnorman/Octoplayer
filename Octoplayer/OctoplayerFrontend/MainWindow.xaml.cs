@@ -95,7 +95,8 @@ namespace OctoplayerFrontend
                 ItemsSource = items,
                 ItemContainerStyle = (Style)this.FindResource("LibraryBrowserItemStyle"),
                 Background = Brushes.Transparent,
-                BorderThickness = new Thickness(0)
+                BorderThickness = new Thickness(0),
+                Margin = new Thickness(5, 0, 5, 0)
             };
             list.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             list.MouseDoubleClick += SelectBrowserItem;
@@ -369,12 +370,12 @@ namespace OctoplayerFrontend
 
                 if (track != player.Queue.CurrentTrack)
                 {
-                    menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                    menuItem = new MenuItem() { Header = "Play Next", Icon = (Canvas)this.FindResource("PlayNextIcon") };
                     menuItem.Click += AddTrackToFront;
                     menu.Items.Add(menuItem);
 
-                    menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
-                    menuItem.Click += AddTrackToBack;
+                    menuItem = new MenuItem() { Header = "Add To Queue", Icon = (Canvas)this.FindResource("AddToQueueIcon") };
+                    menuItem.Click += AddTrackToBack; 
                     menu.Items.Add(menuItem);
                 }
 
@@ -416,11 +417,11 @@ namespace OctoplayerFrontend
                     menu.Items.Add(menuItem);
                 }
 
-                menuItem = new MenuItem() { Header = "Go To Album" };
+                menuItem = new MenuItem() { Header = "Go To Album", Icon = (Canvas)this.FindResource("AlbumMenuIcon") };
                 menuItem.Click += GoToAlbum;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Artist" };
+                menuItem = new MenuItem() { Header = "Go To Artist", Icon = (Canvas)this.FindResource("ArtistMenuIcon") };
                 foreach (var artist in track.Artists.Concat(track.Remixers))
                 {
                     var submenuItem = new MenuItem() { Header = artist.Name };
@@ -429,7 +430,7 @@ namespace OctoplayerFrontend
                 }
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Genre" };
+                menuItem = new MenuItem() { Header = "Go To Genre", Icon = (Canvas)this.FindResource("GenreMenuIcon") };
                 foreach (var genre in track.Genres)
                 {
                     var submenuItem = new MenuItem() { Header = genre.Name };
@@ -443,15 +444,15 @@ namespace OctoplayerFrontend
             {
                 var album = (Album)item.Content;
 
-                menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                menuItem = new MenuItem() { Header = "Play Next", Icon = (Canvas)this.FindResource("PlayNextIcon") };
                 menuItem.Click += AddTracksToFront;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
+                menuItem = new MenuItem() { Header = "Add To Queue", Icon = (Canvas)this.FindResource("AddToQueueIcon") };
                 menuItem.Click += AddTracksToBack;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Artist" };
+                menuItem = new MenuItem() { Header = "Go To Artist", Icon = (Canvas)this.FindResource("ArtistMenuIcon") };
                 foreach (var artist in album.Artists)
                 {
                     var submenuItem = new MenuItem() { Header = artist.Name };
@@ -460,7 +461,7 @@ namespace OctoplayerFrontend
                 }
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Go To Genre" };
+                menuItem = new MenuItem() { Header = "Go To Genre", Icon = (Canvas)this.FindResource("GenreMenuIcon") };
                 foreach (var genre in album.Tracks.SelectMany(t => t.Genres))
                 {
                     var submenuItem = new MenuItem() { Header = genre.Name };
@@ -472,11 +473,11 @@ namespace OctoplayerFrontend
 
             else
             {
-                menuItem = new MenuItem() { Header = "Add To Front Of Queue" };
+                menuItem = new MenuItem() { Header = "Play Next", Icon = (Canvas)this.FindResource("PlayNextIcon") };
                 menuItem.Click += AddTracksToFront;
                 menu.Items.Add(menuItem);
 
-                menuItem = new MenuItem() { Header = "Add To Back Of Queue" };
+                menuItem = new MenuItem() { Header = "Add To Queue", Icon = (Canvas)this.FindResource("AddToQueueIcon") };
                 menuItem.Click += AddTracksToBack;
                 menu.Items.Add(menuItem);
             }
@@ -652,15 +653,8 @@ namespace OctoplayerFrontend
 
         private void MaximiseWindow(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-                
-            }
-            else if (this.WindowState == WindowState.Normal)
-            {
-                this.WindowState = WindowState.Maximized;
-            }
+            if (this.WindowState == WindowState.Maximized) this.WindowState = WindowState.Normal;
+            else if (this.WindowState == WindowState.Normal) this.WindowState = WindowState.Maximized;   
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -676,8 +670,9 @@ namespace OctoplayerFrontend
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed) this.DragMove();
+            DragMove();
         }
+
 
         private void Window_Closed(object sender, EventArgs e)
         {
