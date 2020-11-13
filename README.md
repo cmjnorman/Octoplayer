@@ -3,6 +3,9 @@
 # Octoplayer
 A dark theme fullscreen music player. Currently supports .wav .mp3 and .flac file types.
 
+## Download Link
+
+Click [Here](https://www.dropbox.com/sh/krybnc5lzax1qad/AADYNvXCHzDBfw_65lw0whMZa?dl=0) to download Octoplayer!
 
 ## Screenshots
 
