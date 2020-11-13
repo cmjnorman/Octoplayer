@@ -148,14 +148,6 @@
                 </GeometryGroup>
             </Path.Data>
         </Path>
-        <Path x:Key="CloseIcon" Width="16" Height="16" Stroke="White" StrokeThickness="1">
-            <Path.Data>
-                <GeometryGroup>
-                    <LineGeometry StartPoint="0, 0" EndPoint="16, 16"/>
-                    <LineGeometry StartPoint="0, 16" EndPoint="16, 0"/>
-                </GeometryGroup>
-            </Path.Data>
-        </Path>
         <Path x:Key="MinimiseIcon" Data=" M 0, 8 L 16, 8" Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
         <Canvas x:Key="MaximiseIcon" Width="16" Height="16">
             <Rectangle Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
@@ -172,6 +164,14 @@
                 </Path.Data>
             </Path>
         </Canvas>
+        <Path x:Key="CloseIcon" Width="16" Height="16" Stroke="White" StrokeThickness="1">
+            <Path.Data>
+                <GeometryGroup>
+                    <LineGeometry StartPoint="0, 0" EndPoint="16, 16"/>
+                    <LineGeometry StartPoint="0, 16" EndPoint="16, 0"/>
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
         <!--Menu Icons-->
         <Canvas x:Key="ArtistMenuIcon" Width="16" Height="16">
             <Canvas.RenderTransform>
@@ -411,23 +411,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="TransparentHighlightableButton" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                            <ContentPresenter Focusable="False" Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource OctoOrangeTint}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="QueueToggle" TargetType="ToggleButton">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="{StaticResource OctoOrange}"/>
@@ -604,18 +587,18 @@
     
     
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}" Margin="10, 5, 10, 0">
-            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon-transparent.png" Height="50"/>
+        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
+            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon-transparent.png" Height="45" Margin="2"/>
             <Menu DockPanel.Dock="Left" VerticalAlignment="Center">
                 <MenuItem Header="Library">
                     <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
                 </MenuItem>
             </Menu>
             <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="MinimizeBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource MinimiseIcon}" Padding="10, 5" Click="MinimiseWindow"/>
-                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource RestoreIcon}" Padding="10, 5" Click="MaximiseWindow"/>
-                    <Button x:Name="CloseBtn" Style="{StaticResource TransparentHighlightableButton}" Content="{StaticResource CloseIcon}" Padding="10, 5" Click="CloseWindow"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2">
+                    <Button x:Name="MinimizeBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource MinimiseIcon}" Height="40" Width="40" Click="MinimiseWindow"/>
+                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource RestoreIcon}" Height="40" Width="40" Click="MaximiseWindow"/>
+                    <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" Height="40" Width="40" Click="CloseWindow"/>
                 </StackPanel>
             </Grid>
         </DockPanel>

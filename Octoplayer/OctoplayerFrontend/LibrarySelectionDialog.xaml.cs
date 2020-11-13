@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace OctoplayerFrontend
 {
@@ -73,9 +74,14 @@ namespace OctoplayerFrontend
             Close();
         }
 
-        private void Cancel(object sender, RoutedEventArgs e)
+        private void CloseWindow(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
 
         private TreeViewToggleItem GetTreeView(string path, bool initialState)
