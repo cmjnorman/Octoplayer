@@ -40,7 +40,7 @@ namespace OctoplayerFrontend
             {
                 LibraryBrowser.Visibility = Visibility.Visible;
                 ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Tracks...";
-                OpenBrowserPage(library.Tracks);
+                OpenBrowserPage(library.Tracks, library);
             }
         }
 
@@ -58,7 +58,7 @@ namespace OctoplayerFrontend
             if(library.Tracks.Any())
             { 
                 LibraryBrowser.Visibility = Visibility.Visible;
-                OpenBrowserPage(library.Tracks);
+                OpenBrowserPage(library.Tracks, library);
             }
         }
 
@@ -85,9 +85,7 @@ namespace OctoplayerFrontend
             player.Next();
         }
 
-#nullable enable
-
-        private Grid CreateBrowserPage<T>(List<T> items, Type? sourceType = null)
+        private Grid CreateBrowserPage<T>(List<T> items, Object sourceItem)
         {
             //Create ListBox to occupy with passed items List parameter
             var list = new ListBox()
@@ -102,8 +100,21 @@ namespace OctoplayerFrontend
             list.MouseDoubleClick += SelectBrowserItem;
             list.MouseRightButtonUp += ListBoxRightClick;
 
+            //Create Grid to contain the listbox and possible buttons or searchbar
+            var page = new Grid();
+            page.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            page.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            page.RowDefinitions.Add(new RowDefinition());
+
             //Set item template for ListBox depending on the type of item contained
-            if (sourceType == typeof(Album)) list.ItemTemplate = (DataTemplate)this.FindResource("AlbumTrackBrowserItemTemplate");
+            if (sourceItem != null && sourceItem.GetType() == typeof(Album))
+            {
+                var albumHeader = (StackPanel)this.FindResource("AlbumHeader");
+                albumHeader.DataContext = sourceItem;
+                page.Children.Add(albumHeader);
+                Grid.SetRow(albumHeader, 1);
+                list.ItemTemplate = (DataTemplate)this.FindResource("AlbumTrackBrowserItemTemplate");
+            }
             else
             {
                 switch (typeof(T))
@@ -119,13 +130,8 @@ namespace OctoplayerFrontend
                 }
             }
 
-            //Create Grid to contain the listbox and possible buttons or searchbar
-            var page = new Grid();
-            page.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            page.RowDefinitions.Add(new RowDefinition());
-
             //If browser is at top level (no pages already open), insert searchbar to filter list
-            if (!browserPages.Any())
+            if (sourceItem == library)
             {
                 var searchBar = new TextBox() { Style = (Style)this.FindResource("LibrarySearchBar"), Height = 30, Margin = new Thickness(5, 10, 5, 10) };
                 searchBar.TextChanged += SearchBar_TextChanged;
@@ -141,35 +147,45 @@ namespace OctoplayerFrontend
             }
 
             //If source type is of Artist type, insert button to toggle between viewing artist tracks and albums
-            if (sourceType == typeof(Artist))
+            if (sourceItem != null && sourceItem.GetType() == typeof(Artist))
             {
                 var trackAlbumSwapButton = new Button() { Style = (Style)this.FindResource("RoundedButton"), Margin = new Thickness(0, 10, 5, 10), HorizontalAlignment = HorizontalAlignment.Right };
                 trackAlbumSwapButton.Content = (typeof(T) == typeof(Track) ? "View Artist Albums" : "View Artist Tracks");
                 trackAlbumSwapButton.Click += TrackAlbumSwapButton_Click;
                 page.Children.Add(trackAlbumSwapButton);
+                var artistHeader = (StackPanel)this.FindResource("ArtistHeader");
+                artistHeader.DataContext = sourceItem;
+                page.Children.Add(artistHeader);
+                Grid.SetRow(artistHeader, 1);
             }
-            
+
+            if (sourceItem != null && sourceItem.GetType() == typeof(Genre))
+            {
+                var genreHeader = (StackPanel)this.FindResource("GenreHeader");
+                genreHeader.DataContext = sourceItem;
+                page.Children.Add(genreHeader);
+                Grid.SetRow(genreHeader, 1);
+            }
+
             //Insert ListBox
             page.Children.Add(list);
-            Grid.SetRow(list, 1);
+            Grid.SetRow(list, 2);
 
             return page;
         }
 
-        private void OpenBrowserPage<T>(List<T> items, Type? sourceType = null)
+        private void OpenBrowserPage<T>(List<T> items, Object sourceItem)
         {
             //Hides current page and creates and opens new page
             if(browserPages.Any()) browserPages.Peek().Visibility = Visibility.Collapsed;
 
-            var page = CreateBrowserPage<T>(items, sourceType);
+            var page = CreateBrowserPage<T>(items, sourceItem);
             LibraryBrowser.Children.Add(page);
-            Grid.SetRow(page, 1);
 
             browserPages.Push(page);
+            Grid.SetRow(page, 1);
             ToggleBrowserViewButtons();
         }
-
-#nullable disable
 
         private void CloseAllBrowserPages()
         {
@@ -188,19 +204,19 @@ namespace OctoplayerFrontend
             {
                 case "Tracks":
                     ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Tracks...";
-                    OpenBrowserPage<Track>(library.Tracks);
+                    OpenBrowserPage<Track>(library.Tracks, library);
                     break;
                 case "Albums":
                     ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Albums...";
-                    OpenBrowserPage<Album>(library.Albums);
+                    OpenBrowserPage<Album>(library.Albums, library);
                     break;
                 case "Artists":
                     ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Artists...";
-                    OpenBrowserPage<Artist>(library.Artists);
+                    OpenBrowserPage<Artist>(library.Artists, library);
                     break;
                 case "Genres":
                     ((TextBox)this.FindResource("SearchPromptText")).Text = "Search Genres...";
-                    OpenBrowserPage<Genre>(library.Genres);
+                    OpenBrowserPage<Genre>(library.Genres, library);
                     break;
             }
         }
@@ -218,13 +234,13 @@ namespace OctoplayerFrontend
                         player.SelectTracks(items.OfType<Track>().ToList(), items.IndexOf(track), ShuffleToggle.IsChecked.Value, LoopToggle.IsChecked.Value);
                         break;
                     case Album album:
-                        OpenBrowserPage<Track>(album.Tracks, typeof(Album));
+                        OpenBrowserPage<Track>(album.Tracks, selectedItem);
                         break;
                     case Artist artist:
-                        OpenBrowserPage<Track>(artist.Tracks.Concat(artist.Remixes).ToList(), typeof(Artist));
+                        OpenBrowserPage<Track>(artist.Tracks.Concat(artist.Remixes).ToList(), selectedItem);
                         break;
                     case Genre genre:
-                        OpenBrowserPage<Track>(genre.Tracks);
+                        OpenBrowserPage<Track>(genre.Tracks, selectedItem);
                         break;
                 }
             }
@@ -266,15 +282,16 @@ namespace OctoplayerFrontend
             //Checks type of currently shown items, and creates a new browser with the opposite of what is currently shown (Tracks -> albums, albums -> tracks)
             browserPages.Peek().Visibility = Visibility.Collapsed;
             var items = browserPages.Pop().Children.OfType<ListBox>().First().Items;
+            var artist = (Artist)LibraryBrowser.Children.OfType<Grid>().Last().Children.OfType<StackPanel>().First().DataContext;
             var tracks = items.OfType<Track>();
             var albums = items.OfType<Album>();
             if (tracks.Any())
             {
-                OpenBrowserPage(tracks.Select(t => t.Album).Distinct().OrderBy(a => a.Title).ToList(), typeof(Artist));
+                OpenBrowserPage(artist.Albums, artist);
             }
             if (albums.Any())
             {
-                OpenBrowserPage(albums.SelectMany(a => a.Tracks).OrderBy(t => t.Title).ToList(), typeof(Artist));
+                OpenBrowserPage(artist.Tracks, artist);
             }
         }
 
@@ -488,7 +505,7 @@ namespace OctoplayerFrontend
         private void GoToArtist(object sender, RoutedEventArgs e)
         {
             var artist = library.Artists.First(a => a.Name == (string)((MenuItem)e.Source).Header);
-            OpenBrowserPage(artist.Tracks.Concat(artist.Remixes).ToList(), typeof(Artist));
+            OpenBrowserPage(artist.Tracks.Concat(artist.Remixes).ToList(), artist);
         }
 
         private void GoToAlbum(object sender, RoutedEventArgs e)
@@ -503,13 +520,13 @@ namespace OctoplayerFrontend
                 album = ((QueueItem)((MenuItem)e.Source).DataContext).Track.Album;
             }
            
-            OpenBrowserPage(album.Tracks, typeof(Album));
+            OpenBrowserPage(album.Tracks, album);
         }
 
         private void GoToGenre(object sender, RoutedEventArgs e)
         {
             var genre = library.Genres.First(a => a.Name == (string)((MenuItem)e.Source).Header);
-            OpenBrowserPage(genre.Tracks);
+            OpenBrowserPage(genre.Tracks, genre);
         }
 
         private void UnloadTrack()

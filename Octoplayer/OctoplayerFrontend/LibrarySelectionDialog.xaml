@@ -48,7 +48,7 @@
     
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
-            <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10, 5" Padding="10, 5" Click="CloseWindow"/>
+            <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="30" Height="30" Margin="7" Click="CloseWindow"/>
         </DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="10">
             <Button Style="{StaticResource RoundedButton}" Content="Select Library Location" DockPanel.Dock="Top" Margin="0, 0, 0, 5" HorizontalAlignment="Left" Click="SelectFolder"/>

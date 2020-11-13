@@ -153,12 +153,12 @@
             <Rectangle Width="16" Height="16" Stroke="White" StrokeThickness="1"/>
         </Canvas>
         <Canvas x:Key="RestoreIcon" Width="16" Height="16">
-            <Path StrokeThickness="0.5" Stroke="White">
+            <Path StrokeThickness="1" Stroke="White">
                 <Path.Data>
                     <PathGeometry Figures="M 0.25 2.25 V 15.75 H 13.75 V 2.25 Z"/>
                 </Path.Data>
             </Path>
-            <Path StrokeThickness="0.5" Stroke="White">
+            <Path StrokeThickness="1" Stroke="White">
                 <Path.Data>
                     <PathGeometry Figures="M 2.25 0.25 V 2.25 H 13.75 V 13.75 h 2 V 0.25 Z"/>
                 </Path.Data>
@@ -173,7 +173,7 @@
             </Path.Data>
         </Path>
         <!--Menu Icons-->
-        <Canvas x:Key="ArtistMenuIcon" Width="16" Height="16">
+        <Canvas x:Key="ArtistMenuIcon" x:Shared="False" Width="16" Height="16">
             <Canvas.RenderTransform>
                 <TranslateTransform X="-64.06234" Y="-70.183929"/>
             </Canvas.RenderTransform>
@@ -184,7 +184,7 @@
                 </Path.Data>
             </Path>
         </Canvas>
-        <Canvas x:Key="AlbumMenuIcon" Width="16" Height="16">
+        <Canvas x:Key="AlbumMenuIcon" x:Shared="False" Width="16" Height="16">
             <Canvas.RenderTransform>
                 <TranslateTransform X="-6.0931857" Y="-4.7145665"/>
             </Canvas.RenderTransform>
@@ -194,7 +194,7 @@
                 </Path.Data>
             </Path>
         </Canvas>
-        <Canvas x:Key="GenreMenuIcon" Width="16" Height="16">
+        <Canvas x:Key="GenreMenuIcon" x:Shared="False" Width="16" Height="16">
             <Ellipse Canvas.Left="2.72" Width="6.1" Canvas.Top="12.73" Height="3.8" Fill="{StaticResource OctoOrange}">
                 <Ellipse.RenderTransform>
                     <MatrixTransform Matrix="0.98376468 -0.17946324 0.16801018 0.98578526 0 0"/>
@@ -276,48 +276,27 @@
         <TextBlock x:Key="Genres"/>
         <TextBlock x:Key="BPM"/>
         <TextBlock x:Key="Key"/>
-        <!--Browser Item Templates-->
+        <!--Item Templates-->
         <DataTemplate x:Key="TrackAndAlbumBrowserItemTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Artwork}" Height="100"/>
-                <Grid Grid.Column="1" Margin="10, 0, 0, 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <StackPanel Margin="10, 0, 0, 0">
                     <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                    <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                    <TextBlock Text="{Binding Album}" Grid.Row="2" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                </Grid>
-            </Grid>
+                    <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                    <TextBlock Text="{Binding Album}" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                </StackPanel>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ArtistAndGenreBrowserItemTemplate">
             <TextBlock Text="{Binding Name}" FontSize="20" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
         </DataTemplate>
         <DataTemplate x:Key="AlbumTrackBrowserItemTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding TrackNumber, StringFormat={}{0,-3:0}}" FontSize="30" Padding="5, 0" Foreground="{StaticResource OctoOrange}"/>
-                <Image Source="{Binding Artwork}" Grid.Column="1" Margin="10, 0, 0, 0" Height="100"/>
-                <Grid Grid.Column="2" Margin="10, 0, 0, 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <StackPanel Margin="10, 0, 0, 0" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Title}" FontSize="20" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                    <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" Grid.Row="1" Padding="0" Foreground="{StaticResource OctoOrange}"/>
-                </Grid>
-            </Grid>
+                </StackPanel>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="QueueItemTemplate">
             <StackPanel Orientation="Horizontal">
@@ -328,6 +307,21 @@
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
+        <StackPanel x:Key="AlbumHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Image Source="{Binding Artwork}" Height="300"/>
+            <StackPanel Margin="20">
+                <TextBlock Text="{Binding Title}" FontSize="40" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+                <TextBlock Text="{Binding Artists, Converter={StaticResource ListToStringConverter}}" FontSize="25" Padding="0" Foreground="{StaticResource OctoOrange}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel x:Key="GenreHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Viewbox Child="{StaticResource GenreMenuIcon}" Height="100"/>
+            <TextBlock Text="{Binding Name}" FontSize="40" Padding="0" Margin="20" Foreground="{StaticResource OctoOrange}"/>
+        </StackPanel>
+        <StackPanel x:Key="ArtistHeader" x:Shared="False" Orientation="Horizontal" Margin="10">
+            <Viewbox Child="{StaticResource ArtistMenuIcon}" Height="100"/>
+            <TextBlock Text="{Binding Name}" FontSize="40" Padding="0" Margin="20" Foreground="{StaticResource OctoOrange}"/>
+        </StackPanel>
         <!--Custom Listbox Styling-->
         <Style x:Key="LibraryBrowserItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="Template">
@@ -594,19 +588,24 @@
                     <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
                 </MenuItem>
             </Menu>
-            <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2">
-                    <Button x:Name="MinimizeBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource MinimiseIcon}" Height="40" Width="40" Click="MinimiseWindow"/>
-                    <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource RestoreIcon}" Height="40" Width="40" Click="MaximiseWindow"/>
-                    <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" Height="40" Width="40" Click="CloseWindow"/>
-                </StackPanel>
-            </Grid>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7">
+                <Button x:Name="MinimizeBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource MinimiseIcon}" Height="40" Width="40" Click="MinimiseWindow"/>
+                <Button x:Name="MaximizeRestoreBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource RestoreIcon}" Height="40" Width="40" Click="MaximiseWindow"/>
+                <Button x:Name="CloseBtn" Style="{StaticResource TitlebarButton}" Content="{StaticResource CloseIcon}" Height="40" Width="40" Click="CloseWindow"/>
+            </StackPanel>
         </DockPanel>
-        <Grid Margin="10" >
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+        <DockPanel>
+            <StackPanel x:Name="GridControls" DockPanel.Dock="Bottom" Margin="10" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ToggleButton x:Name="ShuffleToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource ShuffleIcon}" Width="30" Click="ShuffleToggle_Changed"/>
+                    <Button x:Name="BtnPrevious" Style="{StaticResource TransparentButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
+                    <Button x:Name="BtnPlayPause" Style="{StaticResource TransparentButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
+                    <Button x:Name="BtnNext" Style="{StaticResource TransparentButton}" Content="{StaticResource NextIcon}" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
+                    <ToggleButton x:Name="LoopToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource LoopIcon}" Width="30" Click="LoopToggle_Changed"/>
+                </StackPanel>
+                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
+                <Label x:Name="LabelTrackTime" Content="" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
+            </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500"/>
@@ -669,7 +668,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid>
+                    <Grid VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -683,17 +682,6 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <StackPanel x:Name="GridControls" Grid.Row="1" Margin="0, 10" >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <ToggleButton x:Name="ShuffleToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource ShuffleIcon}" Width="30" Click="ShuffleToggle_Changed"/>
-                    <Button x:Name="BtnPrevious" Style="{StaticResource TransparentButton}" Content="{StaticResource ResourceKey=PreviousIcon}" Width="50" IsEnabled="False" Click="BtnPrevious_Click"/>
-                    <Button x:Name="BtnPlayPause" Style="{StaticResource TransparentButton}" Content="{DynamicResource ResourceKey=PlayIcon}" Width="50" IsEnabled="False" Click="BtnPlayPause_Click"/>
-                    <Button x:Name="BtnNext" Style="{StaticResource TransparentButton}" Content="{StaticResource NextIcon}" Width="50" IsEnabled="False" Click="BtnNext_Click"/>
-                    <ToggleButton x:Name="LoopToggle" Style="{StaticResource TransparentToggle}" Content="{StaticResource LoopIcon}" Width="30" Click="LoopToggle_Changed"/>
-                </StackPanel>
-                <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
-                <Label x:Name="LabelTrackTime" Content="" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
-            </StackPanel>
-        </Grid>
+        </DockPanel>
     </DockPanel>
 </Window>
