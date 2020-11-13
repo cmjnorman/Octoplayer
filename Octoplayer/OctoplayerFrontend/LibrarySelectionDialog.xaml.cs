@@ -17,8 +17,11 @@ namespace OctoplayerFrontend
         public LibrarySelectionDialog(List<string> libraryFolders)
         {
             InitializeComponent();
-            FolderViewer.Items.Add(GetTreeView(GetHighestCommonPath(libraryFolders), false));
-            SelectActiveFolders(libraryFolders);
+            if(libraryFolders.Any())
+            {
+                FolderViewer.Items.Add(GetTreeView(GetHighestCommonPath(libraryFolders), false));
+                SelectActiveFolders(libraryFolders);
+            }
         }
 
         private string GetHighestCommonPath(List<string> folderPaths)
