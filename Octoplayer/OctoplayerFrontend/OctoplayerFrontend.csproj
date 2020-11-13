@@ -34,16 +34,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bin\Debug\netcoreapp3.1\assets\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="assets\octoplayer-icon-transparent-dark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="assets\octoplayer-icon-transparent.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="assets\octoplayer-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\netcoreapp3.1\" />
   </ItemGroup>
 
 </Project>

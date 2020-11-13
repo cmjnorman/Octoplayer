@@ -580,9 +580,9 @@
     
     
     
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Top" MouseDown="DragWindow" Background="{StaticResource DarkBase}">
-            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon-transparent.png" Height="45" Margin="2"/>
+    <DockPanel Margin="10">
+        <DockPanel DockPanel.Dock="Top" MouseLeftButtonDown="DragWindow" Background="{StaticResource DarkBase}">
+            <Image DockPanel.Dock="Left" Source="assets/octoplayer-icon.png" Height="45" Margin="5, 5"/>
             <Menu DockPanel.Dock="Left" VerticalAlignment="Center">
                 <MenuItem Header="Library">
                     <MenuItem Header="Select Library" Click="OpenLibrarySelectionDialog"/>
@@ -684,4 +684,7 @@
             </Grid>
         </DockPanel>
     </DockPanel>
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
 </Window>
