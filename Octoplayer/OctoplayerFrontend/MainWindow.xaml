@@ -606,12 +606,12 @@
                 <Slider Style="{StaticResource TrackSlider}" x:Name="TrackSlider" Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" ValueChanged="TrackSlider_ValueChanged" IsEnabled="False"/>
                 <Label x:Name="LabelTrackTime" Content="" HorizontalAlignment="Center" Foreground="{StaticResource OctoOrange}"/>
             </StackPanel>
-            <Grid>
+            <Grid x:Name="GridPlayer" Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <DockPanel x:Name="GridPlayer">
+                <DockPanel>
                     <Border DockPanel.Dock="Top" HorizontalAlignment="Center" MinWidth="300" Padding="10" Background="{StaticResource DarkOverlay}" CornerRadius="4">
                         <StackPanel>
                             <Image x:Name="ImgAlbumArt" DockPanel.Dock="Top" MaxWidth="500"/>
